@@ -1,0 +1,298 @@
+/* gallery.css */
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+#gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.post {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.post:hover {
+    transform: scale(1.05);
+}
+
+.post img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.post-info {
+    padding: 15px;
+}
+
+.post-info h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: #333;
+}
+
+.post-info p {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.post-info strong {
+    color: #333;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.topbar .wrapper{
+    display: flex;
+    width: 100%;
+    max-width: 1366px;
+
+
+}
+.topbar{
+    width: 100%;
+   height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: "Josefin Sans", sans-serif;
+    background-color:black;
+    justify-content: center;
+}
+ .topbar .right{
+    flex: 3;
+    height: 100%;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.topbar .center{
+    flex: 6;
+    height: 50px;
+   
+    display: flex;
+    align-items: center;/*Bu özellik, flex container içindeki öğeleri çapraz eksende (genellikle dikeyde) ortalar.*/
+    justify-content: space-evenly;/*öğeler arasında eşit boşluk bırakır*/
+}
+.topbar .right span img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.topbar .left i{
+    font-size: 1.3rem;
+}
+.topbar .right .searchEngine{
+
+   width: 70%; 
+   height: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.topbar .right .dropdown-icon{
+    color: #007bff;
+}
+.topbar .right .searchEngine i{
+    position: relative;
+    right: 0px;
+    
+    width: 30px;    
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+ }
+ .topbar .right .searchEngine input{
+   width: 100%;
+   height: 23px;
+   border-radius: 7px;
+   opacity: 0;
+   transition: all 0.5s;
+   color: #007bff;
+ }
+
+.topbar .center a {
+    color:rgb(81, 75, 75);
+    text-decoration: none;
+}
+.topbar .left {
+    flex: 3;
+    height: 50px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.topbar .right .searchEngine{
+
+   width: 0px;
+   transition: all 0.5s;
+   color: #007bff;
+ 
+ }
+ .topbar .right .searchEngine.active{
+
+    width: 70%;
+  
+  }
+  .topbar .right .searchEngine.active input{
+
+   opacity: 1;
+  
+  }
+  .topbar .left a{
+    color: rgb(57, 51, 51);
+  }
+/* Dropdown stil */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px; /* Köşeleri yuvarlatma */
+}
+
+.dropdown-content a {
+    color: rgb(54, 49, 49);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 8px; /* Köşeleri yuvarlatma */
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 8px; /* Köşeleri yuvarlatma */
+}
+
+/* Dropdown açıldığında görünür hale gelir */
+.dropdown.show .dropdown-content {
+    display: block;
+}
+
+.dropdown-icon {
+    cursor: pointer; /* İkonun üzerine gelindiğinde imleci pointer yapar */
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.dropdown-icon:hover {
+    color: #007bff; /* İkonun üzerine gelindiğinde rengini değiştirir */
+}
+
+.topbar .wrapper .center {
+    opacity: 1;
+    transition: all 0.5s;
+    transform: translatey(0px);
+  }
+  .topbar .wrapper.active .center{
+    opacity: 0;
+    transform: translatey(-15px);
+  }
+  .topbar .wrapper .left i{
+    transition: all 0.3s;
+    transform: translateX(-15px);
+    opacity: 1;
+}
+.topbar .wrapper.active .left i{
+    transition: all 0.3s;
+    transform: translateX(0px);
+    opacity: 1;
+}
+.topbar .wrapper.active .left i:nth-child(2){
+    transition-duration: 0.5s;
+}
+.topbar .wrapper.active .left i:nth-child(3){
+    transition-duration: 0.8s;
+}
+.topbar .wrapper.active .left i:nth-child(4){
+    transition-duration: 1.2s;
+}
+
+.slider {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Slider'ın yüksekliği tüm ekran yüksekliğini kaplar */
+    overflow: hidden;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.slider .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 1s ease-in-out;
+    
+}
+
+.slider img {
+    width: 100%;
+    height: auto;
+    max-height: 70vh; /* Resimlerin maksimum yüksekliği ekranın %70'i kadar olur */
+    object-fit: contain;
+}
+
+.caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 20vh; /* Açıklamaların maksimum yüksekliği ekranın %30'u kadar olur */
+    overflow-y: auto; /* Uzun yazılarda kaydırma sağlar */
+    border-radius: 10%;
+    background-color: saddlebrown;
+}
+

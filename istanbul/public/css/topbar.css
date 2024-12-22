@@ -1,0 +1,220 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.topbar .wrapper{
+    display: flex;
+    width: 100%;
+    max-width: 1366px;
+
+
+}
+.topbar{
+    width: 100%;
+   height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: "Josefin Sans", sans-serif;
+    background-color:black;
+    justify-content: center;
+}
+ .topbar .right{
+    flex: 3;
+    height: 100%;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.topbar .center{
+    flex: 6;
+    height: 50px;
+   
+    display: flex;
+    align-items: center;/*Bu özellik, flex container içindeki öğeleri çapraz eksende (genellikle dikeyde) ortalar.*/
+    justify-content: space-evenly;/*öğeler arasında eşit boşluk bırakır*/
+}
+.topbar .right span img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.topbar .left i{
+    font-size: 1.3rem;
+}
+.topbar .right .searchEngine{
+
+   width: 70%; 
+   height: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.topbar .right .dropdown-icon{
+    color:white;
+}
+.topbar .right .searchEngine i{
+    position: relative;
+    right: 0px;
+    
+    width: 30px;    
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+ }
+ .topbar .right .searchEngine input{
+   width: 100%;
+   height: 23px;
+   border-radius: 7px;
+   opacity: 0;
+   transition: all 0.5s;
+   color: white;
+ }
+
+.topbar .center a {
+    color:white;
+    text-decoration: none;
+}
+.topbar .left {
+    flex: 3;
+    height: 50px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.topbar .right .searchEngine{
+
+   width: 0px;
+   transition: all 0.5s;
+   color: white;
+ 
+ }
+ .topbar .right .searchEngine.active{
+
+    width: 70%;
+  
+  }
+  .topbar .right .searchEngine.active input{
+
+   opacity: 1;
+  
+  }
+  .topbar .left a{
+    color: white;
+  }
+/* Dropdown stil */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px; /* Köşeleri yuvarlatma */
+}
+
+.dropdown-content a {
+    color: rgb(54, 49, 49);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 8px; /* Köşeleri yuvarlatma */
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 8px; /* Köşeleri yuvarlatma */
+}
+
+/* Dropdown açıldığında görünür hale gelir */
+.dropdown.show .dropdown-content {
+    display: block;
+}
+
+.dropdown-icon {
+    cursor: pointer; /* İkonun üzerine gelindiğinde imleci pointer yapar */
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.dropdown-icon:hover {
+    color: #007bff; /* İkonun üzerine gelindiğinde rengini değiştirir */
+}
+
+
+  /* Scroll animation */
+
+  .topbar .wrapper .center {
+    opacity: 0;
+    transition: all 0.5s;
+    transform: translatey(-15px);
+  }
+  .topbar .wrapper.active .center{
+    opacity: 1;
+    transform: translatey(0px);
+  }
+  .topbar .wrapper .left i{
+    transition: all 0.3s;
+    transform: translateX(-15px);
+    opacity: 0;
+}
+.topbar .wrapper.active .left i{
+    transition: all 0.3s;
+    transform: translateX(0px);
+    opacity: 1;
+}
+.topbar .wrapper.active .left i:nth-child(2){
+    transition-duration: 0.5s;
+}
+.topbar .wrapper.active .left i:nth-child(3){
+    transition-duration: 0.8s;
+}
+.topbar .wrapper.active .left i:nth-child(4){
+    transition-duration: 1.2s;
+}
+.weather {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.weather-content {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    min-width: 200px;
+    z-index: 10;
+}
+
+.weather:hover .weather-content {
+    display: block;
+}
+
+#weatherIcon {
+    font-size: 18px;
+    color: white;
+    margin-right: 10px;
+}
+
+.weather-content p {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+}

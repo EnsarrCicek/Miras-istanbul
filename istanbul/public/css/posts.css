@@ -1,0 +1,100 @@
+.posts {
+    flex: 9;
+    /* weight yerine neden flex kullandık çünkü biz kullanıcı
+    girdiğinde sidebar kısmının çalışmasının istemiyoruz
+    flex kullanıcı girmediği takdirde postların tüm sayfayı kaplamasının sağlar
+     */
+    margin-bottom: 30px;
+    display: flex;
+    /* Yukarıda ki kod normalde alt alta sıralanan
+    kodları yan yana getirdi */
+    flex-wrap: wrap;
+    gap: 20px;
+    /* İki pos arasına boşluk ekler */
+}
+
+.posts .post {
+    width: calc(50% - 20px);
+    /* Böyle yaptık çünkü aradaki boşluğu çıkartıp
+    yapamk zorundaydık gaptaki */
+    border: 1px solid rgba(0, 0, 0.3);
+    /* Etrafındaki siyah çizgiyi sağlar */
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 30px;
+}
+
+
+.posts h1 {
+    font-family: "Dancing Script", cursive;
+    
+}
+
+.posts img {
+    border-radius: 15px;
+    margin-bottom: 5px;
+    height: 200px;
+    object-fit: cover;
+    /* Resim orjinal görünütüsünü korusun diye */
+}
+
+.posts p {
+    padding: 5px;
+    font-family: "Josefin Sans", sans-serif;
+    overflow: hidden;
+    /*(Yukarı) Bu, paragrafın boyutlarından
+     taşan içeriğin gizlenmesini sağlar */
+    text-overflow: ellipsis;
+    /* Bu, taşan metinlerin sonunda ... şeklinde 
+    bir kısaltma (ellipsis) ekler */
+    display: -webkit-box;
+    /* Bu, paragrafı bir WebKit tabanlı tarayıcıda (Chrome, Safari gibi)
+     bir kutu modelinde (box layout) düzenler */
+    -webkit-line-clamp: 4;
+    /*4 satır gözüksün der*/
+    line-clamp: 4; /* Standart olanı ekleyin */
+    -webkit-box-orient: vertical;
+    /* Dikey olarak düzenleriz */
+    line-height: 30px;
+    /* Satır aralığı 25 px olsun dedik */
+}
+.posts .authorAndDate{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* En uzak iki köşeye yolladı */
+    padding: 0px 5px;
+}
+.post .authorAndDate span:nth-child(1){
+    font-family: "Satisfy", cursive;
+    font-weight: 700;
+}
+.post .authorAndDate span:nth-child(2){
+    font-family: "Ubuntu Mono", monospace;
+    font-weight: 700;
+}
+           /*Scroll Animation  */
+
+           .posts .post {
+            transform: translateX(-20px);
+            opacity: 0;
+            transition: all 0.5s;
+         }
+         .posts .post:nth-child(2n) {
+            transition: all 0.8s;
+         }
+         .posts .post.active {
+            transform: translateX(0px);
+            opacity: 1;
+         }
+         
+         
+         /* Responsive area */
+         @media(max-width:1100px){
+            .posts .post {
+               width: 100%;
+            }
+            .posts .post:nth-child(2n) {
+               transition: all 0.5s;
+            }
+         }

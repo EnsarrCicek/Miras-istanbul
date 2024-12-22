@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konum Takip Uygulaması</title>
+    <style>
+        /* Sayfanın temel stillerini tanımlar */
+        body, html {
+            height: 100%; /* Yüksekliği %100 yapar */
+            margin: 0; /* Margin sıfırla */
+            padding: 0; /* Padding sıfırla */
+            font-family: Arial, sans-serif; /* Yazı tipi ayarla */
+            display: flex; /* Flexbox ile yerleşim yap */
+            flex-direction: row; /* Yatay yönde düzenle */
+        }
+        #map {
+            height: 100%; /* Haritanın yüksekliği %100 */
+            width: 100%; /* Haritanın genişliği %70 */
+            position: absolute;
+        }
+        #info-box {
+            position: absolute; /* Konumu göreceli yap */
+            width: 30%; /* Genişlik %30 */
+            background-color: rgba(214, 206, 206, 0.9); /* Hafif şeffaf beyaz arka plan */
+            padding: 10px; /* İç boşluk 20px */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Gölge ekle */
+            display: flex; /* Flexbox ile yerleşim yap */
+            flex-direction: column; /* Dikey yönde düzenle */
+            align-items: center; /* Ortala */
+            z-index: 2; /* Üst üste binme sırasını ayarla */
+        }
+        #info-box h2 {
+            margin-bottom: 10px; /* Alt boşluğu 10px yap */
+            color: #333; /* Yazı rengini koyu gri yap */
+        }
+        #destination {
+            width: 100%; /* Genişlik %100 */
+            padding: 10px; /* İç boşluk 10px */
+            border: 1px solid #dcd8d8; /* Açık gri sınır */
+            border-radius: 5px; /* Köşeleri yuvarla */
+            margin-bottom: 10px; /* Alt boşluğu 10px yap */
+            background-color: rgba(214, 206, 206, 0.9); /* Hafif şeffaf beyaz arka plan */
+            font-size: 16px; /* Yazı boyutunu 16px yap */
+        }
+        #set-destination-btn {
+            padding: 10px 20px; /* İç boşluk 10px üst ve alt, 20px sağ ve sol */
+            background-color: #4CAF50; /* Arka plan rengini yeşil yap */
+            color: #fff; /* Yazı rengini beyaz yap */
+            border: none; /* Sınır yok */
+            border-radius: 5px; /* Köşeleri yuvarla */
+            cursor: pointer; /* Fare imlecini el işareti yap */
+            font-size: 16px; /* Yazı boyutunu 16px yap */
+        }
+        #set-destination-btn:hover {
+            background-color: #45a049; /* Üzerine gelindiğinde arka plan rengini koyu yeşil yap */
+        }
+        #status {
+            margin-top: 10px; /* Üst boşluğu 10px yap */
+            font-weight: bold; /* Yazıyı kalın yap */
+            color: #333; /* Yazı rengini koyu gri yap */
+        }
+    </style>
+</head>
+<body>
+    
+        
+    <div id="info-box">
+        <h2>Konum Takip Uygulaması</h2>
+        <input type="text" id="destination" placeholder="Hedef konumu girin...">
+        <button id="set-destination-btn" onclick="setDestination()">Hedef Ayarla</button>
+        <p id="status">Durum: Hedef ayarlanmadı</p>
+    </div>
+    
+    <div id="map"></div>
+</div>
+    <!-- Google Maps JavaScript API'yi yükler, 'initMap' fonksiyonunu çağırır -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyeA59AqtER0puaZdsBs343PHBHAyHO-Y&libraries=places,geometry&callback=initMap" async defer></script>
+    <script>
+        // Harita ve kullanıcı konumunu yönetmek için değişkenler
+        let map;
+        let userMarker;
+        let destinationMarker;
+        let userPosition;
+        let destinationPosition = null;
+        const distanceThreshold = 4000; // metre cinsinden mesafe sınırı
+        let autocomplete;
+
+        // Haritayı başlatır ve konum algılamayı ayarlar
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 41.0082, lng: 28.9784 }, // İstanbul'un enlem ve boylamı
+                zoom: 12 // Başlangıç zoom seviyesini ayarla
+            });
+
+            // Autocomplete özelliği ekle
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('destination'),
+                { types: ['geocode'] } // Sadece geocode türündeki yerleri göster
+            );
+
+            // Konum bilgisi almak için tarayıcı API'sini kullan
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(updatePosition, showError, {
+                    enableHighAccuracy: true, // Yüksek doğruluk talep et
+                    maximumAge: 0, // Eski konum bilgilerini kullanma
+                    timeout: 60000 // 60 saniyede bir güncelle
+                });
+            } else {
+                alert("Geolocation, tarayıcınızda desteklenmiyor.");
+            }
+        }
+
+        // Kullanıcının konumunu günceller
+        function updatePosition(position) {
+            userPosition = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            // Kullanıcı işareti ekle veya konumunu güncelle
+            if (!userMarker) {
+                userMarker = new google.maps.Marker({
+                    position: userPosition,
+                    map: map,
+                    title: "Sizin Konumunuz",
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 7,
+                        fillColor: '#00BFFF',
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                        strokeColor: '#FFF'
+                    }
+                });
+            } else {
+                userMarker.setPosition(userPosition);
+            }
+
+            // Haritayı kullanıcı konumuna merkezle
+            map.setCenter(userPosition);
+
+            // Eğer hedef konum varsa, mesafeyi kontrol et
+            if (destinationPosition) {
+                checkProximity();
+            }
+        }
+
+        // Konum hatalarını gösterir
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Kullanıcı konum paylaşmayı reddetti.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Konum bilgisi alınamıyor.");
+                    break;
+                case error.TIMEOUT:
+                    alert("Konum isteği zaman aşımına uğradı.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("Bilinmeyen bir hata oluştu.");
+                    break;
+            }
+        }
+
+        // Hedef konumunu ayarlar
+        function setDestination() {
+            const place = autocomplete.getPlace();
+
+            if (!place.geometry) {
+                alert("Geçerli bir konum seçin.");
+                return;
+            }
+
+            destinationPosition = place.geometry.location;
+
+            // Hedef işareti ekle veya konumunu güncelle
+            if (!destinationMarker) {
+                destinationMarker = new google.maps.Marker({
+                    position: destinationPosition,
+                    map: map,
+                    title: "Hedef Konum",
+                    icon: {
+                        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                        scale: 5,
+                        fillColor: '#FF0000',
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                        strokeColor: '#FFF'
+                    }
+                });
+            } else {
+                destinationMarker.setPosition(destinationPosition);
+            }
+
+            // Durum bilgisini güncelle
+            document.getElementById('status').innerText = "Durum: Hedef ayarlandı.";
+        }
+
+        // Kullanıcı ile hedef arasındaki mesafeyi kontrol eder
+        function checkProximity() {
+            const userLatLng = new google.maps.LatLng(userPosition.lat, userPosition.lng);
+            const destinationLatLng = new google.maps.LatLng(destinationPosition.lat(), destinationPosition.lng());
+
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, destinationLatLng);
+
+            // Mesafeyi kontrol et ve durumu güncelle
+            if (distance < distanceThreshold) {
+                document.getElementById('status').innerText = "Durum: Hedefe yaklaşıldı!";
+                alert("Hedefe yaklaşıldı!");
+            } else {
+                document.getElementById('status').innerText = `Durum: Hedefe uzaklık: ${Math.round(distance)} metre`;
+            }
+        }
+    </script>
+</body>
+</html>

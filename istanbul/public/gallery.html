@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/gallery.css">
+    <title>Gallery</title>
+</head>
+<body>
+    <div class="topbar">
+        <div class="wrapper target">
+            <div class="left target">
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </div>
+            <div class="center">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="harita.html">Harita</a>
+                <a href="ilceler.html">İlceler</a>
+                <a href="konum.html">Konum Takip</a>
+
+            </div>
+            <div class="right">
+                <div class="dropdown">
+                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
+                    <div class="dropdown-content">
+                        <a href="/public/register.html">Kayıt Ol</a>
+                        <a href="/public/login.html">Giriş Yap</a>
+                        <a href="/public/add.html">Senin Manzaran</a>
+                        <a href="/public/gallery.html">Galeri</a>
+                    </div>
+                </div>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        
+        <div id="gallery" class="slider">
+            <!-- Slider için placeholder, JavaScript ile doldurulacak -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/gallery');
+                const posts = await response.json();
+
+                const galleryDiv = document.getElementById('gallery');
+                posts.forEach((post, index) => {
+                    const slideElement = document.createElement('div');
+                    slideElement.className = 'slide';
+                    slideElement.style.opacity = index === 0 ? '1' : '0';  // İlk slide'ı görünür yap
+                    slideElement.style.zIndex = index === 0 ? '10' : '1';   // İlk slide'ı en üstte yap
+
+                    slideElement.innerHTML = `
+                        <img src="/${post.image_path}" alt="${post.title}">
+                        <div class="caption">
+                            <h2>${post.title}</h2>
+                            <p>${post.content}</p>
+                            <p><strong>Author:</strong> ${post.author}</p>
+                        </div>
+                    `;
+
+                    galleryDiv.appendChild(slideElement);
+                });
+
+                // Slider'ı başlat
+                let currentSlide = 0;
+                const slides = document.querySelectorAll('.slide');
+                const totalSlides = slides.length;
+
+                function showSlide(index) {
+                    slides.forEach((slide, i) => {
+                        slide.style.opacity = '0';
+                        slide.style.zIndex = '1';
+
+                        if (i === index) {
+                            slide.style.opacity = '1';
+                            slide.style.zIndex = '10';
+                        }
+                    });
+                }
+
+                function nextSlide() {
+                    currentSlide++;
+                    if (currentSlide >= totalSlides) {
+                        currentSlide = 0;  // Son slide'a gelindiğinde başa dön
+                    }
+                    showSlide(currentSlide);
+                }
+
+                showSlide(currentSlide);
+                setInterval(nextSlide, 10000);  // Her 4 saniyede bir sonraki slayta geç
+
+            } catch (error) {
+                console.error('Error fetching gallery:', error);
+            }
+        });
+    </script>
+</body>
+</html>

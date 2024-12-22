@@ -1,0 +1,152 @@
+/* Sayfanın margin ve padding değerlerini sıfırlar, taşma olaylarını engeller */
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Harita taşmalarını engeller */
+}
+
+/* HTML ve body elemanları ile haritanın yüksekliği ve genişliği %100 olarak ayarlanır */
+html, body, #map {
+    height: 100%; /* Tam ekran yüksekliği */
+    width: 100%;  /* Tam ekran genişliği */
+}
+
+/* Haritanın pozisyonu ve yüksekliği ayarlanır */
+#map {
+    position: absolute; /* Haritanın konumunu belirler */
+    top: 40px;         /* Üstten 40px aşağıda başlar (topbar'ı geçmemesi için) */
+    width: 100%;       /* Genişlik %100 olarak ayarlanır */
+    height: calc(100% - 40px); /* Yükseklik, toplam yüksekliğin 40px eksiltilmiş hali */
+}
+
+/* Topbar için stil ayarları */
+.topbar {
+    position: fixed; /* Sabit pozisyonda kalır */
+    top: 0;          /* Üstten sıfır mesafede başlar */
+    left: 0;         /* Soldan sıfır mesafede başlar */
+    width: 100%;     /* Genişlik %100 olarak ayarlanır */
+    height: 40px;    /* Sabit yükseklik */
+    background-color: #333; /* Arka plan rengi */
+    color:crimson;    /* Yazı rengi */
+    display: flex;   /* Flexbox düzeni */
+    align-items: center; /* İçerikleri ortalar */
+    padding: 0 20px; /* Sol ve sağdan 20px iç boşluk */
+    z-index: 1000;   /* Diğer elementlerin üstünde görünür */
+}
+
+/* Topbar içindeki sol, orta ve geocoder bölümleri için stil ayarları */
+.topbar .left, .topbar .center, .topbar .geocoder {
+    display: flex;  /* Flexbox düzeni */
+    align-items: center; /* İçerikleri ortalar */
+}
+
+/* Sol bölüm genişliği */
+.topbar .left {
+    flex: 1; /* Esnek genişlik */
+}
+
+/* Orta bölüm genişliği, içerik ortalanır */
+.topbar .center {
+    flex: 2; /* Esnek genişlik */
+    justify-content: center; /* İçeriği ortalar */
+    text-align: center; /* Metni ortalar */
+}
+
+/* Geocoder için margin ayarı */
+.topbar .geocoder {
+    margin-left: auto; /* Sol taraf boşluğu bırakır */
+}
+
+/* Dropdown menü için stil ayarları */
+.dropdown {
+    position: relative; /* Relative pozisyon */
+    z-index: 1001; /* Dropdown'un üstte görünmesini sağlar */
+}
+
+/* Dropdown butonunun stili */
+.dropbtn {
+    border-radius: 10%; /* Kenarları yuvarlatır */
+    background-color: darkgrey; /* Arka plan rengi */
+    color: white; /* Yazı rengi */
+    padding: 7px 16px; /* İç boşluk */
+    font-size: 14px; /* Yazı boyutu */
+    border: none; /* Kenar çizgisi yok */
+    cursor: pointer; /* İmleci pointer yapar */
+}
+
+/* Dropdown menü içeriği için stil ayarları */
+.dropdown-content {
+    display: none; /* Varsayılan olarak gizli */
+    position: absolute; /* Mutlak pozisyon */
+    background-color: #f9f9f9; /* Arka plan rengi */
+    min-width: 160px; /* Minimum genişlik */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Gölge efekti */
+    z-index: 1000; /* Üstte görünür */
+}
+
+/* Dropdown menü içeriğindeki bağlantılar için stil ayarları */
+.dropdown-content a {
+    color: black; /* Yazı rengi */
+    padding: 12px 16px; /* İç boşluk */
+    text-decoration: none; /* Altı çizili değil */
+    display: block; /* Bloğa dönüştürür */
+}
+
+/* Dropdown menü içeriğindeki bağlantılar hover olduğunda stil ayarları */
+.dropdown-content a:hover {
+    background-color: #f1f1f1; /* Hoverda arka plan rengi */
+}
+
+/* Dropdown menü açık olduğunda stil ayarları */
+.dropdown:hover .dropdown-content {
+    display: block; /* Menü görünür */
+}
+
+/* Dropdown butonunun hover durumunda stil ayarları */
+.dropdown:hover .dropbtn {
+    background-color: #302d2c; /* Hoverda arka plan rengi */
+}
+
+/* Marker için stil ayarları */
+#marker {
+    background-image: url('https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQx0sgDIujFVCXbrH7nn-SZM8oR42xP6gKF97ncHU-GsFT6sQ4f8FgTAovIjDX4_-tzQ09ICzGL0IUV-ilfNVXIaPz_GcHVZwF1phwMPfw'); /* Marker'ın arka plan resmi */
+    background-size: cover; /* Resmi kapsar */
+    width: 50px; /* Genişlik */
+    height: 50px; /* Yükseklik */
+    border-radius: 50%; /* Yuvarlak şekil */
+    cursor: pointer; /* İmleci pointer yapar */
+}
+
+/* Popup (açılır pencere) için stil ayarları */
+.maplibregl-popup {
+    max-width: 200px; /* Maksimum genişlik */
+}
+
+/* GeolocateControl'ün mavi konum işaretçisini gizler */
+.mapboxgl-user-location-dot {
+    display: none !important; /* Mavi nokta gizli */
+}
+
+/* GeolocateControl'ün doğruluk çemberini gizler */
+.mapboxgl-user-location-accuracy-circle {
+    display: none !important; /* Doğruluk çemberi gizli */
+}
+
+.topbar .topbar-button {
+    display: block; /* Görünür yap */
+    position: absolute; /* Mutlak pozisyon */
+    background-color: #f9f9f9; /* Arka plan rengi */
+    min-width: 100px; /* Minimum genişlik */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Gölge efekti */
+    z-index: 1000; /* Üstte görünür */
+    text-align: center; /* Metin ortalamak için */
+    padding: 7px; /* İç boşluk */
+    border-radius: 4px; /* Köşe yuvarlama */
+    margin-left: 400px;
+}
+
+.topbar .topbar-button:hover {
+    background-color: darkgrey; /* Hover durumunda arka plan rengi */
+}
+
+

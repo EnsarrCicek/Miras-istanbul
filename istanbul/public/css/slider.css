@@ -1,0 +1,137 @@
+.ilceler-container * {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.ilceler-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(0.60turn, gray, black);
+}
+
+.ilceler-container .area {
+    margin-left: 200px;
+    margin-top: 75px;
+    width: 600px;
+    height: 300px;
+    border: 5px solid black;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: -10px 10px 16px black;
+}
+
+.ilceler-container .photo {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    /* CSS animasyonu kaldırıldı */
+}
+
+.ilceler-container .photo img {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.ilceler-container .container {
+    display: flex;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+.ilceler-container .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 50px;
+}
+
+.ilceler-container .menu-item {
+    position: relative;
+    font-size: 24px;
+    color: black;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: color 0.3s;
+}
+
+.ilceler-container .menu-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: black;
+    transition: width 0.3s;
+}
+
+.ilceler-container .menu-item:hover {
+    color: #555;
+}
+
+.ilceler-container .menu-item:hover::after {
+    width: 100%;
+}
+
+.ilceler-container .image-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    padding-right: 50px;
+}
+.ilceler-container .back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #000;
+    cursor: pointer;
+    z-index: 1000;
+    transition: color 0.3s;
+}
+
+.ilceler-container .back-button:hover {
+    color: #555;
+}
+
+
+.ilceler-container .image-display img {
+    max-width: 100%;
+    max-height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+/* Scroll animation */
+
+.ilceler-container .container .menu {
+    opacity: 0;
+    transition: all 0.5s;
+    transform: translatey(-15px);
+  }
+  .ilceler-container .container .menu.active {
+    opacity: 1;
+    transform: translatey(0px);
+  }
+  .ilceler-container .container .area {
+    opacity: 0;
+    transition: all 0.5s;
+    transform: translatey(-15px);
+  }
+  .ilceler-container .container .area.active {
+    opacity: 1;
+    transform: translatey(0px);
+  }
+  

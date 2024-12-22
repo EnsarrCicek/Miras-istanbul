@@ -1,0 +1,182 @@
+/* Topbar genel stil */
+.topbar {
+    width: 100%; /* Genişliği %100 yap */
+    background-color: #333; /* Arka plan rengini koyu gri yap */
+    padding: 10px 0; /* Üst ve alt boşluk 10px, sağ ve sol 0 */
+    display: flex; /* Flexbox ile yerleşim yap */
+    justify-content: space-between; /* Elemanları sağa sola yasla */
+    align-items: center; /* Dikeyde ortala */
+    position: relative; /* Açılır pencere için konumlandırma */
+    z-index: 3; /* Üst üste binme sırasını ayarla */
+}
+
+/* Sol, orta ve sağ bölümler için stil */
+.topbar .left,
+.topbar .center,
+.topbar .right {
+    display: flex; /* Flexbox ile yerleşim yap */
+    align-items: center; /* Dikeyde ortala */
+}
+
+/* Sol kısımdaki ikonların stili */
+.topbar .left a {
+    color: white; /* Yazı rengini beyaz yap */
+    margin-right: 15px; /* Sağ tarafta boşluk bırak */
+    font-size: 20px; /* Yazı boyutunu 20px yap */
+    text-decoration: none; /* Alt çizgiyi kaldır */
+    transition: color 0.3s; /* Renk değişimi için geçiş süresi */
+}
+
+.topbar .left a:hover {
+    color: #FFD700; /* Üzerine gelindiğinde yazı rengini altın yap */
+}
+
+/* Orta kısımdaki linklerin stili */
+.topbar .center a {
+    color: white; /* Yazı rengini beyaz yap */
+    margin: 0 15px; /* Sağ ve sol tarafta boşluk bırak */
+    text-decoration: none; /* Alt çizgiyi kaldır */
+    font-size: 18px; /* Yazı boyutunu 18px yap */
+    transition: color 0.3s; /* Renk değişimi için geçiş süresi */
+}
+
+.topbar .center a:hover {
+    color: #FFD700; /* Üzerine gelindiğinde yazı rengini altın yap */
+}
+
+/* Sağ kısımdaki arama motoru ve açılır pencere stili */
+.topbar .right {
+    display: flex; /* Flexbox ile yerleşim yap */
+    align-items: center; /* Dikeyde ortala */
+}
+
+/* Dropdown menü için stil */
+.dropdown {
+    position: relative; /* İçeriği için konumlandırma */
+}
+
+.dropdown-content {
+    display: none; /* Başlangıçta gizle */
+    position: absolute; /* Konumu mutlak yap */
+    right: 0; /* Sağ tarafa hizala */
+    background-color: #333; /* Arka plan rengini koyu gri yap */
+    min-width: 160px; /* Minimum genişliği 160px yap */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Gölge ekle */
+    z-index: 4; /* Üst üste binme sırasını ayarla */
+}
+
+.dropdown-content a {
+    color: white; /* Yazı rengini beyaz yap */
+    padding: 12px 16px; /* İç boşluk ekle */
+    text-decoration: none; /* Alt çizgiyi kaldır */
+    display: block; /* Blok olarak göster */
+    transition: background-color 0.3s; /* Arka plan değişimi için geçiş süresi */
+}
+
+.dropdown-content a:hover {
+    background-color: #575757; /* Üzerine gelindiğinde arka plan rengini koyu gri yap */
+}
+
+/* Dropdown ikonu tıklanınca menüyü göster */
+.dropdown-icon:hover + .dropdown-content,
+.dropdown-content:hover {
+    display: block; /* Menü içeriğini göster */
+}
+
+/* Arama motoru stili */
+.searchEngine {
+    display: flex; /* Flexbox ile yerleşim yap */
+    align-items: center; /* Dikeyde ortala */
+    background-color: white; /* Arka plan rengini beyaz yap */
+    border-radius: 5px; /* Köşeleri yuvarla */
+    padding: 5px 10px; /* İç boşluk ekle */
+    margin-left: 20px; /* Soldan boşluk bırak */
+}
+
+.searchEngine input {
+    border: none; /* Sınırı kaldır */
+    outline: none; /* Kenar çizgiyi kaldır */
+    font-size: 16px; /* Yazı boyutunu 16px yap */
+    padding: 5px; /* İç boşluk ekle */
+    border-radius: 5px; /* Köşeleri yuvarla */
+    flex: 1; /* Genişliği otomatik olarak ayarla */
+}
+
+.searchEngine i {
+    color: #333; /* Yazı rengini koyu gri yap */
+    font-size: 18px; /* Yazı boyutunu 18px yap */
+    margin-left: 10px; /* Soldan boşluk bırak */
+    cursor: pointer; /* Fare imlecini el işareti yap */
+}
+
+.searchEngine i:hover {
+    color: #000; /* Üzerine gelindiğinde yazı rengini siyah yap */
+}
+/* Sayfanın temel stillerini tanımlar */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex; /* Yan yana yerleştirme */
+    width: 100%;
+    height: 100%;
+}
+
+#info-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 25%; /* Solda yer alacak kısmın genişliği */
+    max-width: 300px; /* Maksimum genişlik */
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#map {
+    width: 75%; /* Haritanın genişliği */
+    height: 100%; /* Haritanın yüksekliği */
+}
+
+#info-box h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#destination {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+#set-destination-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#set-destination-btn:hover {
+    background-color: #45a049;
+}
+
+#status {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}

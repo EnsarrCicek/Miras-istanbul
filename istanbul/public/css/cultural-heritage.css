@@ -1,0 +1,157 @@
+.cultural-heritage {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f8f8;
+    padding: 50px 0;
+}
+
+.heritage-content {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.heritage-text {
+    max-width: 500px;
+    margin-left: auto;
+    padding-right: 50px;
+}
+
+.heritage-title {
+    color: #ff4444;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.heritage-subtitle {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.heritage-description {
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.heritage-navigation {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-button {
+    background: none;
+    border: 2px solid #333;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    background: #333;
+    color: white;
+}
+
+.heritage-slider {
+    flex: 2;
+    overflow: hidden;
+    position: relative;
+}
+
+.heritage-cards {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease;
+    padding: 20px;
+}
+
+.heritage-card {
+    min-width: 300px;
+    height: 400px;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.heritage-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.heritage-card:hover img {
+    transform: scale(1.05);
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    color: white;
+    transition: bottom 0.3s ease;
+}
+
+.heritage-card:hover .card-overlay {
+    bottom: 0;
+}
+
+.card-overlay h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.card-overlay p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.explore-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #ff4444;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.explore-btn:hover {
+    background: #ff6666;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 1200px) {
+    .cultural-heritage {
+        flex-direction: column;
+    }
+
+    .heritage-content {
+        padding: 30px;
+    }
+
+    .heritage-text {
+        max-width: 100%;
+        padding-right: 0;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .heritage-navigation {
+        justify-content: center;
+    }
+} 
