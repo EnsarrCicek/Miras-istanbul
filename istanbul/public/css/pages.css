@@ -114,4 +114,86 @@
         font-size: 1rem;
         line-height: 1.6;
     }
+}
+
+.emergency-numbers {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.emergency-numbers h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+}
+
+.numbers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.number-item {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.number-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.number-item i {
+    font-size: 2rem;
+    margin-right: 2rem;
+    color: #e74c3c;
+    width: 50px;
+    text-align: center;
+}
+
+.number-content {
+    flex: 1;
+}
+
+.number-content h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.number-content p {
+    color: #e74c3c;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* Mobil uyumluluk için */
+@media (max-width: 768px) {
+    .emergency-numbers {
+        padding: 1rem;
+    }
+
+    .number-item {
+        padding: 1rem;
+    }
+
+    .number-item i {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+    }
+
+    .number-content h3 {
+        font-size: 1rem;
+    }
+
+    .number-content p {
+        font-size: 1.1rem;
+    }
 } 
