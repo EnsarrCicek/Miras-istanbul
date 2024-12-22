@@ -7,8 +7,7 @@
     display: flex;
     width: 100%;
     max-width: 1366px;
-
-
+    position: relative;
 }
 .topbar{
     width: 100%;
@@ -217,4 +216,93 @@
     margin: 0;
     font-size: 14px;
     text-align: center;
+}
+
+/* İstanbul Senin Menü Stilleri */
+.istanbul-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    cursor: pointer;
+    padding: 0 15px;
+}
+
+.istanbul-text {
+    color: #ff4444;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.istanbul-icon {
+    color: #ff4444;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.istanbul-menu:hover .istanbul-icon {
+    transform: rotate(180deg);
+}
+
+.istanbul-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.istanbul-menu:hover .istanbul-dropdown {
+    display: flex;
+    animation: dropdownFade 0.3s ease;
+}
+
+.istanbul-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.istanbul-btn:hover {
+    background: #ff4444;
+    padding-left: 25px;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobil uyumluluk için */
+@media (max-width: 768px) {
+    .istanbul-menu {
+        padding: 10px;
+    }
+    
+    .istanbul-text {
+        font-size: 1rem;
+    }
+    
+    .istanbul-dropdown {
+        min-width: 180px;
+    }
 }
