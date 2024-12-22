@@ -5,29 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İstanbul Haritaları</title>
     <link rel="stylesheet" href="css/index1.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div class="maps-container">
-        <h1>İstanbul Haritaları</h1>
-        <div class="map-types">
-            <div class="map-card">
-                <h3>Toplu Taşıma Haritası</h3>
-                <div id="transport-map"></div>
+    <div class="topbar">
+        <div class="wrapper target">
+            <div class="left target">
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
             </div>
-            <div class="map-card">
-                <h3>Turistik Yerler Haritası</h3>
-                <div id="tourist-map"></div>
+            <div class="istanbul-menu">
+                <span class="istanbul-text">İstanbul Senin</span>
+                <i class="fas fa-plane istanbul-icon"></i>
+                <div class="istanbul-dropdown">
+                    <button class="istanbul-btn" onclick="window.location.href='onemli-numaralar.html'">Önemli Numaralar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='ulasim.html'">Ulaşım</button>
+                    <button class="istanbul-btn" onclick="window.location.href='haritalar.html'">Haritalar</button>
+                </div>
             </div>
-            <div class="map-card">
-                <h3>İlçeler Haritası</h3>
-                <div id="districts-map"></div>
+            <div class="center">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="harita.html">Harita</a>
+                <a href="ilceler.html">İlçeler</a>
+                <a href="konum.html">Konum Takip</a>
             </div>
-            <div class="map-card">
-                <h3>Bisiklet Yolları Haritası</h3>
-                <div id="bike-map"></div>
+            <div class="right">
+                <div class="weather">
+                    <i class="fa-solid fa-cloud-sun" id="weatherIcon"></i>
+                    <div class="weather-content" id="weatherContent">
+                        <p>Hava durumu bilgisi yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
+                    <div class="dropdown-content">
+                        <a href="/public/register.html">Kayıt Ol</a>
+                        <a href="/public/login.html">Giriş Yap</a>
+                        <a href="/public/add.html">Senin Manzaran</a>
+                        <a href="/public/gallery.html">Galeri</a>
+                        <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                    </div>
+                </div>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
             </div>
         </div>
     </div>
-    <script src="js/maps.js"></script>
+
+    <div class="maps-container">
+        <link rel="stylesheet" href="css/pages.css">
+
+        <div class="maps-header">
+            <h1>İstanbul Feribot Haritası</h1>
+        </div>
+        
+        <div class="map-image">
+            <img src="image/feribot.harita.jpeg" alt="İstanbul Feribot Haritası">
+        </div>
+        
+        <div class="map-description">
+            <p>İstanbul’un incisi olan Boğaz’da, şehir içi ulaşımı kolaylaştıran vapur hatları bulunuyor. Bunlardan biri olan Boğaz Hattı, şehir içi deniz ulaşımında İstanbul’un en 
+                uzun güzergâhına sahip olma özelliğiyle dikkatleri üzerine çekiyor.</p>
+            
+            <p>Eminönü’nden başlayarak Anadolu Kavağı’nda sona eren güzergâhta Boğaz Hattı Vapuru, Kabataş, Beşiktaş, Ortaköy, Üsküdar, Kuzguncuk, Beylerbeyi, Çengelköy, Arnavutköy, Bebek, Kandilli, Küçüksu, Anadolu Hisarı, Kanlıca, Emirgan, İstinye, Çubuklu, Paşabahçe, Beykoz, Büyükdere, 
+                Sarıyer, Rumeli Kavağı, Anadolu Kavağı olmak üzere toplam 23 iskeleye demir atıyor.</p>
+            
+            <p>Hafta içi ve hafta sonu yalnızca sabah ve akşam trafik saatlerinde hizmet veren Boğaz Hattı, her seferinde farklı iskelelere uğruyor. Örneğin, Eminönü’nden 17.15’te hareket eden vapur, sadece Beşiktaş, Beylerbeyi ve Çengelköy’e uğrarken 18.10’da Eminönü’nden hareket eden vapur sırasıyla; Kabataş, Beşiktaş, Ortaköy, Emirgan, İstinye, 
+                Sarıyer ve Rumeli Kavağı’na uğrayarak Anadolu Kavağı’nda seferini noktalıyor.</p>
+        </div>
+    </div>
+    <div class="maps-container">
+        <link rel="stylesheet" href="css/pages.css">
+
+        <div class="maps-header">
+            <h1>Turistik İstanbul Haritası</h1>
+        </div>
+        
+        <div class="map-image">
+            <img src="image/genel.harita.png" alt="Turistik İstanbul Haritası">
+        </div>
+        
+        <div class="map-description">
+            <p>İstanbul, tarih boyunca medeniyetlerin buluşma noktası olmuş, eşsiz güzellikleri ve kültürel zenginlikleriyle adeta bir açık hava müzesi gibi ziyaretçilerini büyülemektedir. Şehirde gezilecek yerler saymakla bitmez, ancak bazıları İstanbul’u anlamak ve hissetmek için mutlaka görülmelidir.
+
+                Tarihi Yarımada’da bulunan Ayasofya, Bizans İmparatorluğu’nun mirasını ve Osmanlı döneminin zarafetini bir arada sunan bir başyapıttır. 6. yüzyılda kilise olarak inşa edilen ve ardından camiye dönüştürülen bu yapı, ihtişamlı kubbesi ve eşsiz mozaikleriyle hayranlık uyandırır. Hemen yanında yer alan Sultanahmet Camii, mavi İznik çinileriyle 
+                bezenmiş duvarları ve zarif minareleriyle İstanbul’un siluetine ayrı bir güzellik katar.</p>
+            
+            <p>Boğaz’ın serin sularına bakan Topkapı Sarayı, Osmanlı padişahlarının yüzyıllar boyunca yaşadığı ve devlet işlerini yönettiği bir mekândır. Sarayın içinde bulunan Harem bölümü ve kutsal emanetler odası, ziyaretçilerin en çok ilgi gösterdiği yerler arasındadır. Yakın çevredeki Yerebatan Sarnıcı ise mistik atmosferi ve sütun ormanıyla sizi bambaşka bir dünyaya taşır.
+
+                Modern İstanbul’un enerjisini hissetmek isteyenler için Taksim Meydanı ve İstiklal Caddesi idealdir. Restoranlar, kafeler ve mağazalarla dolu bu hareketli cadde, şehrin kozmopolit yapısını ve dinamik yaşamını gözler önüne serer. Caddenin sonundaki Galata Kulesi’ne 
+                çıkarak İstanbul’un eşsiz manzarasını izleyebilirsiniz.</p>
+            
+            <p>Boğaz’da bir tekne turu yapmak, İstanbul’un iki yakasını birleştiren bu masalsı şehri denizden keşfetmenin en güzel yoludur. Saraylar, yalılar ve köprüler eşliğinde geçen bu yolculuk, unutulmaz bir deneyim sunar.
+
+                İstanbul’un zenginliklerini keşfetmek, sadece geçmişi değil, aynı zamanda bugünü ve geleceği de anlamak demektir. Bu şehir, her köşesiyle ziyaretçilerine bir hikâye fısıldar ve
+                 onu deneyimleyen herkesin kalbinde özel bir yer edinir.</p>
+        </div>
+    </div>
+    <div class="maps-container">
+        <link rel="stylesheet" href="css/pages.css">
+
+        <div class="maps-header">
+            <h1>İstanbul Metro Haritası</h1>
+        </div>
+        
+        <div class="map-image">
+            <img src="image/metro.harita.png" alt="İstanbul Metro Haritası">
+        </div>
+        
+        <div class="map-description">
+            <p>stanbul, geniş ve karmaşık ulaşım ağıyla milyonlarca insanın günlük yaşamını kolaylaştıran modern bir metro sistemine sahiptir. Şehir, hem Avrupa hem de Asya yakasını kapsayan çeşitli metro hatlarıyla donatılmıştır ve bu hatlar İstanbul’un farklı bölgelerini birbirine bağlayarak hızlı, güvenilir ve ekonomik bir ulaşım seçeneği sunar.
+
+                Avrupa yakasında en çok kullanılan hatlardan biri olan M2 Yenikapı-Hacıosman Metro Hattı, şehrin merkezi bölgelerinden geçer. Taksim, Şişli ve Levent gibi iş ve eğlence merkezlerine ulaşımı sağlayan bu hat, yoğun saatlerde dahi büyük kolaylık sağlar. Marmaray ile entegre bir şekilde çalışan bu
+                 hat, Yenikapı üzerinden diğer ulaşım ağlarına da bağlantı sunar.</p>
+            
+            <p>M1A Yenikapı-Atatürk Havalimanı ve M1B Yenikapı-Kirazlı hatları, İstanbul’un ilk metro hatlarından biridir. Bu hatlar, özellikle Atatürk Havalimanı döneminde şehrin ana ulaşım arterlerinden biri olmuş, halen birçok semte erişim sağlamaya devam etmektedir.
+
+                Asya yakasında ise M4 Kadıköy-Tavşantepe Metro Hattı, bölgenin en önemli hatlarından biridir. Kadıköy’den başlayarak Kartal ve Pendik gibi yoğun nüfuslu bölgelere ulaşan bu hat, aynı zamanda Sabiha Gökçen 
+                Havalimanı’na erişim için de bir bağlantı sunar.</p>
+            
+            <p>Şehirde ayrıca yeni metro hatları yapım aşamasındadır. Özellikle M8 Bostancı-Dudullu ve M11 Gayrettepe-İstanbul Havalimanı gibi projeler, İstanbul’un farklı noktalarını metro ağıyla birleştirmeyi hedeflemektedir. Marmaray hattı ise iki kıtayı deniz altından birbirine bağlayan bir mühendislik harikasıdır ve Pendik’ten Halkalı’ya kadar uzanan güzergahıyla hem yerel hem de uluslararası yolcular için büyük kolaylık sunar.
+
+                İstanbul’un metro sistemi, çeşitli toplu taşıma araçlarıyla entegre bir şekilde çalışarak yolcuların seyahatini oldukça rahatlatır. Metrobüs, tramvay ve otobüs hatlarıyla uyum içinde çalışan bu sistem, şehrin yoğun trafiğini bypass etmek isteyenler için ideal bir ulaşım seçeneği oluşturur. Sürekli genişleyen hatları ve gelişmiş altyapısıyla İstanbul metrosu, 
+                şehrin modernleşme sürecinin önemli bir parçasıdır.</p>
+        </div>
+    </div>
+    <div class="maps-container">
+        <link rel="stylesheet" href="css/pages.css">
+
+        <div class="maps-header">
+            <h1>İstanbul Otobüs Haritası</h1>
+        </div>
+        
+        <div class="map-image">
+            <img src="image/otobus.harita.png" alt="İstanbul Otobüs Haritası">
+        </div>
+        
+        <div class="map-description">
+            <p>İstanbul’un geniş toplu taşıma ağının temel taşlarından biri olan otobüs hatları, şehrin neredeyse her köşesine ulaşım sağlar. İstanbul’un otobüs ağı, hem Avrupa hem de Asya yakasında binlerce durak ve yüzlerce güzergâh ile hizmet verir. Şehirdeki otobüs hatları, İstanbul Elektrik Tramvay ve Tünel İşletmeleri (İETT) tarafından yönetilir ve tüm toplu taşıma araçlarıyla entegre bir şekilde çalışır.
+
+                Avrupa yakasında en yoğun kullanılan otobüs hatlarından biri, Beşiktaş, Taksim, Şişli ve Mecidiyeköy gibi merkezi bölgelerden geçen güzergâhlardır. Bu hatlar, özellikle iş ve alışveriş merkezlerine ulaşımda büyük kolaylık sağlar. 145T (Tuzla-Eminönü) gibi hatlar ise uzak bölgeleri şehrin tarihi yarımadasına bağlayan uzun mesafeli bir güzergâha sahiptir. Ayrıca, Beylikdüzü ve Avcılar gibi Batı İstanbul bölgelerini 
+                merkeze bağlayan otobüs hatları da sık kullanılan güzergâhlar arasındadır.</p>
+            
+            <p>Asya yakasında ise Kadıköy ve Üsküdar çevresindeki otobüs hatları yoğun olarak kullanılır. Kadıköy’den Pendik, Kartal, Maltepe gibi uzak semtlere ulaşım sağlayan hatlar, özellikle iş ve okul saatlerinde yüksek talep görür. Örneğin, 16A hattı Kadıköy’den Pendik’e kadar geniş bir alanı kapsar. Ayrıca, Anadolu Yakası’ndan Avrupa Yakası’na geçişi sağlayan otobüsler, 15 Temmuz Şehitler Köprüsü ve Fatih Sultan Mehmet Köprüsü üzerinden geçerek iki yaka arasında kolay ulaşım imkânı sunar.
+
+                Metrobüs hattı da otobüs ağına dâhildir ve İstanbul’un ana arterlerinden biri olarak hizmet verir. Beylikdüzü’nden Söğütlüçeşme’ye kadar uzanan bu hat, E-5 karayolu boyunca trafik sıkışıklığından etkilenmeden hızlı ulaşım sağlar. Metrobüs, farklı toplu taşıma hatlarıyla 
+                entegre olduğu için şehir içi ulaşımda vazgeçilmez bir seçenektir.</p>
+            
+            <p>İstanbul’un otobüs durakları, hemen hemen her mahallede bulunur ve büyük bir erişim ağı sunar. Otobüsler, şehirdeki metro, tramvay, Marmaray ve vapur hatlarıyla uyumlu şekilde çalışarak yolculara alternatifli bir ulaşım sistemi sunar. Yolcular, İstanbulkart kullanarak bu araçlardan kolaylıkla faydalanabilir ve mobil uygulamalar üzerinden hat bilgilerine ve durak konumlarına erişebilir.
+
+                İstanbul otobüs haritası, sürekli gelişen güzergâhları ve kapsamlı durak ağıyla hem yerel halk hem de turistler için
+                 şehirde hızlı ve ekonomik bir ulaşım imkânı sağlamaktadır.</p>
+        </div>
+    </div>
+
+    
+    <script src="js/index1.js"></script>
+    <script src="js/hava.js"></script>
+    <script src="js/sayfa.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/heritage-slider.js"></script>
 </body>
 </html> 
