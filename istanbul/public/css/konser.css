@@ -1,0 +1,501 @@
+.konser-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.konser-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.konser-header h1 {
+    font-size: 2.8rem;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.filter-dropdown {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    background-color: white;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+    padding-right: 40px;
+}
+
+.konser-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.konser-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: visible;
+}
+
+.konser-card::before {
+    content: '🎪';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 2rem;
+    transform: rotate(15deg);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.konser-card:hover::before {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.konser-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.konser-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.konser-card:hover .konser-image img {
+    transform: scale(1.05);
+}
+
+.konser-info {
+    padding: 1.5rem;
+    border-top: 3px solid #3498db;
+    background: linear-gradient(to bottom, rgba(52, 152, 219, 0.05), transparent);
+}
+
+.konser-info h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.konser-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.konser-details p {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #34495e;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.konser-details i {
+    color: #3498db;
+    font-size: 1.2rem;
+}
+
+.price {
+    font-weight: 700;
+    color: #27ae60 !important;
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+}
+
+/* Genişletilmiş içerik */
+.konser-expanded {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    background: #f8f9fa;
+    border-radius: 0 0 15px 15px;
+}
+
+.konser-card.active .konser-expanded {
+    max-height: 800px;
+}
+
+.expanded-content {
+    padding: 2.5rem;
+    background: #f8f9fa;
+}
+
+.expanded-content h3 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.expanded-content p {
+    color: #34495e;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.lineup {
+    margin: 1rem 0;
+}
+
+.lineup h4 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.lineup ul {
+    list-style: none;
+    padding: 0;
+}
+
+.lineup li {
+    padding: 0.8rem 0;
+    color: #34495e;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.lineup li:last-child {
+    border-bottom: none;
+}
+
+.ticket-btn {
+    width: 100%;
+    padding: 1.2rem 2.5rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    min-height: 60px;
+    margin: 1rem 0;
+}
+
+.ticket-btn::before {
+    content: '🎫';
+    position: static;
+    margin-right: 10px;
+}
+
+.ticket-btn::after {
+    content: '✨';
+    position: static;
+    margin-left: 10px;
+}
+
+.ticket-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Responsive tasarım */
+@media (max-width: 768px) {
+    .konser-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .konser-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .konser-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .konser-info h2 {
+        font-size: 1.4rem;
+    }
+
+    .konser-details p {
+        font-size: 1rem;
+    }
+
+    .price {
+        font-size: 1.2rem;
+    }
+
+    .expanded-content {
+        padding: 1.5rem;
+    }
+
+    .expanded-content p,
+    .lineup li {
+        font-size: 1rem;
+    }
+
+    .konser-header h1::before,
+    .konser-header h1::after {
+        font-size: 1.5rem;
+    }
+
+    .konser-card::before {
+        font-size: 1.5rem;
+        top: -10px;
+        right: -10px;
+    }
+
+    .lineup li::before {
+        font-size: 1rem;
+    }
+
+    .ticket-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        min-height: 45px;
+    }
+} 
+
+/* Loading animasyonu */
+@keyframes musicNote {
+    0% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-10px) rotate(10deg); }
+    100% { transform: translateY(0) rotate(0); }
+}
+
+.konser-card.loading::after {
+    content: '🎵';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: musicNote 1s infinite;
+}
+
+/* Konser kartı süslemeleri */
+.konser-card {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+}
+
+.konser-card:hover {
+    background: linear-gradient(135deg, #fff 0%, #e8f0fe 100%);
+}
+
+/* Kart gölge efekti */
+.konser-card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1),
+                0 8px 30px rgba(52, 152, 219, 0.1);
+}
+
+.konser-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15),
+                0 12px 40px rgba(52, 152, 219, 0.2);
+}
+
+/* Konser detayları ikonları */
+.konser-details p:nth-child(1) i::after {
+    content: '📍';
+    margin-left: 5px;
+}
+
+.konser-details p:nth-child(2) i::after {
+    content: '📅';
+    margin-left: 5px;
+}
+
+.price::before {
+    content: '💫';
+    margin-right: 8px;
+}
+
+/* Genişletilmiş içerik süslemeleri */
+.expanded-content h3::before {
+    content: '🎭';
+    margin-right: 10px;
+}
+
+.lineup h4::before {
+    content: '⭐';
+    margin-right: 10px;
+}
+
+.lineup li::before {
+    content: '🎤';
+    margin-right: 10px;
+}
+
+/* Bilet butonu süslemeleri */
+.ticket-btn::before {
+    content: '🎫';
+    margin-right: 10px;
+}
+
+.ticket-btn::after {
+    content: '✨';
+    margin-left: 10px;
+}
+
+/* Animasyonlu arka plan */
+.konser-card {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+}
+
+.konser-card:hover {
+    background: linear-gradient(135deg, #fff 0%, #e8f0fe 100%);
+}
+
+/* Kart gölge efekti */
+.konser-card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1),
+                0 8px 30px rgba(52, 152, 219, 0.1);
+}
+
+.konser-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15),
+                0 12px 40px rgba(52, 152, 219, 0.2);
+}
+
+/* Konser bilgi bölümü süslemeleri */
+.konser-info {
+    border-top: 3px solid #3498db;
+    background: linear-gradient(to bottom, rgba(52, 152, 219, 0.05), transparent);
+}
+
+/* Bilet butonu hover efekti */
+.ticket-btn {
+    /* Mevcut stiller korunacak */
+    position: relative;
+    overflow: hidden;
+}
+
+.ticket-btn::before {
+    content: '🎫';
+    position: absolute;
+    left: -30px;
+    transition: all 0.3s ease;
+}
+
+.ticket-btn:hover::before {
+    left: 20px;
+}
+
+/* Responsive düzenlemeler için emoji boyutları */
+@media (max-width: 768px) {
+    .konser-header h1::before,
+    .konser-header h1::after {
+        font-size: 1.5rem;
+    }
+
+    .konser-card::before {
+        font-size: 1.5rem;
+        top: -10px;
+        right: -10px;
+    }
+
+    .lineup li::before {
+        font-size: 1rem;
+    }
+}
+
+/* Loading animasyonu */
+@keyframes musicNote {
+    0% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-10px) rotate(10deg); }
+    100% { transform: translateY(0) rotate(0); }
+}
+
+.konser-card.loading::after {
+    content: '🎵';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: musicNote 1s infinite;
+}
+
+/* Bilet butonu container'ı */
+.ticket-btn-container {
+    padding: 1.5rem;
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .konser-card.active .konser-expanded {
+        max-height: 1000px;
+    }
+
+    .expanded-content {
+        padding: 2rem;
+    }
+
+    .ticket-btn {
+        padding: 1rem 2rem;
+        min-height: 50px;
+        font-size: 1rem;
+    }
+} 
+
+/* Her kart için ayrı expanded sınıfları */
+.zeytinli-expanded,
+.sagopa-expanded,
+.evgeny-expanded,
+.mabel-expanded {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    background: #f8f9fa;
+    border-radius: 0 0 15px 15px;
+}
+
+/* Aktif kartlar için ayrı stiller */
+.zeytinli-card.active .zeytinli-expanded {
+    max-height: 800px;
+}
+
+.sagopa-card.active .sagopa-expanded {
+    max-height: 800px;
+}
+
+.evgeny-card.active .evgeny-expanded {
+    max-height: 800px;
+}
+
+.mabel-card.active .mabel-expanded {
+    max-height: 800px;
+}
+
+/* Diğer kartların expanded içeriğini gizli tut */
+.konser-card:not(.active) .konser-expanded {
+    max-height: 0 !important;
+} 
