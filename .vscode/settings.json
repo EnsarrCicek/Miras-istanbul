@@ -12,19 +12,6 @@
             "name": "ensar",
             "database": "root",
             "username": "root"
-        },
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3300,
-            "driver": "MySQL",
-            "name": "ensarr",
-            "username": "root",
-            "database": "root"
         }
     ]
 }

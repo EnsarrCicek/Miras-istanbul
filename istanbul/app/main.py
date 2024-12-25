@@ -11,10 +11,10 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 # CORS ayarları
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Tüm kökenlere izin verir
+    allow_origins=["*"],  # Güvenlik için production'da spesifik origin'leri belirtin
     allow_credentials=True,
-    allow_methods=["*"],  # Tüm HTTP yöntemlerine izin verir
-    allow_headers=["*"],  # Tüm başlıklara izin verir
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Veritabanı tablolarını oluşturma
@@ -92,3 +92,59 @@ def test_post():
 @app.get("/")
 def read_root():
     return {"message": "Server is running"}
+
+@app.post("/api/admin/concerts/", response_model=schemas.Concert)
+async def create_concert(
+    title: str = Form(...),
+    venue: str = Form(...),
+    date: str = Form(...),
+    price: float = Form(...),
+    description: str = Form(None),
+    lineup: str = Form(None),
+    image: UploadFile = File(...),
+    db: Session = Depends(database.get_db)
+):
+    # Resim kaydetme
+    uploads_dir = "uploads/concerts"
+    os.makedirs(uploads_dir, exist_ok=True)
+    
+    file_name = f"{uuid4().hex}_{image.filename}"
+    file_path = os.path.join(uploads_dir, file_name)
+    
+    with open(file_path, "wb+") as file_object:
+        file_object.write(await image.read())
+
+    # Konser oluşturma
+    db_concert = models.Concert(
+        title=title,
+        venue=venue,
+        date=date,
+        price=price,
+        description=description,
+        lineup=lineup,
+        image_path=file_path
+    )
+    
+    db.add(db_concert)
+    db.commit()
+    db.refresh(db_concert)
+    return db_concert
+
+@app.get("/api/concerts/", response_model=list[schemas.Concert])
+def read_concerts(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
+    concerts = db.query(models.Concert).offset(skip).limit(limit).all()
+    return concerts
+
+@app.delete("/api/admin/concerts/{concert_id}")
+def delete_concert(concert_id: int, db: Session = Depends(database.get_db)):
+    concert = db.query(models.Concert).filter(models.Concert.id == concert_id).first()
+    if concert is None:
+        raise HTTPException(status_code=404, detail="Concert not found")
+    
+    # Resmi sil
+    if concert.image_path and os.path.exists(concert.image_path):
+        os.remove(concert.image_path)
+    
+    db.delete(concert)
+    db.commit()
+    return {"message": "Concert deleted"}
