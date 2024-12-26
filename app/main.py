@@ -148,3 +148,57 @@ def delete_concert(concert_id: int, db: Session = Depends(database.get_db)):
     db.delete(concert)
     db.commit()
     return {"message": "Concert deleted"}
+
+@app.put("/api/admin/concerts/{concert_id}", response_model=schemas.Concert)
+async def update_concert(
+    concert_id: int,
+    title: str = Form(...),
+    venue: str = Form(...),
+    date: str = Form(...),
+    price: float = Form(...),
+    description: str = Form(None),
+    lineup: str = Form(None),
+    image: UploadFile = File(None),
+    db: Session = Depends(database.get_db)
+):
+    # Konseri bul
+    concert = db.query(models.Concert).filter(models.Concert.id == concert_id).first()
+    if concert is None:
+        raise HTTPException(status_code=404, detail="Concert not found")
+    
+    # Yeni resim yüklendiyse
+    if image:
+        # Eski resmi sil
+        if concert.image_path and os.path.exists(concert.image_path):
+            os.remove(concert.image_path)
+        
+        # Yeni resmi kaydet
+        uploads_dir = "uploads/concerts"
+        os.makedirs(uploads_dir, exist_ok=True)
+        
+        file_name = f"{uuid4().hex}_{image.filename}"
+        file_path = os.path.join(uploads_dir, file_name)
+        
+        with open(file_path, "wb+") as file_object:
+            file_object.write(await image.read())
+        
+        concert.image_path = file_path
+    
+    # Diğer alanları güncelle
+    concert.title = title
+    concert.venue = venue
+    concert.date = date
+    concert.price = price
+    concert.description = description
+    concert.lineup = lineup
+    
+    db.commit()
+    db.refresh(concert)
+    return concert
+
+@app.get("/api/concerts/{concert_id}", response_model=schemas.Concert)
+def read_concert(concert_id: int, db: Session = Depends(database.get_db)):
+    concert = db.query(models.Concert).filter(models.Concert.id == concert_id).first()
+    if concert is None:
+        raise HTTPException(status_code=404, detail="Concert not found")
+    return concert

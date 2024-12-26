@@ -9,9 +9,10 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "ensar",
-            "database": "root",
-            "username": "root"
+            "username": "root",
+            "database": "ensar",
+            "name": "sakila"
         }
-    ]
+    ],
+    "liveServer.settings.port": 5502
 }
