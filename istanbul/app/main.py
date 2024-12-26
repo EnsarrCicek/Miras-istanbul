@@ -7,7 +7,13 @@ import os
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+# Uploads klasörünü oluştur
+os.makedirs("uploads/concerts", exist_ok=True)
+
+# Statik dosyaları serve et
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 # CORS ayarları
 app.add_middleware(
     CORSMiddleware,
