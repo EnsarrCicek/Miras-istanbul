@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İstanbul Tarihte Bugün</title>
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/gecmis.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
-    
+    <!-- Topbar kısmı -->
     <div class="topbar">
         <link rel="stylesheet" href="css/topbar.css">
 
@@ -74,38 +73,28 @@
             </div>
         </div>
     </div>
-    <link rel="stylesheet" href="css/gecmis.css">
 
-    <div class="container">
-        <h1>İstanbul Tarihte Bugün</h1>
+    <div class="history-container">
+        <div class="history-header">
+            <h1>Tarihte Bugün: İstanbul</h1>
+            <p class="current-date" id="currentDate"></p>
+        </div>
 
-        <!-- Olaylar Bölümü -->
-        <section>
-            <h2>Olaylar</h2>
-            <ul class="event-list">
-                <li><button onclick="navigateToPage('olay1.html')">1453 - İstanbul'un Fethi</button></li>
-                <li><button onclick="navigateToPage('olay2.html')">1923 - Cumhuriyet'in İlanı</button></li>
-            </ul>
-        </section>
+        <div id="loadingMessage" class="loading-message">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Tarihsel olaylar yükleniyor...</p>
+        </div>
 
-        <!-- Doğumlar Bölümü -->
-        <section>
-            <h2>Doğumlar</h2>
-            <ul class="birth-list">
-                <li>1801 - Ahmed Cevdet Paşa</li>
-                <li>1874 - Halide Edip Adıvar</li>
-            </ul>
-        </section>
+        <div id="errorMessage" class="error-message" style="display: none;">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
 
-        <!-- Ölümler Bölümü -->
-        <section>
-            <h2>Ölümler</h2>
-            <ul class="death-list">
-                <li>1938 - Mustafa Kemal Atatürk</li>
-                <li>1481 - Fatih Sultan Mehmet</li>
-            </ul>
-        </section>
+        <div id="events" class="events-container">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
     </div>
+
+    <!-- Script dosyaları -->
     <script src="js/index1.js"></script>
     <script src="js/hava.js"></script>
     <script src="js/sayfa.js"></script>
@@ -114,5 +103,22 @@
     <script src="js/script.js"></script>
     <script src="js/heritage-slider.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/gecmis.js"></script>
+
+    <script>
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'long' 
+            };
+            document.getElementById('currentDate').textContent = 
+                now.toLocaleDateString('tr-TR', options);
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCurrentDate);
+    </script>
 </body>
 </html>
