@@ -85,5 +85,24 @@
     </div>
 
     <script src="../js/admin.js"></script>
+    <script>
+    // Sayfa yüklendiğinde admin kontrolü yap
+    document.addEventListener('DOMContentLoaded', () => {
+        const isAdmin = localStorage.getItem('isAdmin');
+        const adminUsername = localStorage.getItem('adminUsername');
+        
+        if (!isAdmin || !adminUsername || adminUsername !== 'Ensar') {
+            // Admin değilse login sayfasına yönlendir
+            window.location.href = '../login.html';
+        }
+    });
+
+    // Çıkış yap butonu için
+    document.querySelector('.logout').addEventListener('click', () => {
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('adminUsername');
+        window.location.href = '../index1.html';
+    });
+    </script>
 </body>
 </html> 

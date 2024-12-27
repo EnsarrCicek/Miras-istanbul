@@ -223,8 +223,10 @@
             const username = document.getElementById('adminUsernameInput').value;
             const password = document.getElementById('adminPasswordInput').value;
 
-            if (username === 'admin' && password === 'admin123') {
+            // Admin bilgileri kontrolü
+            if (username === 'Ensar' && password === 'Ensar.2534') {
                 localStorage.setItem('isAdmin', 'true');
+                localStorage.setItem('adminUsername', username);
                 window.location.href = 'admin/index.html';
             } else {
                 alert('Admin bilgileri hatalı!');
