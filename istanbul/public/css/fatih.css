@@ -1,0 +1,225 @@
+.header {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.header .bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+    z-index: 1;
+}
+
+.header h1 {
+    font-size: 6rem;
+    color: green;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    text-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease forwards 0.5s;
+    letter-spacing: 4px;
+    position: relative;
+}
+
+.header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive tasarım için */
+@media (max-width: 768px) {
+    .header {
+        height: 300px;
+    }
+
+    .header h1 {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 3rem;
+    }
+}
+
+.about {
+    padding: 80px 0;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.photo {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s ease forwards;
+}
+
+.photo img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: all 0.5s ease;
+    display: block;
+}
+
+.photo:hover img {
+    transform: scale(1.05);
+}
+
+.text {
+    flex: 1;
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slideInRight 1s ease forwards 0.3s;
+}
+
+.text h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.text h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #3498db;
+    transition: width 0.3s ease;
+}
+
+.text:hover h1::after {
+    width: 100px;
+}
+
+.text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #34495e;
+    text-align: justify;
+}
+
+/* Animasyonlar */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Hover efektleri */
+.photo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(52, 152, 219, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo:hover::before {
+    opacity: 1;
+}
+
+/* Responsive tasarım */
+@media (max-width: 992px) {
+    .wrapper {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .photo, .text {
+        width: 100%;
+    }
+
+    .text h1 {
+        font-size: 2rem;
+    }
+
+    .text p {
+        font-size: 1rem;
+    }
+}
+
+/* Loading efekti */
+.wrapper.loading .photo,
+.wrapper.loading .text {
+    animation: none;
+}
+
+/* Scroll reveal efekti */
+.wrapper.reveal .photo {
+    animation: slideInLeft 1s ease forwards;
+}
+
+.wrapper.reveal .text {
+    animation: slideInRight 1s ease forwards 0.3s;
+} 
