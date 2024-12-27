@@ -61,13 +61,13 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
+                    <i class="fa-solid fa-user dropdown-icon" id="dropdownIcon"></i>
                     <div class="dropdown-content">
-                        <a href="/public/register.html">Kayıt Ol</a>
-                        <a href="/public/login.html">Giriş Yap</a>
+                        <a href="/public/profile.html">Profilim</a>
                         <a href="/public/add.html">Senin Manzaran</a>
                         <a href="/public/gallery.html">Galeri</a>
                         <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                        <a href="#" onclick="logout()">Çıkış Yap</a>
                     </div>
                 </div>
                 <div class="searchEngine" id="searchEngine">
@@ -462,6 +462,22 @@
     <script src="js/script.js"></script>
     <script src="js/heritage-slider.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+        // Çıkış yapma fonksiyonu
+        function logout() {
+            localStorage.removeItem('username');
+            window.location.href = 'index1.html';
+        }
 
+        // Kullanıcı kontrolü
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = 'login.html';
+            }
+            // Kullanıcı adını göster
+            document.querySelector('.dropdown-icon').title = `Hoş geldin, ${username}`;
+        });
+    </script>
 </body>
 </html>

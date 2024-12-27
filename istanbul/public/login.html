@@ -79,24 +79,46 @@
     </div> 
 
     <div class="logReg">
-        <img src="./image/arka.jpg" alt="login">
-        <form id="loginForm">
-  
-            <div class="formGroup">
-                <input type="text" name="username" id="usernameInput" required>
-                <span>Username *</span>
+        <div class="login-container">
+            <!-- Kullanıcı Girişi -->
+            <div class="login-section">
+                <img src="./image/arka.jpg" alt="login">
+                <form id="userLoginForm">
+                    <h2>Kullanıcı Girişi</h2>
+                    <div class="formGroup">
+                        <input type="text" name="username" id="userUsernameInput" required>
+                        <span>Kullanıcı Adı *</span>
+                    </div>
+                    <div class="formGroup">
+                        <input type="password" name="password" id="userPasswordInput" required>
+                        <span>Şifre *</span>
+                    </div>
+                    <div class="btnGroup">
+                        <a href="./register.html">Hesabın yok mu?</a>
+                        <button type="submit">Giriş Yap</button>
+                    </div>
+                </form>
             </div>
-  
-            <div class="formGroup">
-                <input type="password" name="password" id="passwordInput" required>
-                <span>Password *</span>
+
+            <!-- Admin Girişi -->
+            <div class="login-section admin">
+                <img src="./image/admin-bg.jpg" alt="admin login">
+                <form id="adminLoginForm">
+                    <h2>Admin Girişi</h2>
+                    <div class="formGroup">
+                        <input type="text" name="username" id="adminUsernameInput" required>
+                        <span>Admin Kullanıcı Adı *</span>
+                    </div>
+                    <div class="formGroup">
+                        <input type="password" name="password" id="adminPasswordInput" required>
+                        <span>Admin Şifre *</span>
+                    </div>
+                    <div class="btnGroup">
+                        <button type="submit">Admin Girişi</button>
+                    </div>
+                </form>
             </div>
-  
-            <div class="btnGroup">
-                <a href="./register.html">Hesabın yok mu?</a>
-                <button type="submit">Giriş Yap</button>
-            </div>
-        </form>
+        </div>
     </div>
 
     <script src="./js/search.js"></script>
@@ -108,36 +130,50 @@
     <script src="js/search.js"></script>
     <script src="js/script.js"></script>
     <script src="js/heritage-slider.js"></script>
+    <script src="js/auth.js"></script>
     <script>
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        // Kullanıcı girişi
+        document.getElementById('userLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('userUsernameInput').value;
+            const password = document.getElementById('userPasswordInput').value;
 
-            const usernameInput = document.getElementById("usernameInput").value;
-            const passwordInput = document.getElementById("passwordInput").value;
+            try {
+                const response = await fetch('http://localhost:8000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
 
-            fetch("http://localhost:8000/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "username": usernameInput,
-                    "password": passwordInput
-                })
-            })
-            .then(response => {
                 if (response.ok) {
-                    window.location.href = "index1.html"; // Başarılı girişte yönlendirme
+                    localStorage.setItem('username', username);
+                    window.location.href = 'index2.html';
                 } else {
-                    return response.json().then(data => {
-                        alert(data.detail || "Login failed!");
-                    });
+                    alert('Kullanıcı adı veya şifre hatalı!');
                 }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Login failed! Please try again.");
-            });
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                alert('Giriş yapılırken bir hata oluştu!');
+            }
+        });
+
+        // Admin girişi
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('adminUsernameInput').value;
+            const password = document.getElementById('adminPasswordInput').value;
+
+            if (username === 'admin' && password === 'admin123') {
+                localStorage.setItem('isAdmin', 'true');
+                window.location.href = 'admin/index.html';
+            } else {
+                alert('Admin bilgileri hatalı!');
+            }
         });
     </script>
 </body>
