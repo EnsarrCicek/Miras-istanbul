@@ -9,9 +9,9 @@ body {
 }
 
 .container {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
 }
 
 h1 {
@@ -250,49 +250,190 @@ h1 {
 
 .slider {
     position: relative;
-    width: 100%;
-    height: 100vh; /* Slider'ın yüksekliği tüm ekran yüksekliğini kaplar */
+    height: 600px;
+    border-radius: 20px;
     overflow: hidden;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background: #fff;
 }
 
-.slider .slide {
+.slide {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     opacity: 0;
-    z-index: 1;
-    transition: opacity 1s ease-in-out;
-    
+    transition: opacity 0.5s ease-in-out;
 }
 
-.slider img {
-    width: 100%;
-    height: auto;
-    max-height: 70vh; /* Resimlerin maksimum yüksekliği ekranın %70'i kadar olur */
-    object-fit: contain;
+.slide img {
+    width: 60%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .caption {
-    background-color: rgba(0, 0, 0, 0.5);
+    width: 40%;
+    padding: 40px;
+    background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.98));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.caption h2 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.caption p {
+    font-size: 1.1rem;
+    color: #34495e;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.caption p:last-child {
+    margin-top: auto;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+/* Slider kontrolleri */
+.slider-controls {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+}
+
+.slider-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(52, 152, 219, 0.9);
     color: white;
-    padding: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    max-height: 20vh; /* Açıklamaların maksimum yüksekliği ekranın %30'u kadar olur */
-    overflow-y: auto; /* Uzun yazılarda kaydırma sağlar */
-    border-radius: 10%;
-    background-color: saddlebrown;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.slider-btn:hover {
+    background: #2980b9;
+    transform: scale(1.1);
+}
+
+/* Slider göstergeleri */
+.slider-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: #3498db;
+    transform: scale(1.2);
+}
+
+/* Animasyonlar */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide.active {
+    opacity: 1;
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Responsive tasarım */
+@media (max-width: 992px) {
+    .slide {
+        flex-direction: column;
+    }
+    
+    .slide img {
+        width: 100%;
+        height: 50%;
+    }
+    
+    .caption {
+        width: 100%;
+        height: 50%;
+        padding: 20px;
+    }
+    
+    .caption h2 {
+        font-size: 2rem;
+    }
+    
+    .slider {
+        height: 800px;
+    }
+}
+
+@media (max-width: 768px) {
+    .slider {
+        height: 600px;
+    }
+    
+    .caption h2 {
+        font-size: 1.5rem;
+    }
+    
+    .caption p {
+        font-size: 1rem;
+    }
+}
+
+/* Loading durumu */
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    color: #3498db;
+}
+
+/* Hata mesajı */
+.error-message {
+    text-align: center;
+    padding: 40px;
+    color: #e74c3c;
+}
+
+/* No posts mesajı */
+.no-posts {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-size: 1.2rem;
 }
 

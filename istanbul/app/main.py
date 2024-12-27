@@ -9,10 +9,11 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI()
 
 # Uploads klasörünü oluştur
-os.makedirs("uploads/concerts", exist_ok=True)
+os.makedirs("uploads", exist_ok=True)
 
 # Statik dosyaları serve et
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/public", StaticFiles(directory="public"), name="public")
 
 # CORS ayarları
 app.add_middleware(
@@ -80,8 +81,16 @@ async def create_post(
 
 @app.get("/gallery")
 async def get_gallery(db: Session = Depends(database.get_db)):
-    posts = db.query(models.Post).all()
-    return posts
+    try:
+        posts = db.query(models.Post).all()
+        # Her post için görsel yolunu düzelt
+        for post in posts:
+            if post.image_path and not post.image_path.startswith(('http://', 'https://')):
+                post.image_path = f"uploads/{os.path.basename(post.image_path)}"
+        return posts
+    except Exception as e:
+        print(f"Gallery error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/posts")
