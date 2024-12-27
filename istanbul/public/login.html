@@ -100,8 +100,8 @@
                 </form>
             </div>
 
-            <!-- Admin Girişi -->
-            <div class="login-section admin">
+            <!-- Admin Girişi (Başlangıçta gizli) -->
+            <div class="login-section admin" style="display: none;">
                 <img src="./image/admin-bg.jpg" alt="admin login">
                 <form id="adminLoginForm">
                     <h2>Admin Girişi</h2>
@@ -132,6 +132,61 @@
     <script src="js/heritage-slider.js"></script>
     <script src="js/auth.js"></script>
     <script>
+        let adminPanelShown = false;
+        let keySequence = '';
+        const secretCode = 'admin123';
+        const adminSection = document.querySelector('.login-section.admin');
+
+        // Sayfa yüklendiğinde admin panelini gizle
+        document.addEventListener('DOMContentLoaded', () => {
+            adminSection.style.display = 'none';
+        });
+
+        // Klavye girişlerini dinle
+        document.addEventListener('keypress', (e) => {
+            // Sadece kullanıcı bir input alanında değilken çalış
+            if (e.target.tagName !== 'INPUT') {
+                keySequence += e.key;
+                
+                // Gizli kodu kontrol et
+                if (keySequence.includes(secretCode)) {
+                    showAdminPanel();
+                    keySequence = ''; // Sıfırla
+                }
+
+                // Bellek yönetimi için son 20 karakteri tut
+                if (keySequence.length > 20) {
+                    keySequence = keySequence.slice(-20);
+                }
+            }
+        });
+
+        // Admin panelini göster
+        function showAdminPanel() {
+            if (!adminPanelShown) {
+                adminSection.style.display = 'block';
+                adminSection.classList.add('show');
+                adminPanelShown = true;
+
+                // Animasyon ekle
+                setTimeout(() => {
+                    adminSection.style.opacity = '1';
+                    adminSection.style.transform = 'translateY(0)';
+                }, 100);
+
+                // Bildirim göster
+                const notification = document.createElement('div');
+                notification.className = 'admin-notification';
+                notification.textContent = 'Admin paneli aktif edildi!';
+                document.body.appendChild(notification);
+
+                // Bildirimi 3 saniye sonra kaldır
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
         // Kullanıcı girişi
         document.getElementById('userLoginForm').addEventListener('submit', async (e) => {
             e.preventDefault();

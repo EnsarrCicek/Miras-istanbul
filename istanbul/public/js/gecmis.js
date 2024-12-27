@@ -16,9 +16,9 @@ const historyData = {
             description: "Fatih Sultan Mehmet, İstanbul'u yeniden yapılandırma planlarını ilan etti."
         }
     ],
-    "12-13": [
+    "12-27": [
         {
-            title: "1453: İstanbul Fethi Sonrası İlk Osmanlı Yönetim Reformu",
+            title: "12: İstanbul Fethi Sonrası İlk Osmanlı Yönetim Reformu",
             description: "Fatih Sultan Mehmet, İstanbul'u yeniden yapılandırma planlarını ilan etti."
         }
     ]
