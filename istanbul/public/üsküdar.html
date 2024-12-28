@@ -4,71 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/fatih.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="topbar">
+        <link rel="stylesheet" href="css/topbar.css">
+
+
         <div class="wrapper target">
             <div class="left target">
-                <div class="left target">
-                    <a href="https://www.instagram.com" target="_blank">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://www.youtube.com" target="_blank">
-                        <i class="fa-brands fa-youtube"></i>
-                    </a>
-                    <a href="https://twitter.com" target="_blank">
-                        <i class="fa-brands fa-twitter"></i>
-                    </a>
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </div>
+            <div class="istanbul-menu">
+                <span class="istanbul-text">İstanbul Senin</span>
+                <i class="fas fa-plane istanbul-icon"></i>
+                <div class="istanbul-dropdown">
+                    <button class="istanbul-btn" onclick="window.location.href='onemli-numaralar.html'">Önemli Numaralar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='ulasim.html'">Ulaşım</button>
+                    <button class="istanbul-btn" onclick="window.location.href='haritalar.html'">Haritalar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='kultur.html'">Kültür & Sanat</button>
+                    <button class="istanbul-btn" onclick="window.location.href='yemek.html'">Yeme & İçme</button>
+                    <button class="istanbul-btn" onclick="window.location.href='etkinlik.html'">Etkinlikler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='muzeler.html'">Müzeler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='konser.html'">Konserler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='plajlar.html'">Plajlar</button>
                 </div>
-
-
-
             </div>
             <div class="center">
                 <a href="index.html">Ana Sayfa</a>
                 <a href="about.html">Hakkımızda</a>
                 <a href="harita.html">Harita</a>
-                <a href="ilceler.html">İlceler</a>
+                <a href="ilceler.html">İlçeler</a>
                 <a href="konum.html">Konum Takip</a>
-
             </div>
-             <div class="right">
-            <!-- Açılır pencere için kapsayıcı div -->
-            <div class="dropdown">
-                <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
-                <div class="dropdown-content">
-                    
-                    <a href="/public/register.html">Kayıt Ol</a>
-                    <a href="/public/login.html">Giriş Yap</a>
-                    <a href="/public/add.html">Senin Manzaran</a>
-                    <a href="/public/gallery.html">Galeri</a>
-                    
-                    
+            <div class="right">
+                <div class="weather">
+                    <i class="fa-solid fa-cloud-sun" id="weatherIcon"></i>
+                    <div class="weather-content" id="weatherContent">
+                        <p>Hava durumu bilgisi yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
+                    <div class="dropdown-content">
+                        <a href="/public/register.html">Kayıt Ol</a>
+                        <a href="login.html">Giriş Yap</a>
+                        <a href="/public/add.html">Senin Manzaran</a>
+                        <a href="/public/gallery.html">Galeri</a>
+                        <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                    </div>
+                </div>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
                 </div>
             </div>
-            
-            <div class="searchEngine" id="searchEngine">
-                <input type="text" placeholder="...">
-                <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
-            </div>
         </div>
-        </div>
-
-
-
     </div>
+
 
     </div>
 
     <header class="header target">
-        <img src="/public/image/uskudar.jpg" alt="backround" class="bg-image">
-        <h1>ÜSKÜDAR</h1>
+        
+        <h1>FATİH</h1>
         
     </header>
     <div class="about">
@@ -76,14 +93,14 @@
         <div class="wrapper target">
             <div class="photo">
               
-                    <img src="../public/image/beylerbeyi.jpg" alt="Galata">
+                    <img src="../public/image/gulhane.jpg" alt="Galata">
               
             </div>
             <div class="text">
-                <h1>Beylerbeyi Sarayı</h1>
+                <h1>Gülhane Parkı</h1>
                 <p>
-                    Beylerbeyi Sarayı, İstanbul'un Üsküdar ilçesinde bulunan yazlık bir Osmanlı sarayıydı. Günümüzde müze olarak kullanılan Beylerbeyi Sarayı, kendisine bağlı çeşitli yapı ve diğer unsurlardan oluşan bir kompleksin parçasıdır. Adını, bulunduğu Beylerbeyi semtinden alır.
-                     Osmanlı Padişahı Abdülaziz'in talimatıyla, 1863-1865 yıllarında, Sarkis Balyan'ın mimarlığında inşa edilmiştir
+                    İstanbul şehremini operatör Cemil Paşa (Topuzlu) zamanında düzenlenerek 1912 yılında park haline getirildi ve halka açıldı. Toplam alanı 163 dönüm kadardır. Parkın girişinde
+                     sağ tarafta İstanbul şehremini ve belediye başkanlarının büstleri vardır. Parkın ortasından iki yanı ağaçlı yol geçer.
                 </p>
             </div>
 
@@ -94,14 +111,14 @@
 
         <div class="wrapper target">
             <div class="text">
-                <h1>Kız Kulesi</h1>
+                <h1>Ayasofya</h1>
                 <p>
-                    Kyzikos'taki deniz zaferinden sonra, MÖ 408'de Atinalı general Alkibiadis, muhtemelen Karadeniz'den gelen gemiler için Üsküdar'ın önündeki küçük bir kaya üzerine özel bir istasyon inşa etti.
-                    Üsküdar'ın sembolü hâline gelen kule, Üsküdar’da Bizans devrinden kalan tek eserdir. MÖ 24 yıllarına kadar uzanan bir geçmişe sahiptir.
+                    Ayasofya aynı yere üç kez inşa edilmiş bir eserdir. Günümüzdeki Ayasofya “Üçüncü Ayasofya” olarak bilinmektedir. Ayasofya’nın ilk inşaatı Hıristiyanlığı Roma İmparatorluğu’nun resmi dini olarak kabul eden I. Konstantin döneminde başlatılmıştır. İstanbul’un yedi tepesinden birincisi üzerinde ahşap çatılı bir bazilika olarak inşa edilen ve o dönemde ‘Büyük Kilise’ ismiyle anılan bu yapının açılışı, 360 yılında II. Konstantin döneminde gerçekleşmiştir. 404 yılında
+                     başlayan isyanda çıkan bir yangın neticesinde büyük ölçüde harap olan bu yapıdan günümüze ulaşan bir kalıntı bulunmamaktadır.
                 </p>
             </div>
             <div class="photo">
-                <img src="../public/image/kız.jpeg" alt="">
+                <img src="../public/image/ayasofya.jpg" alt="">
             </div>
         </div>
     </div>
@@ -110,54 +127,117 @@
 
         <div class="wrapper target">
             <div class="photo">
-                <img src="../public/image/fetih.jpg" alt="">
+                <img src="../public/image/sultanahmet.jpg" alt="">
             </div>
             <div class="text">
-                <h1>Fethi Paşa Korusu</h1>
+                <h1>Sultanahmet Camisi</h1>
                 <p>
-                    Fethipaşa Korusu, İstanbul'un Üsküdar ilçesi, Paşalimanı bölgesinde bulunan, denize bakan bir korudur. Kuzguncuk ve Sultantepe mahalleleri arasında yer alır. Koru adını, Osmanlı vezirlerinden Fethi Ahmet Paşa'dan almaktadır. 
-                    Uzun yıllar boyunca bakımsız kaldıktan sonra, yenilenmiş ve halka açık park hâline getirilmiştir.
+                    Sultan Ahmet Camii veya Sultânahmed Camiî, 1609-1617 yılları arasında Osmanlı Padişahı I. Ahmed tarafından İstanbul'daki tarihî yarımadada, Mimar Sedefkâr Mehmed Ağa'ya yaptırılmıştır. Cami; mavi, yeşil ve beyaz renkli İznik çinileriyle bezendiği için ve yarım kubbeleri ile büyük kubbesinin içi de yine mavi ağırlıklı kalem işleriyle süslendiği için Avrupalılar tarafından "Mavi Camii (Blue Mosque)" 
+                    olarak adlandırılır. Ayasofya'nın 1935 yılında camiden müzeye dönüştürülmesiyle, İstanbul'un ana camii konumuna ulaşmıştır.
                 </p>
             </div>
 
-        </div>
-    </div>
-
-    <div class="about">
-
-        <div class="wrapper target">
-            <div class="text">
-                <h1>Nakkaştepe Millet Bahçesi</h1>
-                <p>
-                    Nakkaştepe Millet Bahçesi, İstanbul'un, Üsküdar ilçesinde 8 aralık 2018'de T.C. Çevre ve Şehircilik Bakanlığı tarafından yapılan Üsküdar Belediyesi tarafından işletilen Millet Bahçesidir.
-                    90 bin m²’lik alan'a sahip millet bahçesi içerisinde 50 bin m²’lik mesire alanı, Piknik Alanı, Gezinti ve Dinlenme Alanları, 3200m Koşu Yolu,Macera Parkı, Çocuk Parkı, Fitness Alanı, Tenis Kortu, Zipline, Gölet, Kafe ve Tuvaletleri mevcuttur.
-                </p>
-            </div>
-            <div class="photo">
-                <img src="../public/image/nakkas.jpg" alt="">
-            </div>
         </div>
     </div>
     <div class="about">
 
         <div class="wrapper target">
-            <div class="photo">
-                <img src="../public/image/kuzguncuk.jpg" alt="">
-            </div>
             <div class="text">
-                <h1>Kuzguncuk Evleri</h1>
+                <h1>Topkapı Sarayı</h1>
                 <p>
-                    Kuzguncuk İstanbul ilinin Anadolu yakasında Üsküdar ilçesinde yer alan bir semttir. Boğaziçi’nin Anadolu kıyısında, Üsküdar, Paşalimanı ile Beylerbeyi arasındaki yerleşme
-                     Kuzeybatı-güneydoğu doğrultusunda oluşmuş, Boğaziçi’ne açılan bir vadi içinde gelişmiştir.
+                    Topkapı Sarayı (Osmanlı Türkçesi: طوپقپو سرايى), İstanbul Sarayburnu'nda, Osmanlı İmparatorluğu'nun 600 yıllık tarihinin 400 yılı boyunca, devletin idare merkezi olarak kullanılan ve Osmanlı padişahlarının yaşadığı saraydır. Bir zamanlar içinde 4.000'e yakın insan yaşamıştır.
+                    Topkapı Sarayı Fatih Sultan Mehmed tarafından 1478’de yaptırılmış, Abdülmecid’in Dolmabahçe Sarayı’nı yaptırmasına kadar yaklaşık 380 sene boyunca devletin idare merkezi ve Osmanlı padişahlarının resmi ikâmetgâhı olmuştur. Kuruluş yıllarında yaklaşık 700.000 m²'lik bir alanda yer alan sarayın bugünkü alanı 80.000 m²'dir.
                 </p>
             </div>
-
+            <div class="photo">
+                <img src="../public/image/topkapı.jpg" alt="">
+            </div>
         </div>
     </div>
 
-    <script src="js/index1.js"></script>
+
+    <div class="about">
+
+        <div class="wrapper target">
+            <div class="photo">
+                <img src="../public/image/yerebatan.jpg" alt="">
+            </div>
+            <div class="text">
+                <h1>Yerebatan Sarnıcı</h1>
+                <p>
+                    Yerebatan Sarnıcı  İmparator loustinianos (527-565) döneminde İstanbul'da şehrin su ihtiyacını karşılamak üzere 526-527 senelerinde yaptırılmış kapalı su sarnıcıdır.
+                    Ayasofya'nın güneybatısında, Soğukçeşme Sokağı'nda bulunmaktadır. Suyun içinden yükselen pek çok mermer sütun nedeniyle halk arasında Yerebatan Sarayı olarak isimlendirilmektedir. Sarnıcın üzerinde daha önce bir bazilika bulunmasından ötürü, Bazilika Sarnıcı olarak da adlandırılır.
+                </p>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <img src="image/logo.png" alt="Visit Istanbul Logo" class="footer-logo">
+                <p class="footer-description">Yazılmış ve devam eden hikayenin bir parçası olun</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>TEMELLER</h3>
+                <ul>
+                    
+                    <li><a href="#">Toplu Taşıma</a></li>
+                    <li><a href="#">Erişilebilirlik</a></li>
+                    <li><a href="#">İstanbul Kart</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>İLETİŞİME GEÇİN</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> +90538 393 16 24</p>
+                    <p><i class="fas fa-envelope"></i> ensarcckk@gmail.com</p>
+                </div>
+                <div class="social-title">
+                    <h4>HİKAYELERİMİZİ TAKİP EDİN</h4>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>BİRLİKTE YARATIYORUZ</h3>
+                <p>Kendi İstanbul hikayenizi yazmaya hazır mısınız?</p>
+                <div class="creators-logo">
+                    <img src="image/creators-logo.png" alt="İstanbul Creators">
+                    <span>YARATICILAR. İSTANBUL</span>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="footer-logo-ibb">
+                    <img src="image/ibb-logo.png" alt="İBB Logo">
+                    <p>©2025 Telif Hakkı - İstanbul Büyükşehir Belediyesi Turizm Şube Müdürlüğü</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Yasal Uyarı</a>
+                    <a href="#">Gizlilik Politikası</a>
+                    <a href="#">Çerez Beyanı</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script src="js/hava.js"></script>
-    <script src="js/sayfa.js"></script>
+    
     <script src="js/scroll.js"></script>
     <script src="js/search.js"></script>
     <script src="js/script.js"></script>
