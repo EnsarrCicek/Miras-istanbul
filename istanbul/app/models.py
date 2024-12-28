@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
 from datetime import datetime
 from .database import Base
 
@@ -32,4 +32,15 @@ class Concert(Base):
     description = Column(String(1000))
     image_path = Column(String(255))
     lineup = Column(String(500))
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Admin(Base):
+    __tablename__ = "admins"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(255), unique=True, index=True)
+    password = Column(String(255))
+    email = Column(String(255), unique=True)
+    is_superadmin = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)

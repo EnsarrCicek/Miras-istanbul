@@ -30,3 +30,26 @@ INSERT INTO concerts (title, venue, date, price, description, image_path, lineup
 ('MABEL MATİZ 360', 'Volkswagen Arena', '14 Şubat, 15 Şubat', 500.00,
 'Mabel Matiz, 360 derece sahne şovuyla unutulmaz bir performansa hazırlanıyor.',
 'image/mabel.jpg', 'VIP Paket Mevcut,Meet & Greet İmkanı,Özel Sahne Şovu,Limited Edition Merch');
+
+-- Mevcut adminleri kontrol et
+SELECT * FROM admins;
+
+-- Gerekirse tabloyu yeniden oluştur
+DROP TABLE IF EXISTS admins;
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    is_superadmin BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Admin kullanıcılarını ekle
+INSERT INTO admins (username, password, email, is_superadmin) 
+VALUES 
+    ('Ensar', 'Ensar.2534', 'admin@example.com', TRUE),
+    ('Hatice', 'Hatice.0525', 'hatice@example.com', TRUE);
+
+-- Eklenen kayıtları kontrol et
+SELECT * FROM admins;

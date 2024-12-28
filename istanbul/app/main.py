@@ -217,3 +217,42 @@ def read_concert(concert_id: int, db: Session = Depends(database.get_db)):
     if concert is None:
         raise HTTPException(status_code=404, detail="Concert not found")
     return concert
+
+@app.post("/admin/login")
+async def admin_login(admin: schemas.AdminBase, db: Session = Depends(database.get_db)):
+    print(f"Login attempt - username: {admin.username}, password: {admin.password}")  # Debug log
+    
+    db_admin = db.query(models.Admin).filter(
+        models.Admin.username == admin.username
+    ).first()
+    
+    if not db_admin:
+        print(f"Admin not found: {admin.username}")
+        raise HTTPException(status_code=400, detail="Admin bulunamadı")
+    
+    if db_admin.password != admin.password:
+        print(f"Password mismatch for: {admin.username}")
+        raise HTTPException(status_code=400, detail="Şifre hatalı")
+    
+    print(f"Successful login for: {admin.username}")
+    return {
+        "message": "Admin girişi başarılı!",
+        "admin": {
+            "username": db_admin.username,
+            "email": db_admin.email,
+            "is_superadmin": db_admin.is_superadmin
+        }
+    }
+
+@app.post("/admin/create", response_model=schemas.Admin)
+async def create_admin(admin: schemas.AdminCreate, db: Session = Depends(database.get_db)):
+    db_admin = models.Admin(
+        username=admin.username,
+        password=admin.password,  # Gerçek uygulamada şifre hash'lenmelidir
+        email=admin.email,
+        is_superadmin=False  # Varsayılan olarak normal admin
+    )
+    db.add(db_admin)
+    db.commit()
+    db.refresh(db_admin)
+    return db_admin

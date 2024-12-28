@@ -31,3 +31,18 @@ class Concert(ConcertCreate):
 
     class Config:
         orm_mode = True
+
+class AdminBase(BaseModel):
+    username: str
+    email: str
+
+class AdminCreate(AdminBase):
+    password: str
+
+class Admin(AdminBase):
+    id: int
+    is_superadmin: bool
+    created_at: datetime
+
+    class Config:
+        orm_mode = True

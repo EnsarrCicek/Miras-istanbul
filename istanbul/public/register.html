@@ -80,29 +80,33 @@
 
 
     <div class="logReg">
-        <img src="./image/arka4.jpg" alt="register">
-        <form method="POST">
-            <div class="formGroup">
-                <input type="text" name="email" id="emailInput" required>
-                <span>Email *</span>
-            </div>
+        <div class="login-container">
+            <div class="login-section">
+                <img src="./image/arka4.jpg" alt="register">
+                <form id="registerForm">
+                    <h2>Kayıt Ol</h2>
+                    <div class="formGroup">
+                        <input type="text" name="email" id="emailInput" required>
+                        <span>Email *</span>
+                    </div>
 
-            <div class="formGroup">
-                <input type="text" name="username" id="usernameInput" required>
-                <span>Username *</span>
-            </div>
+                    <div class="formGroup">
+                        <input type="text" name="username" id="usernameInput" required>
+                        <span>Kullanıcı Adı *</span>
+                    </div>
 
-            <div class="formGroup">
-                <input type="password" name="password" id="passwordInput" required>
-                <span>Password *</span>
+                    <div class="formGroup">
+                        <input type="password" name="password" id="passwordInput" required>
+                        <span>Şifre *</span>
+                    </div>
+                    
+                    <div class="btnGroup">
+                        <a href="./login.html">Zaten bir hesabım var</a>
+                        <button type="button" onclick="handlesubmit()">Kayıt Ol</button>
+                    </div>
+                </form>
             </div>
-            
-            <div class="btnGroup">
-                <a href="./login.html">Zaten bir hesabım var.</a>
-                <button type="button" onclick="handlesubmit()">Kaydol</button>
-            </div>
-            
-        </form>
+        </div>
     </div>
 
     <script src="./js/search.js"></script>
@@ -115,6 +119,7 @@
     <script src="js/script.js"></script>
     <script src="js/heritage-slider.js"></script>
     <script src="js/auth.js"></script>
+    
     <script>
         function handlesubmit() {
             const emailInput = document.getElementById("emailInput").value;
