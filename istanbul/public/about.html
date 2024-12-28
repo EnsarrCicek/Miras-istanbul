@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımızda - İstanbul</title>
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Document</title>
+    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
-
 <body>
+    <!-- Topbar kısmı -->
     <div class="topbar">
         <link rel="stylesheet" href="css/topbar.css">
 
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="center">
-                <a href="index1.html">Ana Sayfa</a>
+                <a href="index.html">Ana Sayfa</a>
                 <a href="about.html">Hakkımızda</a>
                 <a href="harita.html">Harita</a>
                 <a href="ilceler.html">İlçeler</a>
@@ -58,13 +58,13 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
+                    <i class="fa-solid fa-user dropdown-icon" id="dropdownIcon"></i>
                     <div class="dropdown-content">
-                        <a href="/public/register.html">Kayıt Ol</a>
-                        <a href="login.html">Giriş Yap</a>
+                        <a href="/public/profile.html">Profilim</a>
                         <a href="/public/add.html">Senin Manzaran</a>
                         <a href="/public/gallery.html">Galeri</a>
                         <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                        <a href="#" onclick="logout()">Çıkış Yap</a>
                     </div>
                 </div>
                 <div class="searchEngine" id="searchEngine">
@@ -75,100 +75,97 @@
         </div>
     </div>
 
-    </div>
-
-    <header class="header target">
-        <img src="/public/image/uydu.jpg" alt="backround" class="bg-image">
-        <h1>Miras İstanbul</h1>
-        <!-- <h3>İstanbul</h3> -->
-    </header>
-    <div class="about">
-
-        <div class="wrapper target">
-            <div class="photo">
-                <img src="../public/image/harita.png" alt="">
-            </div>
-            <div class="text">
-                <h1>Harita</h1>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-image">
+            <img src="image/10.jpg" alt="İstanbul">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>hakkı<br>mızda</h1>
+            <div class="hero-text">
                 <p>
-                    Tüm ilçelerin içinde barındırdığı tarihi ve doğal güzellikleri harita üzerinde şekillerle göstererek kullanıcıya 
-                    daha kolay anlaşılabilir bir sayfa oluşturduk. Seçtiği yere nasıl gideceğni butonlar yardımıyla kolaylaştırdık.
+                    İstanbul'un tarihi dokusunu ve modern yüzünü keşfetmeniz için size rehberlik ediyoruz. 
+                    Şehrin en güzel noktalarını, gizli kalmış köşelerini ve muhteşem kültürel mirasını 
+                    sizin için bir araya getirdik.
                 </p>
             </div>
-
+            
         </div>
     </div>
 
-    <div class="about">
-
-        <div class="wrapper target">
-            <div class="text">
-                <h1>Add Sayfası</h1>
-                <p>
-                    Add sayfasında kullanıcıların İstanbul'un her yerinden çektiği veya diğer kullanıcılarla paylaşmak istediği fotoğrafları
-                    eklemesine olanak tanıdık. Bu şekilde kullanıcılar İstanbul'un bilinmeyen güzelliklerini de ortaya koymuş olucak. Konum ve
-                    içeriklerle görsellerini zenginleştirebilecek.
-                </p>
+    <!-- Hero Section'dan sonra ekleyin -->
+    <div class="features-section">
+        <h2 class="section-title">Nasıl Çalışır</h2>
+        
+        <div class="features-container">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <h3>360° YÖNETİM</h3>
+                <p>Markanız için dijitalin tüm platformlarında size 360° derece hizmet sağlıyoruz.</p>
             </div>
-            <div class="photo">
-                <img src="../public/image/add.png" alt="">
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3>MÜŞTERİ MEMNUNİYETİ</h3>
+                <p>Doğru analiz ve çalışma ile başarılı sonuçlar alan mutlu markalar yaratıyoruz.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3>HER ZAMAN HIZLI DÖNÜŞ</h3>
+                <p>Uzman ekibimiz sizler için her zaman ulaşılabilir ve hizmete hazır.</p>
             </div>
         </div>
     </div>
 
-    <div class="about">
-
-        <div class="wrapper target">
-            <div class="photo">
-                <img src="../public/image/galleryy.png" alt="">
+    <!-- Features section'dan sonra ekleyin -->
+    <div class="goals-section">
+        <div class="goals-container">
+            <div class="goals-image">
+                <img src="image/yıldızparkı.jpg" alt="Hedeflerimiz">
             </div>
-            <div class="text">
-                <h1>Gallery</h1>
-                <p>
-                   Bu sayfada kullanıcıların paylaştığı birbirinden güzel İstanbul'un tarihi ve doğası kullanıcılara sunulacak. Konumu verilen 
-                   görsel , diğer kullanıcılar tarafından da keşfedilmeyi bekleyecek.
-                </p>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="about">
-
-        <div class="wrapper target">
-           
-            <div class="text">
-                <h1>Login-Register</h1>
-                <p>
-                    Login ve register sayfaları ile kullanıcıların giriş yapıp sayfalarına ulaşmaları sağlanacak. Bu şekilde her kullanıcı verisi,
-                    kendine has ve özgü olacak.
+            <div class="goals-content">
+                <h2>Hedeflerimiz</h2>
+                <div class="goals-list">
+                    <div class="goal-item">
+                        <h3>KALİTE</h3>
+                        <p>İstanbul'un tarihi ve kültürel mirasını en kaliteli şekilde tanıtmak ve korumak için çalışıyoruz.</p>
+                    </div>
                     
-                </p>
-            </div>
-            <div class="photo">
-                <img src="../public/image/login.png" alt="">
+                    <div class="goal-item">
+                        <h3>SONUÇLAR</h3>
+                        <p>Ziyaretçilerimize en iyi deneyimi sunmak ve şehrin güzelliklerini keşfetmelerini sağlamak.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="about">
+    <!-- Goals section'dan sonra ekleyin -->
+    !-- Slider için overlay ekleyelim 
+    <div class="slider-overlay"></div>
+    <link rel="stylesheet" href="css/index1.css">
+    <link rel="stylesheet" href="css/trending-section.css">
+    <link rel="stylesheet" href="css/cultural-heritage.css">
 
-        <div class="wrapper target">
-            <div class="photo">
-                <img src="../public/image/konum2.png" alt="">
-            </div>
-            <div class="text">
-                <h1>Gallery</h1>
-                <p>
-                   
-                    Harita sayfamızda kullanıcı gitmek istediği konumu ilgili bölmeye girip kendi konumununda paylaşılmasına izin verir.
-                    Seçtiği bölgeye belli bir mesafe yaklaşınca site uyarı verip kullanıcının bölgeye yaklaştığını bildirim olarak gösterir.
-                </p>
-            </div>
 
-        </div>
+    <div class="background-slideshow">
+        
+        <div class="slide" style="background-image: url('image/10.jpg');"></div>
+        <div class="slide" style="background-image: url('image/11.jpg');"></div>
+        <div class="slide" style="background-image: url('image/istanbul.jpg');"></div>
+        
+
+        <button class="nav-btn left-btn" id="prevSlide">&#9664;</button>
+        <button class="nav-btn right-btn" id="nextSlide">&#9654;</button>
     </div>
-
 
 
     <script src="js/index1.js"></script>
@@ -180,5 +177,4 @@
     <script src="js/heritage-slider.js"></script>
     <script src="js/auth.js"></script>
 </body>
-
-</html>
+</html> 
