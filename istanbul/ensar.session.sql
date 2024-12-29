@@ -104,3 +104,16 @@ CREATE TABLE likes (
     FOREIGN KEY (media_id) REFERENCES media(id) ON DELETE CASCADE,
     UNIQUE KEY unique_like (kullanici_id, media_id)
 );
+
+-- Media tablosunu güncelle
+ALTER TABLE media
+ADD COLUMN like_count INT DEFAULT 0,
+ADD COLUMN comment_count INT DEFAULT 0;
+
+-- Önce mevcut like_count sütununu sil
+ALTER TABLE media DROP COLUMN like_count;
+
+-- Sonra yeniden ekle
+ALTER TABLE media
+ADD COLUMN like_count INT DEFAULT 0,
+ADD COLUMN comment_count INT DEFAULT 0;

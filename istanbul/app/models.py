@@ -26,16 +26,20 @@ class Media(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     kullanici_id = Column(Integer, ForeignKey('kullanici.id', ondelete='CASCADE'))
-    media_type = Column(String(10))  # 'photo' veya 'video'
+    media_type = Column(String(10))
     file_path = Column(String(255))
     title = Column(String(255))
     content = Column(Text)
-    author = Column(String(255))
     caption = Column(Text)
+    author = Column(String(255))
     created_at = Column(DateTime, default=datetime.utcnow)
+    like_count = Column(Integer, default=0)
+    comment_count = Column(Integer, default=0)
 
-    # Kullanıcı ilişkisi
+    # İlişkiler
     kullanici = relationship("Kullanici", back_populates="media")
+    likes = relationship("Like", back_populates="media", cascade="all, delete-orphan")
+    comments = relationship("Comment", back_populates="media", cascade="all, delete-orphan")
 
 class Kullanici(Base):
     __tablename__ = "kullanici"
@@ -46,21 +50,25 @@ class Kullanici(Base):
     password = Column(String(255))
     profile_image = Column(String(255))
     bio = Column(Text)
+    follower_count = Column(Integer, default=0)
+    following_count = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    # Medya ilişkisi
+    # İlişkiler
     media = relationship("Media", back_populates="kullanici")
+    likes = relationship("Like", back_populates="kullanici", cascade="all, delete-orphan")
+    comments = relationship("Comment", back_populates="kullanici", cascade="all, delete-orphan")
     
     # Takipçi ilişkileri
     followers = relationship(
         "Followers",
-        foreign_keys=[Followers.following_id],
+        foreign_keys="Followers.following_id",
         backref="following",
         cascade="all, delete-orphan"
     )
     following = relationship(
         "Followers",
-        foreign_keys=[Followers.follower_id],
+        foreign_keys="Followers.follower_id",
         backref="follower",
         cascade="all, delete-orphan"
     )
@@ -68,13 +76,13 @@ class Kullanici(Base):
     # Mesaj ilişkileri
     sent_messages = relationship(
         "Messages",
-        foreign_keys=[Messages.sender_id],
+        foreign_keys="Messages.sender_id",
         backref="sender",
         cascade="all, delete-orphan"
     )
     received_messages = relationship(
         "Messages",
-        foreign_keys=[Messages.receiver_id],
+        foreign_keys="Messages.receiver_id",
         backref="receiver",
         cascade="all, delete-orphan"
     )
@@ -119,6 +127,10 @@ class Like(Base):
     media_id = Column(Integer, ForeignKey('media.id', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.utcnow)
 
+    # İlişkiler
+    kullanici = relationship("Kullanici", back_populates="likes")
+    media = relationship("Media", back_populates="likes")
+
 class Comment(Base):
     __tablename__ = "comments"
 
@@ -129,5 +141,5 @@ class Comment(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # İlişkiler
-    kullanici = relationship("Kullanici", backref="comments")
-    media = relationship("Media", backref="comments")
+    kullanici = relationship("Kullanici", back_populates="comments")
+    media = relationship("Media", back_populates="comments")

@@ -39,7 +39,7 @@ async function loadUserProfile() {
         if (data.profile_image) {
             profileImage.src = `http://localhost:8000${data.profile_image}`;
         } else {
-            profileImage.src = '/image/default-profile.jpg';
+            profileImage.src = '/public/image/default-profile.jpg';
         }
 
         document.getElementById('bio').querySelector('p').textContent = data.bio || 'Henüz biyografi eklenmemiş...';
@@ -68,6 +68,8 @@ async function loadUserMedia() {
         media.forEach(item => {
             const mediaItem = document.createElement('div');
             mediaItem.className = 'media-item';
+            // Media ID'sini data attribute olarak ekle
+            mediaItem.dataset.mediaId = item.id;
 
             if (item.media_type === 'photo') {
                 mediaItem.innerHTML = `
@@ -354,19 +356,34 @@ function closeMediaModal() {
 // Medya detaylarını yükle
 async function loadMediaDetails(mediaId) {
     try {
+        console.log('Loading media details for ID:', mediaId); // Debug log
+        
         const response = await fetch(`http://localhost:8000/api/media/${mediaId}`, {
             headers: {
                 'username': localStorage.getItem('username')
             }
         });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Medya detayları alınamadı');
+        }
+
         const data = await response.json();
+        console.log('Media details:', data); // Debug log
 
         // Modal içeriğini güncelle
         document.getElementById('modalImage').src = `http://localhost:8000${data.file_path}`;
         document.getElementById('modalUsername').textContent = data.author;
         document.getElementById('modalDate').textContent = new Date(data.created_at).toLocaleDateString();
-        document.querySelector('.like-count').textContent = data.like_count;
-        document.querySelector('.comment-count').textContent = data.comment_count;
+        
+        // Kullanıcı resmini güncelle
+        const userImage = document.getElementById('modalUserImage');
+        userImage.src = data.user_image ? `http://localhost:8000${data.user_image}` : '/image/default-profile.jpg';
+
+        // Beğeni ve yorum sayılarını güncelle
+        document.querySelector('.like-count').textContent = data.like_count || 0;
+        document.querySelector('.comment-count').textContent = data.comment_count || 0;
 
         // Beğeni durumunu kontrol et
         const likeBtn = document.querySelector('.like-btn');
@@ -381,8 +398,10 @@ async function loadMediaDetails(mediaId) {
 
         // Aktif medya ID'sini sakla
         document.querySelector('.like-btn').dataset.mediaId = mediaId;
+
     } catch (error) {
         console.error('Medya detayları yüklenirken hata:', error);
+        alert('Medya detayları yüklenirken bir hata oluştu: ' + error.message);
     }
 }
 
@@ -445,23 +464,24 @@ async function submitComment(event) {
     const commentInput = document.querySelector('.comment-input');
     const comment = commentInput.value.trim();
 
-    if (!comment) return;
+    if (!comment || !mediaId) return;
 
     try {
+        const formData = new FormData();
+        formData.append('comment', comment);
+
         const response = await fetch(`http://localhost:8000/api/media/${mediaId}/comment`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'username': localStorage.getItem('username')
             },
-            body: JSON.stringify({ comment })
+            body: formData
         });
 
         if (response.ok) {
+            const data = await response.json();
             commentInput.value = '';
             loadComments(mediaId);
-            // Yorum sayısını güncelle
-            const data = await response.json();
             document.querySelector('.comment-count').textContent = data.comment_count;
         }
     } catch (error) {
@@ -474,7 +494,11 @@ document.querySelector('.media-grid').addEventListener('click', (e) => {
     const mediaItem = e.target.closest('.media-item');
     if (mediaItem) {
         const mediaId = mediaItem.dataset.mediaId;
-        openMediaModal(mediaId);
+        if (mediaId) {  // mediaId varsa modalı aç
+            openMediaModal(mediaId);
+        } else {
+            console.error('Media ID bulunamadı');
+        }
     }
 });
 

@@ -275,10 +275,8 @@ async def get_user_profile(username: str = Header(None), db: Session = Depends(d
         if not user:
             raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
 
-        # Gönderi, takipçi ve takip sayılarını hesapla
+        # Post sayısını hesapla
         post_count = db.query(models.Media).filter(models.Media.kullanici_id == user.id).count()
-        follower_count = db.query(models.Followers).filter(models.Followers.following_id == user.id).count()
-        following_count = db.query(models.Followers).filter(models.Followers.follower_id == user.id).count()
 
         return {
             "username": user.username,
@@ -286,10 +284,11 @@ async def get_user_profile(username: str = Header(None), db: Session = Depends(d
             "profile_image": user.profile_image,
             "bio": user.bio,
             "post_count": post_count,
-            "follower_count": follower_count,
-            "following_count": following_count
+            "follower_count": user.follower_count or 0,
+            "following_count": user.following_count or 0
         }
     except Exception as e:
+        print(f"Error in get_user_profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Kullanıcının medya içeriklerini getir
@@ -300,17 +299,23 @@ async def get_user_media(username: str = Header(None), db: Session = Depends(dat
         if not user:
             raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
 
-        media = db.query(models.Media).filter(models.Media.kullanici_id == user.id).all()
+        media_items = db.query(models.Media).filter(models.Media.kullanici_id == user.id).all()
+        
         return [
             {
-                "id": m.id,
-                "media_type": m.media_type,
-                "file_path": m.file_path,
-                "caption": m.caption,
-                "created_at": m.created_at
-            } for m in media
+                "id": item.id,
+                "file_path": item.file_path,
+                "media_type": item.media_type,
+                "title": item.title,
+                "caption": item.caption,
+                "author": item.author,
+                "like_count": getattr(item, 'like_count', 0),
+                "comment_count": getattr(item, 'comment_count', 0),
+                "created_at": item.created_at
+            } for item in media_items
         ]
     except Exception as e:
+        print(f"Error in get_user_media: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Kullanıcının mesajlarını getir
@@ -321,7 +326,6 @@ async def get_user_messages(username: str = Header(None), db: Session = Depends(
         if not user:
             raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
 
-        # Gelen ve giden mesajları al
         messages = db.query(models.Messages).filter(
             or_(
                 models.Messages.sender_id == user.id,
@@ -331,16 +335,17 @@ async def get_user_messages(username: str = Header(None), db: Session = Depends(
 
         return [
             {
-                "id": m.id,
-                "sender_id": m.sender_id,
-                "receiver_id": m.receiver_id,
-                "message": m.message,
-                "is_read": m.is_read,
-                "created_at": m.created_at,
-                "sender_username": db.query(models.Kullanici).get(m.sender_id).username
-            } for m in messages
+                "id": msg.id,
+                "sender_id": msg.sender_id,
+                "receiver_id": msg.receiver_id,
+                "message": msg.message,
+                "is_read": msg.is_read,
+                "created_at": msg.created_at,
+                "sender_username": db.query(models.Kullanici).get(msg.sender_id).username
+            } for msg in messages
         ]
     except Exception as e:
+        print(f"Error in get_user_messages: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Profil fotoğrafı güncelleme endpoint'i
@@ -533,21 +538,20 @@ async def upload_media(
         file_path = os.path.join(uploads_dir, new_filename)
         
         # Dosyayı kaydet
-        try:
-            contents = await image.read()
-            with open(file_path, "wb") as f:
-                f.write(contents)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Dosya kaydedilemedi: {str(e)}")
+        with open(file_path, "wb") as f:
+            content = await image.read()
+            f.write(content)
         
         # Medya kaydını oluştur
         new_media = models.Media(
             kullanici_id=user.id,
             media_type='photo',
-            file_path=f"/static/uploads/media/{new_filename}",
-            caption=content,
+            file_path=f"/uploads/media/{new_filename}",
             title=title,
-            author=author
+            content=content,
+            author=author,
+            like_count=0,
+            comment_count=0
         )
         
         db.add(new_media)
@@ -558,7 +562,6 @@ async def upload_media(
             "media": {
                 "id": new_media.id,
                 "file_path": new_media.file_path,
-                "caption": new_media.caption,
                 "title": new_media.title,
                 "author": new_media.author
             }
@@ -569,37 +572,59 @@ async def upload_media(
         raise HTTPException(status_code=500, detail=str(e))
 
 # Medya detaylarını getir
-@app.get("/api/media/{media_id}", response_model=schemas.MediaDetail)
+@app.get("/api/media/{media_id}")
 async def get_media_details(
     media_id: int,
     username: str = Header(None),
     db: Session = Depends(database.get_db)
 ):
     try:
+        # Kullanıcı kontrolü
         user = db.query(models.Kullanici).filter(models.Kullanici.username == username).first()
         if not user:
             raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
 
+        # Medya kontrolü
         media = db.query(models.Media).filter(models.Media.id == media_id).first()
         if not media:
             raise HTTPException(status_code=404, detail="Medya bulunamadı")
 
-        # Beğeni durumunu kontrol et
+        # Medya sahibi bilgisi
+        owner = db.query(models.Kullanici).filter(
+            models.Kullanici.id == media.kullanici_id
+        ).first()
+
+        # Beğeni durumu kontrolü
         is_liked = db.query(models.Like).filter(
             models.Like.kullanici_id == user.id,
             models.Like.media_id == media_id
         ).first() is not None
 
-        # Yorum sayısını al
-        comment_count = db.query(models.Comment).filter(models.Comment.media_id == media_id).count()
+        # Yorum sayısı kontrolü
+        comment_count = db.query(models.Comment).filter(
+            models.Comment.media_id == media_id
+        ).count()
 
-        return {
-            **media.__dict__,
+        # Media nesnesini dictionary'e dönüştür
+        media_dict = {
+            "id": media.id,
+            "file_path": media.file_path,
+            "title": media.title,
+            "content": media.content,
+            "caption": media.caption,
+            "author": media.author,
+            "created_at": media.created_at,
+            "like_count": getattr(media, 'like_count', 0),  # Eğer alan yoksa 0 döndür
+            "comment_count": comment_count,
             "is_liked": is_liked,
-            "comment_count": comment_count
+            "user_image": owner.profile_image if owner else None,
+            "kullanici_id": media.kullanici_id
         }
 
+        return media_dict
+
     except Exception as e:
+        print(f"Error in get_media_details: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Yorumları getir
@@ -623,7 +648,6 @@ async def get_media_comments(media_id: int, db: Session = Depends(database.get_d
 @app.post("/api/media/{media_id}/like")
 async def like_media(
     media_id: int,
-    like_data: schemas.LikeAction,
     username: str = Header(None),
     db: Session = Depends(database.get_db)
 ):
@@ -636,40 +660,34 @@ async def like_media(
         if not media:
             raise HTTPException(status_code=404, detail="Medya bulunamadı")
 
-        if like_data.action == "like":
-            # Beğeni ekle
-            if not db.query(models.Like).filter_by(kullanici_id=user.id, media_id=media_id).first():
-                new_like = models.Like(kullanici_id=user.id, media_id=media_id)
-                db.add(new_like)
-                media.like_count += 1
-                
-                # Medya sahibinin toplam beğeni sayısını güncelle
-                media_owner = db.query(models.Kullanici).get(media.kullanici_id)
-                media_owner.total_likes += 1
+        existing_like = db.query(models.Like).filter(
+            models.Like.kullanici_id == user.id,
+            models.Like.media_id == media_id
+        ).first()
 
+        if existing_like:
+            # Beğeniyi kaldır
+            db.delete(existing_like)
+            media.like_count = max(0, (media.like_count or 0) - 1)
         else:
-            # Beğeni kaldır
-            like = db.query(models.Like).filter_by(kullanici_id=user.id, media_id=media_id).first()
-            if like:
-                db.delete(like)
-                media.like_count = max(0, media.like_count - 1)
-                
-                # Medya sahibinin toplam beğeni sayısını güncelle
-                media_owner = db.query(models.Kullanici).get(media.kullanici_id)
-                media_owner.total_likes = max(0, media_owner.total_likes - 1)
+            # Beğeni ekle
+            new_like = models.Like(kullanici_id=user.id, media_id=media_id)
+            db.add(new_like)
+            media.like_count = (media.like_count or 0) + 1
 
         db.commit()
         return {"like_count": media.like_count}
 
     except Exception as e:
         db.rollback()
+        print(f"Error in like_media: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# Yorum ekle
-@app.post("/api/media/{media_id}/comment", response_model=schemas.Comment)
+# Yorum ekleme endpoint'i
+@app.post("/api/media/{media_id}/comment")
 async def add_comment(
     media_id: int,
-    comment_data: schemas.CommentCreate,
+    comment: str = Form(...),
     username: str = Header(None),
     db: Session = Depends(database.get_db)
 ):
@@ -678,21 +696,31 @@ async def add_comment(
         if not user:
             raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
 
+        media = db.query(models.Media).filter(models.Media.id == media_id).first()
+        if not media:
+            raise HTTPException(status_code=404, detail="Medya bulunamadı")
+
         new_comment = models.Comment(
-            kullanici_id=user.id,
             media_id=media_id,
-            comment=comment_data.comment
+            kullanici_id=user.id,
+            comment=comment
         )
         db.add(new_comment)
         db.commit()
-        db.refresh(new_comment)
+
+        # Yorum sayısını güncelle
+        comment_count = db.query(models.Comment).filter(models.Comment.media_id == media_id).count()
 
         return {
-            **new_comment.__dict__,
+            "id": new_comment.id,
+            "comment": comment,
             "username": user.username,
-            "user_image": user.profile_image
+            "user_image": user.profile_image,
+            "created_at": new_comment.created_at,
+            "comment_count": comment_count
         }
 
     except Exception as e:
         db.rollback()
+        print(f"Error in add_comment: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
