@@ -91,7 +91,7 @@
         const isAdmin = localStorage.getItem('isAdmin');
         const adminUsername = localStorage.getItem('adminUsername');
         
-        if (!isAdmin || !adminUsername || adminUsername !== 'Ensar') {
+        if (!isAdmin || !adminUsername) {
             // Admin değilse login sayfasına yönlendir
             window.location.href = '../login.html';
         }

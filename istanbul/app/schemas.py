@@ -11,6 +11,22 @@ class UserLogin(BaseModel):
     username: str
     password: str
 
+class KullaniciBase(BaseModel):
+    username: str
+    email: str
+
+class KullaniciCreate(KullaniciBase):
+    password: str
+
+class Kullanici(KullaniciBase):
+    id: int
+    profile_image: Optional[str] = None
+    bio: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
 class PostCreate(BaseModel):
     title: str
     content: str
@@ -34,10 +50,11 @@ class Concert(ConcertCreate):
 
 class AdminBase(BaseModel):
     username: str
+    password: str
     email: str
 
 class AdminCreate(AdminBase):
-    password: str
+    pass
 
 class Admin(AdminBase):
     id: int

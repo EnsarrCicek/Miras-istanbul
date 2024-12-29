@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Topbar buraya gelecek -->
+    <div class="topbar">
+        <link rel="stylesheet" href="css/topbar.css">
+
+
+        <div class="wrapper target">
+            <div class="left target">
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </div>
+            <div class="istanbul-menu">
+                <span class="istanbul-text">İstanbul Senin</span>
+                <i class="fas fa-plane istanbul-icon"></i>
+                <div class="istanbul-dropdown">
+                    <button class="istanbul-btn" onclick="window.location.href='onemli-numaralar.html'">Önemli Numaralar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='ulasim.html'">Ulaşım</button>
+                    <button class="istanbul-btn" onclick="window.location.href='haritalar.html'">Haritalar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='kultur.html'">Kültür & Sanat</button>
+                    <button class="istanbul-btn" onclick="window.location.href='yemek.html'">Yeme & İçme</button>
+                    <button class="istanbul-btn" onclick="window.location.href='etkinlik.html'">Etkinlikler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='muzeler.html'">Müzeler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='konser.html'">Konserler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='plajlar.html'">Plajlar</button>
+                </div>
+            </div>
+            <div class="center">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="harita.html">Harita</a>
+                <a href="ilceler.html">İlçeler</a>
+                <a href="konum.html">Konum Takip</a>
+            </div>
+            <div class="right">
+                <div class="weather">
+                    <i class="fa-solid fa-cloud-sun" id="weatherIcon"></i>
+                    <div class="weather-content" id="weatherContent">
+                        <p>Hava durumu bilgisi yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
+                    <div class="dropdown-content">
+                        <a href="/public/register.html">Kayıt Ol</a>
+                        <a href="login.html">Giriş Yap</a>
+                        <a href="/public/add.html">Senin Manzaran</a>
+                        <a href="/public/gallery.html">Galeri</a>
+                        <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                    </div>
+                </div>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-image">
+                <img src="" alt="Profil" id="profileImage">
+                <div class="edit-overlay">
+                    <i class="fas fa-camera"></i>
+                    <input type="file" id="profileImageInput" accept="image/*">
+                </div>
+            </div>
+            <div class="profile-info">
+                <div class="profile-header-top">
+                    <h1 id="username">Kullanıcı Adı</h1>
+                    <div class="profile-actions">
+                        <button id="followButton" class="follow-btn">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Takip Et</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="count" id="postCount">0</span>
+                        <span class="label">Gönderi</span>
+                    </div>
+                    <div class="stat">
+                        <span class="count" id="followerCount">0</span>
+                        <span class="label">Takipçi</span>
+                    </div>
+                    <div class="stat">
+                        <span class="count" id="followingCount">0</span>
+                        <span class="label">Takip</span>
+                    </div>
+                </div>
+                <div class="bio" id="bio">
+                    <p>Biyografi buraya gelecek...</p>
+                    <button class="edit-btn" onclick="editBio()">
+                        <i class="fas fa-edit"></i> Düzenle
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="content-tabs">
+                <button class="tab-btn active" data-tab="posts">
+                    <i class="fas fa-th"></i> Gönderiler
+                </button>
+                <button class="tab-btn" data-tab="messages">
+                    <i class="fas fa-envelope"></i> Mesajlar
+                </button>
+            </div>
+
+            <div class="tab-content" id="posts">
+                <div class="media-grid">
+                    <!-- Medya içerikleri buraya gelecek -->
+                </div>
+                <button class="add-media-btn" onclick="showUploadModal()">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+
+            <div class="tab-content" id="messages" style="display: none;">
+                <div class="messages-container">
+                    <!-- Mesajlar buraya gelecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Yeni Gönderi</h2>
+            <form id="uploadForm">
+                <div class="upload-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Fotoğraf veya video yüklemek için tıklayın</p>
+                    <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
+                </div>
+                <textarea placeholder="Açıklama ekleyin..."></textarea>
+                <button type="submit">Paylaş</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+    <script src="js/index1.js"></script>
+    <script src="js/hava.js"></script>
+    <script src="js/sayfa.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/heritage-slider.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html> 

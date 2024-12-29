@@ -53,3 +53,18 @@ VALUES
 
 -- Eklenen kayıtları kontrol et
 SELECT * FROM admins;
+
+-- Tabloları sil
+DROP TABLE IF EXISTS media;
+DROP TABLE IF EXISTS followers;
+DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS kullanici;
+
+-- Tabloları yeniden oluştur (models.py'daki tanımlamalara göre)
+
+-- Kullanıcıları users tablosundan kullanici tablosuna aktar
+
+-- Kullanici tablosuna yeni sütunlar ekle
+ALTER TABLE kullanici
+ADD COLUMN follower_count INT DEFAULT 0,
+ADD COLUMN following_count INT DEFAULT 0;
