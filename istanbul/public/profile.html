@@ -148,15 +148,59 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Yeni Gönderi</h2>
-            <form id="uploadForm">
-                <div class="upload-area">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Fotoğraf veya video yüklemek için tıklayın</p>
-                    <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="text">
+                    <input type="text" name="title" placeholder="Başlık *" required>
+                    <textarea name="content" placeholder="Açıklama *" required></textarea>
+                    <input type="text" name="author" placeholder="İsminiz *" required>
                 </div>
-                <textarea placeholder="Açıklama ekleyin..."></textarea>
-                <button type="submit">Paylaş</button>
+
+                <div class="button">
+                    <button type="submit">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <label for="file">
+                        <i class="fa-solid fa-image"></i>
+                    </label>
+                    <input type="file" id="file" name="image" style="display: none;">
+                </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Media Modal -->
+    <div class="media-modal" id="mediaModal">
+        <button class="close-modal" onclick="closeMediaModal()">×</button>
+        <div class="media-modal-content">
+            <div class="media-view">
+                <img id="modalImage" src="" alt="">
+            </div>
+            <div class="media-info">
+                <div class="media-header">
+                    <img id="modalUserImage" src="" alt="User">
+                    <div class="media-user-info">
+                        <h3 id="modalUsername"></h3>
+                        <span id="modalDate"></span>
+                    </div>
+                </div>
+                <div class="media-actions">
+                    <button class="like-btn" onclick="likeMedia()">
+                        <i class="fas fa-heart"></i>
+                        <span class="like-count">0</span>
+                    </button>
+                    <button class="comment-btn">
+                        <i class="fas fa-comment"></i>
+                        <span class="comment-count">0</span>
+                    </button>
+                </div>
+                <div class="comments-section" id="comments">
+                    <!-- Yorumlar buraya gelecek -->
+                </div>
+                <form class="comment-form" onsubmit="submitComment(event)">
+                    <textarea class="comment-input" placeholder="Yorum yaz..." required></textarea>
+                    <button type="submit" class="comment-submit">Gönder</button>
+                </form>
+            </div>
         </div>
     </div>
 

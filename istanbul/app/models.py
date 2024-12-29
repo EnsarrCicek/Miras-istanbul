@@ -28,6 +28,9 @@ class Media(Base):
     kullanici_id = Column(Integer, ForeignKey('kullanici.id', ondelete='CASCADE'))
     media_type = Column(String(10))  # 'photo' veya 'video'
     file_path = Column(String(255))
+    title = Column(String(255))
+    content = Column(Text)
+    author = Column(String(255))
     caption = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -107,3 +110,24 @@ class Admin(Base):
     email = Column(String(255), unique=True)
     is_superadmin = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class Like(Base):
+    __tablename__ = "likes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    kullanici_id = Column(Integer, ForeignKey('kullanici.id', ondelete='CASCADE'))
+    media_id = Column(Integer, ForeignKey('media.id', ondelete='CASCADE'))
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    kullanici_id = Column(Integer, ForeignKey('kullanici.id', ondelete='CASCADE'))
+    media_id = Column(Integer, ForeignKey('media.id', ondelete='CASCADE'))
+    comment = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # İlişkiler
+    kullanici = relationship("Kullanici", backref="comments")
+    media = relationship("Media", backref="comments")

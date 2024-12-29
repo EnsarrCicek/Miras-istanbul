@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 class UserCreate(BaseModel):
     email: str
@@ -63,3 +63,38 @@ class Admin(AdminBase):
 
     class Config:
         orm_mode = True
+
+class CommentBase(BaseModel):
+    comment: str
+
+class CommentCreate(CommentBase):
+    pass
+
+class Comment(CommentBase):
+    id: int
+    kullanici_id: int
+    media_id: int
+    username: str
+    user_image: Optional[str]
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+class MediaDetail(BaseModel):
+    id: int
+    file_path: str
+    title: str
+    caption: Optional[str]
+    author: str
+    like_count: int
+    comment_count: int
+    created_at: datetime
+    is_liked: bool
+    comments: List[Comment]
+
+    class Config:
+        orm_mode = True
+
+class LikeAction(BaseModel):
+    action: str  # 'like' veya 'unlike'

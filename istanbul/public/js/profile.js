@@ -71,16 +71,11 @@ async function loadUserMedia() {
 
             if (item.media_type === 'photo') {
                 mediaItem.innerHTML = `
-                    <img src="${item.file_path}" alt="${item.caption || ''}">
+                    <img src="http://localhost:8000${item.file_path}" alt="${item.title || ''}">
                     <div class="media-overlay">
+                        <h3>${item.title || ''}</h3>
                         <p>${item.caption || ''}</p>
-                    </div>
-                `;
-            } else {
-                mediaItem.innerHTML = `
-                    <video src="${item.file_path}" controls></video>
-                    <div class="media-overlay">
-                        <p>${item.caption || ''}</p>
+                        <span class="author">Yazar: ${item.author || ''}</span>
                     </div>
                 `;
             }
@@ -187,30 +182,32 @@ document.querySelector('.close').addEventListener('click', () => {
 document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const formData = new FormData();
-    const files = document.getElementById('mediaInput').files;
-    const caption = document.querySelector('#uploadForm textarea').value;
-
-    for (let file of files) {
-        formData.append('media', file);
-    }
-    formData.append('caption', caption);
-
+    const formData = new FormData(e.target);
+    const currentUser = localStorage.getItem('username');
+    
     try {
         const response = await fetch('http://localhost:8000/api/kullanici/upload-media', {
             method: 'POST',
             headers: {
-                'username': localStorage.getItem('username')
+                'username': currentUser
             },
             body: formData
         });
 
         if (response.ok) {
             document.getElementById('uploadModal').style.display = 'none';
-            loadUserMedia(); // Medya gridini yenile
+            // Medya gridini yenile
+            loadUserMedia();
+            // Formu temizle
+            e.target.reset();
+            alert('Gönderi başarıyla paylaşıldı!');
+        } else {
+            const error = await response.json();
+            alert('Hata: ' + (error.detail || 'Gönderi paylaşılırken bir hata oluştu'));
         }
     } catch (error) {
         console.error('Medya yüklenirken hata:', error);
+        alert('Gönderi paylaşılırken bir hata oluştu!');
     }
 });
 
@@ -338,5 +335,159 @@ document.getElementById('followButton').addEventListener('click', async () => {
     } catch (error) {
         console.error('Takip işlemi sırasında hata:', error);
         alert('İşlem sırasında bir hata oluştu!');
+    }
+});
+
+// Medya modalını aç
+function openMediaModal(mediaId) {
+    const modal = document.getElementById('mediaModal');
+    modal.classList.add('active');
+    loadMediaDetails(mediaId);
+}
+
+// Medya modalını kapat
+function closeMediaModal() {
+    const modal = document.getElementById('mediaModal');
+    modal.classList.remove('active');
+}
+
+// Medya detaylarını yükle
+async function loadMediaDetails(mediaId) {
+    try {
+        const response = await fetch(`http://localhost:8000/api/media/${mediaId}`, {
+            headers: {
+                'username': localStorage.getItem('username')
+            }
+        });
+        const data = await response.json();
+
+        // Modal içeriğini güncelle
+        document.getElementById('modalImage').src = `http://localhost:8000${data.file_path}`;
+        document.getElementById('modalUsername').textContent = data.author;
+        document.getElementById('modalDate').textContent = new Date(data.created_at).toLocaleDateString();
+        document.querySelector('.like-count').textContent = data.like_count;
+        document.querySelector('.comment-count').textContent = data.comment_count;
+
+        // Beğeni durumunu kontrol et
+        const likeBtn = document.querySelector('.like-btn');
+        if (data.is_liked) {
+            likeBtn.classList.add('liked');
+        } else {
+            likeBtn.classList.remove('liked');
+        }
+
+        // Yorumları yükle
+        loadComments(mediaId);
+
+        // Aktif medya ID'sini sakla
+        document.querySelector('.like-btn').dataset.mediaId = mediaId;
+    } catch (error) {
+        console.error('Medya detayları yüklenirken hata:', error);
+    }
+}
+
+// Yorumları yükle
+async function loadComments(mediaId) {
+    try {
+        const response = await fetch(`http://localhost:8000/api/media/${mediaId}/comments`);
+        const comments = await response.json();
+
+        const commentsSection = document.getElementById('comments');
+        commentsSection.innerHTML = comments.map(comment => `
+            <div class="comment">
+                <div class="comment-header">
+                    <img src="${comment.user_image || '/image/default-profile.jpg'}" alt="${comment.username}">
+                    <span class="comment-user">${comment.username}</span>
+                </div>
+                <p class="comment-text">${comment.comment}</p>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Yorumlar yüklenirken hata:', error);
+    }
+}
+
+// Beğeni işlemi
+async function likeMedia() {
+    const likeBtn = document.querySelector('.like-btn');
+    const mediaId = likeBtn.dataset.mediaId;
+    const isLiked = likeBtn.classList.contains('liked');
+
+    try {
+        const response = await fetch(`http://localhost:8000/api/media/${mediaId}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'username': localStorage.getItem('username')
+            },
+            body: JSON.stringify({
+                action: isLiked ? 'unlike' : 'like'
+            })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            likeBtn.classList.toggle('liked');
+            document.querySelector('.like-count').textContent = data.like_count;
+            
+            // Kullanıcının toplam beğeni sayısını güncelle
+            loadUserProfile();
+        }
+    } catch (error) {
+        console.error('Beğeni işlemi sırasında hata:', error);
+    }
+}
+
+// Yorum gönderme
+async function submitComment(event) {
+    event.preventDefault();
+    const mediaId = document.querySelector('.like-btn').dataset.mediaId;
+    const commentInput = document.querySelector('.comment-input');
+    const comment = commentInput.value.trim();
+
+    if (!comment) return;
+
+    try {
+        const response = await fetch(`http://localhost:8000/api/media/${mediaId}/comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'username': localStorage.getItem('username')
+            },
+            body: JSON.stringify({ comment })
+        });
+
+        if (response.ok) {
+            commentInput.value = '';
+            loadComments(mediaId);
+            // Yorum sayısını güncelle
+            const data = await response.json();
+            document.querySelector('.comment-count').textContent = data.comment_count;
+        }
+    } catch (error) {
+        console.error('Yorum gönderilirken hata:', error);
+    }
+}
+
+// Media grid item'larına tıklama olayı ekle
+document.querySelector('.media-grid').addEventListener('click', (e) => {
+    const mediaItem = e.target.closest('.media-item');
+    if (mediaItem) {
+        const mediaId = mediaItem.dataset.mediaId;
+        openMediaModal(mediaId);
+    }
+});
+
+// Modal dışına tıklandığında kapat
+document.querySelector('.media-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+        closeMediaModal();
+    }
+});
+
+// ESC tuşuna basıldığında modalı kapat
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeMediaModal();
     }
 }); 

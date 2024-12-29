@@ -68,3 +68,39 @@ DROP TABLE IF EXISTS kullanici;
 ALTER TABLE kullanici
 ADD COLUMN follower_count INT DEFAULT 0,
 ADD COLUMN following_count INT DEFAULT 0;
+
+-- Media tablosuna yeni sütunlar ekle
+ALTER TABLE media
+ADD COLUMN title VARCHAR(255),
+ADD COLUMN content TEXT,
+ADD COLUMN author VARCHAR(255);
+
+-- Beğeni sayısı için media tablosuna sütun ekle
+ALTER TABLE media
+ADD COLUMN like_count INT DEFAULT 0;
+
+-- Kullanıcı toplam beğeni sayısı için kullanici tablosuna sütun ekle
+ALTER TABLE kullanici
+ADD COLUMN total_likes INT DEFAULT 0;
+
+-- Yorumlar tablosunu oluştur
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    media_id INT NOT NULL,
+    kullanici_id INT NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (media_id) REFERENCES media(id) ON DELETE CASCADE,
+    FOREIGN KEY (kullanici_id) REFERENCES kullanici(id) ON DELETE CASCADE
+);
+
+-- Beğeniler tablosu
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    kullanici_id INT NOT NULL,
+    media_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (kullanici_id) REFERENCES kullanici(id) ON DELETE CASCADE,
+    FOREIGN KEY (media_id) REFERENCES media(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_like (kullanici_id, media_id)
+);
