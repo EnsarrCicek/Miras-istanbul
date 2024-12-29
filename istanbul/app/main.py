@@ -18,8 +18,8 @@ os.makedirs("uploads", exist_ok=True)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Statik dosyaları serve et
-app.mount("/static", StaticFiles(directory="public"), name="static")
-app.mount("/uploads", StaticFiles(directory=os.path.join(BASE_DIR, "public", "uploads")), name="uploads")
+app.mount("/public", StaticFiles(directory="public"), name="public")
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # CORS ayarları
 app.add_middleware(
@@ -86,16 +86,22 @@ async def create_post(
 
 
 @app.get("/gallery")
-async def get_gallery(db: Session = Depends(database.get_db)):
+async def get_gallery_posts(db: Session = Depends(database.get_db)):
     try:
         posts = db.query(models.Post).all()
-        # Her post için görsel yolunu düzelt
+        result = []
         for post in posts:
-            if post.image_path and not post.image_path.startswith(('http://', 'https://')):
-                post.image_path = f"uploads/{os.path.basename(post.image_path)}"
-        return posts
+            result.append({
+                "id": post.id,
+                "title": post.title,
+                "content": post.content,
+                "author": post.author,
+                "image_path": f"/uploads/{os.path.basename(post.image_path)}" if post.image_path else None
+            })
+        print("Posts data:", result)  # Debug için
+        return result
     except Exception as e:
-        print(f"Gallery error: {str(e)}")
+        print(f"Error in get_gallery_posts: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -278,10 +284,16 @@ async def get_user_profile(username: str = Header(None), db: Session = Depends(d
         # Post sayısını hesapla
         post_count = db.query(models.Media).filter(models.Media.kullanici_id == user.id).count()
 
+        # Profil fotoğrafı yolunu düzelt - public/uploads/profiles yolunu kullan
+        profile_image = None
+        if user.profile_image:
+            # Tam yolu oluştur
+            profile_image = f"/public/uploads/profiles/{os.path.basename(user.profile_image)}"
+
         return {
             "username": user.username,
             "email": user.email,
-            "profile_image": user.profile_image,
+            "profile_image": profile_image,
             "bio": user.bio,
             "post_count": post_count,
             "follower_count": user.follower_count or 0,
@@ -723,4 +735,106 @@ async def add_comment(
     except Exception as e:
         db.rollback()
         print(f"Error in add_comment: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Admin kullanıcı kontrolü
+async def check_admin(username: str = Header(None), db: Session = Depends(database.get_db)):
+    if not username:
+        raise HTTPException(status_code=401, detail="Yetkilendirme başlığı eksik")
+    
+    user = db.query(models.Kullanici).filter(models.Kullanici.username == username).first()
+    if not user or not user.is_admin:
+        raise HTTPException(status_code=403, detail="Admin yetkisi gerekli")
+    return user
+
+# Tüm kullanıcıları getir
+@app.get("/api/admin/users")
+async def get_all_users(db: Session = Depends(database.get_db)):
+    try:
+        # Kullanıcıları çek
+        users = db.query(models.Kullanici).all()
+        user_list = []
+        
+        for user in users:
+            # Profil fotoğrafı yolunu kontrol et
+            profile_image = None
+            if user.profile_image:
+                # Dosyanın var olup olmadığını kontrol et
+                image_path = f"public/uploads/profiles/{user.profile_image}"
+                if os.path.exists(image_path):
+                    profile_image = f"/public/uploads/profiles/{user.profile_image}"
+                else:
+                    print(f"Profil fotoğrafı bulunamadı: {image_path}")
+            
+            user_list.append({
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "profile_image": profile_image,
+                "bio": user.bio or "",
+                "created_at": user.created_at.strftime("%Y-%m-%d %H:%M:%S") if user.created_at else None,
+                "follower_count": user.follower_count or 0,
+                "following_count": user.following_count or 0
+            })
+        
+        return {"users": user_list}
+    except Exception as e:
+        print(f"Error in get_all_users: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Tek kullanıcı bilgilerini getir
+@app.get("/api/admin/users/{user_id}", response_model=schemas.UserAdmin)
+async def get_user(user_id: int, 
+                  admin: models.Kullanici = Depends(check_admin),
+                  db: Session = Depends(database.get_db)):
+    try:
+        user = db.query(models.Kullanici).filter(models.Kullanici.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+        return user
+    except Exception as e:
+        print(f"Error in get_user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Kullanıcı güncelle
+@app.put("/api/admin/users/{user_id}", response_model=schemas.UserAdmin)
+async def update_user(user_id: int, 
+                     user_update: schemas.UserUpdate,
+                     admin: models.Kullanici = Depends(check_admin),
+                     db: Session = Depends(database.get_db)):
+    try:
+        user = db.query(models.Kullanici).filter(models.Kullanici.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+
+        # Güncelleme yapılacak alanları kontrol et
+        if user_update.username is not None:
+            user.username = user_update.username
+        if user_update.email is not None:
+            user.email = user_update.email
+        if user_update.is_active is not None:
+            user.is_active = user_update.is_active
+
+        db.commit()
+        db.refresh(user)
+        return user
+    except Exception as e:
+        print(f"Error in update_user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Kullanıcı sil
+@app.delete("/api/admin/users/{user_id}")
+async def delete_user(user_id: int,
+                     admin: models.Kullanici = Depends(check_admin),
+                     db: Session = Depends(database.get_db)):
+    try:
+        user = db.query(models.Kullanici).filter(models.Kullanici.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+
+        db.delete(user)
+        db.commit()
+        return {"message": "Kullanıcı başarıyla silindi"}
+    except Exception as e:
+        print(f"Error in delete_user: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))

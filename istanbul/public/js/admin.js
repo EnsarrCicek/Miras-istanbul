@@ -139,5 +139,149 @@ async function deleteConcert(id) {
     }
 }
 
-// Sayfa yüklendiğinde konserleri getir
-document.addEventListener('DOMContentLoaded', loadConcerts); 
+// Kullanıcıları yükle
+async function loadUsers() {
+    try {
+        const response = await fetch('http://localhost:8000/api/admin/users');
+        const data = await response.json();
+        
+        console.log('Gelen veri:', data); // Debug için
+
+        const users = data.users;
+        if (!users || !Array.isArray(users)) {
+            throw new Error('Geçersiz veri formatı');
+        }
+
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = users.map(user => {
+            // Profil fotoğrafı URL'sini kontrol et
+            const profileImage = user.profile_image || '/public/image/default-profile.jpg';
+            console.log('Profil fotoğrafı:', profileImage); // Debug için
+
+            return `
+            <tr>
+                <td>${user.id}</td>
+                <td>
+                    <div class="user-profile">
+                        <img src="${profileImage}" 
+                             alt="${user.username}"
+                             onerror="this.src='/public/image/default-profile.jpg'"
+                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
+                        <span>${user.username}</span>
+                    </div>
+                </td>
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td>${new Date(user.created_at).toLocaleDateString('tr-TR')}</td>
+                <td>
+                    <span class="user-status active">Aktif</span>
+                </td>
+                <td>
+                    <div class="user-actions">
+                        <button class="edit" onclick="editUser(${user.id})">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </button>
+                        <button class="delete" onclick="deleteUser(${user.id})">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `}).join('');
+
+        // Kullanıcı sayısını göster
+        const totalUsers = users.length;
+        document.querySelector('.users-section h1').textContent = 
+            `Kullanıcı Yönetimi (${totalUsers} kullanıcı)`;
+
+    } catch (error) {
+        console.error('Kullanıcılar yüklenirken hata:', error);
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; color: #e74c3c; padding: 20px;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Kullanıcılar yüklenirken bir hata oluştu: ${error.message}
+                </td>
+            </tr>
+        `;
+    }
+}
+
+// Sayfa yüklendiğinde
+document.addEventListener('DOMContentLoaded', () => {
+    // Admin kontrolü
+    const isAdmin = localStorage.getItem('isAdmin');
+    const adminUsername = localStorage.getItem('adminUsername');
+    
+    if (!isAdmin || !adminUsername) {
+        window.location.href = '../login.html';
+        return;
+    }
+
+    // Kullanıcıları yükle
+    loadUsers();
+
+    // Event listener'ları ayarla
+    setupEventListeners();
+});
+
+// Event listener'ları ayarla
+function setupEventListeners() {
+    // Arama
+    const searchInput = document.getElementById('userSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', filterUsers);
+    }
+
+    // Filtre
+    const filterSelect = document.getElementById('userFilter');
+    if (filterSelect) {
+        filterSelect.addEventListener('change', filterUsers);
+    }
+
+    // Çıkış butonu
+    const logoutBtn = document.querySelector('.logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('adminUsername');
+            window.location.href = '../index1.html';
+        });
+    }
+}
+
+// Kullanıcıları filtrele
+function filterUsers() {
+    const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+    const filterValue = document.getElementById('userFilter').value;
+    const rows = document.querySelectorAll('#usersList tr');
+
+    rows.forEach(row => {
+        const username = row.querySelector('.user-profile span').textContent.toLowerCase();
+        const email = row.cells[3].textContent.toLowerCase();
+        const status = row.querySelector('.user-status').textContent.toLowerCase();
+
+        const matchesSearch = username.includes(searchTerm) || email.includes(searchTerm);
+        const matchesFilter = filterValue === 'all' || 
+                            (filterValue === 'active' && status === 'aktif') ||
+                            (filterValue === 'inactive' && status === 'inaktif');
+
+        row.style.display = matchesSearch && matchesFilter ? '' : 'none';
+    });
+}
+
+// Bölüm gösterme fonksiyonu
+function showSection(sectionName) {
+    // Tüm bölümleri gizle
+    document.querySelectorAll('.admin-content > div').forEach(div => {
+        div.style.display = 'none';
+    });
+
+    // İlgili bölümü göster
+    if (sectionName === 'users') {
+        document.querySelector('.users-section').style.display = 'block';
+        loadUsers(); // Kullanıcıları yükle
+    }
+    // ... diğer bölümler için kontroller
+} 

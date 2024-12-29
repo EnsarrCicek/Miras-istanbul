@@ -41,6 +41,10 @@ async function loadUserProfile() {
         } else {
             profileImage.src = '/public/image/default-profile.jpg';
         }
+        
+        profileImage.onerror = function() {
+            this.src = '/public/image/default-profile.jpg';
+        };
 
         document.getElementById('bio').querySelector('p').textContent = data.bio || 'Henüz biyografi eklenmemiş...';
         document.getElementById('postCount').textContent = data.post_count || 0;

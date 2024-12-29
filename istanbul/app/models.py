@@ -45,14 +45,14 @@ class Kullanici(Base):
     __tablename__ = "kullanici"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(255), unique=True, index=True)
-    email = Column(String(255), unique=True)
+    username = Column(String(50), unique=True, index=True)
+    email = Column(String(100), unique=True, index=True)
     password = Column(String(255))
-    profile_image = Column(String(255))
-    bio = Column(Text)
+    profile_image = Column(String(255), nullable=True)
+    bio = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
     follower_count = Column(Integer, default=0)
     following_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
 
     # İlişkiler
     media = relationship("Media", back_populates="kullanici")
@@ -91,8 +91,8 @@ class Post(Base):
     __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), index=True)
-    content = Column(String(1000))
+    title = Column(String(255))
+    content = Column(Text)
     author = Column(String(255))
     image_path = Column(String(255))
 

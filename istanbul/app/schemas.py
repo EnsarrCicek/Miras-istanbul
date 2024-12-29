@@ -98,3 +98,25 @@ class MediaDetail(BaseModel):
 
 class LikeAction(BaseModel):
     action: str  # 'like' veya 'unlike'
+
+class UserBase(BaseModel):
+    username: str
+    email: str
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    is_active: Optional[bool] = None
+
+class UserAdmin(UserBase):
+    id: int
+    profile_image: Optional[str] = None
+    bio: Optional[str] = None
+    is_active: bool
+    is_admin: bool
+    created_at: datetime
+    follower_count: int
+    following_count: int
+
+    class Config:
+        from_attributes = True

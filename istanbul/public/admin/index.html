@@ -18,6 +18,9 @@
                 <a href="#" class="active" onclick="showSection('concerts')">
                     <i class="fas fa-music"></i> Konserler
                 </a>
+                <a href="../insta.html" onclick="showSection('users')">
+                    <i class="fas fa-users"></i> Kullanıcılar
+                </a>
                 <a href="#" onclick="showSection('stats')">
                     <i class="fas fa-chart-bar"></i> İstatistikler
                 </a>
@@ -81,6 +84,40 @@
             <div class="concerts-list" id="concertsList">
                 <!-- Konserler JavaScript ile buraya yüklenecek -->
             </div>
+        </div>
+    </div>
+
+    <!-- Kullanıcılar bölümü içeriği -->
+    <div class="users-section" style="display: none;">
+        <div class="admin-header">
+            <h1>Kullanıcı Yönetimi</h1>
+            <div class="user-filters">
+                <input type="text" id="userSearch" placeholder="Kullanıcı ara...">
+                <select id="userFilter">
+                    <option value="all">Tümü</option>
+                    <option value="active">Aktif</option>
+                    <option value="inactive">İnaktif</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="users-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Profil</th>
+                        <th>Kullanıcı Adı</th>
+                        <th>Email</th>
+                        <th>Kayıt Tarihi</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody id="usersList">
+                    <!-- Kullanıcılar JavaScript ile buraya yüklenecek -->
+                </tbody>
+            </table>
         </div>
     </div>
 

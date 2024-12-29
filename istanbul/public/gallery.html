@@ -115,7 +115,12 @@
                     slideElement.style.opacity = index === 0 ? '1' : '0';
                     slideElement.style.zIndex = index === 0 ? '10' : '1';
 
-                    const imagePath = `http://localhost:8000/${post.image_path}`;
+                    // Görüntü yolunu düzgün şekilde oluştur
+                    const imagePath = post.image_path ? 
+                        `http://localhost:8000${post.image_path}` : 
+                        'image/default-image.jpg';
+
+                    console.log('Image path:', imagePath); // Debug için
 
                     slideElement.innerHTML = `
                         <img src="${imagePath}" alt="${post.title}" 

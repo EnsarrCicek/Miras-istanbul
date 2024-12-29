@@ -1,0 +1,279 @@
+/* Ana container */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    width: 280px;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+}
+
+.admin-logo {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+}
+
+.admin-logo img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.admin-logo h2 {
+    font-size: 1.5rem;
+    color: white;
+    margin: 0;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-nav a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #ecf0f1;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.admin-nav a i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+.admin-nav a:hover,
+.admin-nav a.active {
+    background: #3498db;
+    color: white;
+    transform: translateX(5px);
+}
+
+.admin-nav .logout {
+    margin-top: auto;
+    color: #e74c3c;
+}
+
+.admin-nav .logout:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+/* Ana içerik */
+.admin-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 30px;
+}
+
+.content-header {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.content-header h1 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 1.8rem;
+}
+
+/* Filtreler */
+.user-filters {
+    display: flex;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #95a5a6;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+#userFilter {
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    min-width: 200px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#userFilter:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Tablo */
+.users-table {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.users-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.users-table th {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.users-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.user-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.user-status.active {
+    background: #e1f6e1;
+    color: #2ecc71;
+}
+
+.user-status.inactive {
+    background: #fee7e7;
+    color: #e74c3c;
+}
+
+/* Butonlar */
+.user-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.user-actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.user-actions .edit {
+    background: #3498db;
+    color: white;
+}
+
+.user-actions .delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.user-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Responsive tasarım */
+@media (max-width: 1200px) {
+    .admin-sidebar {
+        width: 80px;
+    }
+    
+    .admin-content {
+        margin-left: 80px;
+    }
+
+    .admin-logo h2,
+    .admin-nav a span {
+        display: none;
+    }
+
+    .admin-nav a i {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .admin-nav a {
+        justify-content: center;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-filters {
+        flex-direction: column;
+    }
+
+    .users-table {
+        overflow-x: auto;
+    }
+
+    .content-header {
+        padding: 15px;
+    }
+} 

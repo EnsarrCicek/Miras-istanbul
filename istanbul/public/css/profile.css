@@ -276,27 +276,196 @@
     background: rgba(0,0,0,0.8);
     backdrop-filter: blur(5px);
     z-index: 1000;
+    animation: modalFadeIn 0.3s ease;
 }
 
 .modal-content {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: white;
-    width: 90%;
-    max-width: 600px;
-    margin: 50px auto;
     padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-    transform: translateY(20px);
-    opacity: 0;
-    animation: modalShow 0.3s ease forwards;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes modalShow {
+/* Modal Başlık */
+.modal-content h2 {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+}
+
+.modal-content h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: #3498db;
+    border-radius: 2px;
+}
+
+/* Form Alanları */
+.modal-content .text {
+    margin-bottom: 25px;
+}
+
+.modal-content input[type="text"],
+.modal-content textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+.modal-content textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+/* Butonlar */
+.modal-content .button {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.modal-content button,
+.modal-content label {
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.modal-content button {
+    background: #3498db;
+    color: white;
+}
+
+.modal-content label {
+    background: #2ecc71;
+    color: white;
+}
+
+.modal-content button:hover,
+.modal-content label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content button i,
+.modal-content label i {
+    font-size: 18px;
+}
+
+/* Kapatma Butonu */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    color: #95a5a6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close:hover {
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+    transform: rotate(90deg);
+}
+
+/* Animasyonlar */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(1);
     }
+}
+
+/* Placeholder Stilleri */
+.modal-content input::placeholder,
+.modal-content textarea::placeholder {
+    color: #95a5a6;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 20px;
+    }
+
+    .modal-content button,
+    .modal-content label {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* Dosya Yükleme Alanı */
+.file-upload-preview {
+    width: 100%;
+    height: 200px;
+    border: 2px dashed #3498db;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.file-upload-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.file-upload-preview.dragover {
+    background: rgba(52, 152, 219, 0.1);
+    border-color: #2980b9;
 }
 
 /* Responsive tasarım */
