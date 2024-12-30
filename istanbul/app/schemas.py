@@ -120,3 +120,13 @@ class UserAdmin(UserBase):
 
     class Config:
         from_attributes = True
+
+class Media(BaseModel):
+    id: int
+    file_path: str  # Örnek: "/uploads/media/post_1_1735483597.jpg"
+    # Diğer alanlar...
+
+class User(BaseModel):
+    id: int
+    profile_image: Optional[str]  # Örnek: "/uploads/profiles/profile_1_1735560413.jpg"
+    # Diğer alanlar...

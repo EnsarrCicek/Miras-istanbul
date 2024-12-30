@@ -24,48 +24,15 @@ async function loadUsers() {
         const response = await fetch('http://localhost:8000/api/admin/users');
         const data = await response.json();
         
-        console.log('Gelen veri:', data); // Debug için
-
-        const users = data.users; // users listesini al
-        if (!users || !Array.isArray(users)) {
-            throw new Error('Geçersiz veri formatı');
+        if (!data || !data.users) {
+            throw new Error('Sunucudan veri alınamadı');
         }
 
         const usersList = document.getElementById('usersList');
-        usersList.innerHTML = users.map(user => `
-            <tr>
-                <td>${user.id}</td>
-                <td>
-                    <div class="user-profile">
-                        <img src="${user.profile_image ? `/uploads/profiles/${user.profile_image}` : '/public/image/default-profile.jpg'}" 
-                             alt="${user.username}"
-                             onerror="this.src='/public/image/default-profile.jpg'">
-                        <span>${user.username}</span>
-                    </div>
-                </td>
-                <td>${user.username}</td>
-                <td>${user.email}</td>
-                <td>${new Date(user.created_at).toLocaleDateString('tr-TR')}</td>
-                <td>
-                    <span class="user-status active">
-                        Aktif
-                    </span>
-                </td>
-                <td>
-                    <div class="user-actions">
-                        <button class="edit" onclick="editUser(${user.id})">
-                            <i class="fas fa-edit"></i> Düzenle
-                        </button>
-                        <button class="delete" onclick="deleteUser(${user.id})">
-                            <i class="fas fa-trash"></i> Sil
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
+        usersList.innerHTML = data.users.map(user => createUserRow(user)).join('');
 
         // Kullanıcı sayısını göster
-        const totalUsers = users.length;
+        const totalUsers = data.users.length;
         document.querySelector('.content-header h1').textContent = 
             `Kullanıcı Yönetimi (${totalUsers} kullanıcı)`;
 
@@ -82,6 +49,9 @@ async function loadUsers() {
         `;
     }
 }
+
+// Periyodik olarak kullanıcı listesini güncelle (her 30 saniyede bir)
+setInterval(loadUsers, 30000);
 
 // Event listener'ları ayarla
 function setupEventListeners() {
@@ -115,9 +85,16 @@ function filterUsers() {
     const rows = document.querySelectorAll('#usersList tr');
 
     rows.forEach(row => {
-        const username = row.querySelector('.user-profile span').textContent.toLowerCase();
-        const email = row.cells[3].textContent.toLowerCase();
-        const status = row.querySelector('.user-status').textContent.toLowerCase();
+        // Hata kontrolü ekleyelim
+        const usernameCell = row.querySelector('td:nth-child(3)'); // Username hücresi
+        const emailCell = row.querySelector('td:nth-child(4)'); // Email hücresi
+        const statusBadge = row.querySelector('.status-badge'); // Status badge
+
+        if (!usernameCell || !emailCell || !statusBadge) return; // Eğer gerekli elementler yoksa, bu satırı atla
+
+        const username = usernameCell.textContent.toLowerCase();
+        const email = emailCell.textContent.toLowerCase();
+        const status = statusBadge.textContent.toLowerCase();
 
         const matchesSearch = username.includes(searchTerm) || email.includes(searchTerm);
         const matchesFilter = filterValue === 'all' || 
@@ -128,9 +105,11 @@ function filterUsers() {
     });
 
     // Görünen kullanıcı sayısını güncelle
-    const visibleUsers = document.querySelectorAll('#usersList tr[style=""]').length;
-    document.querySelector('.content-header h1').textContent = 
-        `Kullanıcı Yönetimi (${visibleUsers} kullanıcı gösteriliyor)`;
+    const visibleUsers = Array.from(rows).filter(row => row.style.display !== 'none').length;
+    const headerTitle = document.querySelector('.content-header h1');
+    if (headerTitle) {
+        headerTitle.textContent = `Kullanıcı Yönetimi (${visibleUsers} kullanıcı gösteriliyor)`;
+    }
 }
 
 // Kullanıcı düzenleme
@@ -191,4 +170,45 @@ async function deleteUser(userId) {
             console.error('Kullanıcı silinirken hata:', error);
         }
     }
+}
+
+function createUserRow(user) {
+    // Profil fotoğrafı yolunu düzelt
+    let profileContent;
+    
+    if (user.profile_image) {
+        // Profil fotoğrafı varsa
+        const profileImageUrl = `http://localhost:8000${user.profile_image}`;
+        profileContent = `<img src="${profileImageUrl}" alt="${user.username}" onerror="this.onerror=null; this.src='http://localhost:8000/static/image/default-profile.jpg';">`;
+    } else {
+        // Profil fotoğrafı yoksa varsayılan ikon
+        profileContent = `<div class="default-avatar">
+            <i class="fas fa-user"></i>
+        </div>`;
+    }
+
+    return `
+        <tr>
+            <td>${user.id}</td>
+            <td class="user-profile">
+                ${profileContent}
+            </td>
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td>${new Date(user.created_at).toLocaleDateString('tr-TR')}</td>
+            <td>
+                <span class="status-badge ${user.is_active ? 'active' : 'inactive'}">
+                    ${user.is_active ? 'Aktif' : 'İnaktif'}
+                </span>
+            </td>
+            <td class="actions">
+                <button onclick="editUser(${user.id})" class="edit-btn">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button onclick="deleteUser(${user.id})" class="delete-btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `;
 } 

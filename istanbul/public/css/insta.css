@@ -177,7 +177,7 @@
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .user-profile img {
@@ -185,7 +185,6 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .user-status {
@@ -276,4 +275,32 @@
     .content-header {
         padding: 15px;
     }
+}
+
+.default-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.default-avatar i {
+    font-size: 20px;
+    color: #6c757d;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 } 

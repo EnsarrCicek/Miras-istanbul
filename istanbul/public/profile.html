@@ -177,14 +177,11 @@
             </div>
             <div class="media-info">
                 <div class="media-header">
-                    <img id="modalUserImage" src="" alt="User">
-                    <div class="media-user-info">
-                        <h3 id="modalUsername"></h3>
-                        <span id="modalDate"></span>
-                    </div>
+                    <h3 id="modalTitle"></h3>
+                    <span id="modalAuthor"></span>
                 </div>
                 <div class="media-actions">
-                    <button class="like-btn" onclick="likeMedia()">
+                    <button class="like-btn" onclick="likeMedia(this.dataset.mediaId)">
                         <i class="fas fa-heart"></i>
                         <span class="like-count">0</span>
                     </button>
@@ -198,7 +195,7 @@
                 </div>
                 <form class="comment-form" onsubmit="submitComment(event)">
                     <textarea class="comment-input" placeholder="Yorum yaz..." required></textarea>
-                    <button type="submit" class="comment-submit">Gönder</button>
+                    <button type="submit">Gönder</button>
                 </form>
             </div>
         </div>

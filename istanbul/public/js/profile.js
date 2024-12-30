@@ -34,18 +34,18 @@ async function loadUserProfile() {
         // Profil bilgilerini güncelle
         document.getElementById('username').textContent = data.username;
         
-        // Profil fotoğrafı yolunu kontrol et ve güncelle
+        // Profil fotoğrafını veritabanından al
         const profileImage = document.getElementById('profileImage');
         if (data.profile_image) {
             profileImage.src = `http://localhost:8000${data.profile_image}`;
-        } else {
-            profileImage.src = '/public/image/default-profile.jpg';
         }
         
-        profileImage.onerror = function() {
-            this.src = '/public/image/default-profile.jpg';
+        // Profil fotoğrafı yüklenemezse tekrar dene
+        profileImage.onerror = async function() {
+            console.error('Profil fotoğrafı yüklenemedi:', data.profile_image);
         };
 
+        // Diğer profil bilgilerini güncelle
         document.getElementById('bio').querySelector('p').textContent = data.bio || 'Henüz biyografi eklenmemiş...';
         document.getElementById('postCount').textContent = data.post_count || 0;
         document.getElementById('followerCount').textContent = data.follower_count || 0;
@@ -72,21 +72,31 @@ async function loadUserMedia() {
         media.forEach(item => {
             const mediaItem = document.createElement('div');
             mediaItem.className = 'media-item';
-            // Media ID'sini data attribute olarak ekle
             mediaItem.dataset.mediaId = item.id;
 
-            if (item.media_type === 'photo') {
-                mediaItem.innerHTML = `
-                    <img src="http://localhost:8000${item.file_path}" alt="${item.title || ''}">
-                    <div class="media-overlay">
-                        <h3>${item.title || ''}</h3>
-                        <p>${item.caption || ''}</p>
-                        <span class="author">Yazar: ${item.author || ''}</span>
-                    </div>
-                `;
-            }
+            // file_path'den public kısmını kaldır
+            const imagePath = item.file_path.replace('/public', '');
+            
+            mediaItem.innerHTML = `
+                <img src="http://localhost:8000${imagePath}" alt="${item.title || ''}">
+                <div class="media-stats">
+                    <span>
+                        <i class="fas fa-heart"></i> ${item.like_count || 0}
+                    </span>
+                    <span>
+                        <i class="fas fa-comment"></i> ${item.comment_count || 0}
+                    </span>
+                </div>
+            `;
 
             mediaGrid.appendChild(mediaItem);
+        });
+
+        // Medya öğelerine tıklama olayı ekle
+        document.querySelectorAll('.media-item').forEach(item => {
+            item.addEventListener('click', () => {
+                openMediaModal(item.dataset.mediaId);
+            });
         });
 
     } catch (error) {
@@ -344,117 +354,64 @@ document.getElementById('followButton').addEventListener('click', async () => {
     }
 });
 
-// Medya modalını aç
-function openMediaModal(mediaId) {
-    const modal = document.getElementById('mediaModal');
-    modal.classList.add('active');
-    loadMediaDetails(mediaId);
-}
-
-// Medya modalını kapat
-function closeMediaModal() {
-    const modal = document.getElementById('mediaModal');
-    modal.classList.remove('active');
-}
-
-// Medya detaylarını yükle
-async function loadMediaDetails(mediaId) {
+// Modal açma fonksiyonu
+async function openMediaModal(mediaId) {
     try {
-        console.log('Loading media details for ID:', mediaId); // Debug log
-        
-        const response = await fetch(`http://localhost:8000/api/media/${mediaId}`, {
-            headers: {
-                'username': localStorage.getItem('username')
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || 'Medya detayları alınamadı');
-        }
-
+        const response = await fetch(`http://localhost:8000/api/media/${mediaId}`);
         const data = await response.json();
-        console.log('Media details:', data); // Debug log
 
-        // Modal içeriğini güncelle
-        document.getElementById('modalImage').src = `http://localhost:8000${data.file_path}`;
-        document.getElementById('modalUsername').textContent = data.author;
-        document.getElementById('modalDate').textContent = new Date(data.created_at).toLocaleDateString();
-        
-        // Kullanıcı resmini güncelle
-        const userImage = document.getElementById('modalUserImage');
-        userImage.src = data.user_image ? `http://localhost:8000${data.user_image}` : '/image/default-profile.jpg';
+        const modal = document.getElementById('mediaModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalAuthor = document.getElementById('modalAuthor');
+        const likeBtn = modal.querySelector('.like-btn');
+        const likeCount = modal.querySelector('.like-count');
+        const commentCount = modal.querySelector('.comment-count');
 
-        // Beğeni ve yorum sayılarını güncelle
-        document.querySelector('.like-count').textContent = data.like_count || 0;
-        document.querySelector('.comment-count').textContent = data.comment_count || 0;
+        // Resim yolunu düzelt
+        const imagePath = data.file_path.replace('/public', '');
+        modalImage.src = `http://localhost:8000${imagePath}`;
+        modalTitle.textContent = data.title;
+        modalAuthor.textContent = data.author;
+        likeCount.textContent = data.like_count || 0;
+        commentCount.textContent = data.comment_count || 0;
 
-        // Beğeni durumunu kontrol et
-        const likeBtn = document.querySelector('.like-btn');
-        if (data.is_liked) {
-            likeBtn.classList.add('liked');
-        } else {
-            likeBtn.classList.remove('liked');
-        }
+        // Like butonuna mediaId'yi ekle
+        likeBtn.dataset.mediaId = mediaId;
 
         // Yorumları yükle
-        loadComments(mediaId);
+        await loadComments(mediaId);
 
-        // Aktif medya ID'sini sakla
-        document.querySelector('.like-btn').dataset.mediaId = mediaId;
-
+        modal.classList.add('active');
     } catch (error) {
-        console.error('Medya detayları yüklenirken hata:', error);
-        alert('Medya detayları yüklenirken bir hata oluştu: ' + error.message);
-    }
-}
-
-// Yorumları yükle
-async function loadComments(mediaId) {
-    try {
-        const response = await fetch(`http://localhost:8000/api/media/${mediaId}/comments`);
-        const comments = await response.json();
-
-        const commentsSection = document.getElementById('comments');
-        commentsSection.innerHTML = comments.map(comment => `
-            <div class="comment">
-                <div class="comment-header">
-                    <img src="${comment.user_image || '/image/default-profile.jpg'}" alt="${comment.username}">
-                    <span class="comment-user">${comment.username}</span>
-                </div>
-                <p class="comment-text">${comment.comment}</p>
-            </div>
-        `).join('');
-    } catch (error) {
-        console.error('Yorumlar yüklenirken hata:', error);
+        console.error('Modal açılırken hata:', error);
     }
 }
 
 // Beğeni işlemi
-async function likeMedia() {
-    const likeBtn = document.querySelector('.like-btn');
-    const mediaId = likeBtn.dataset.mediaId;
-    const isLiked = likeBtn.classList.contains('liked');
+async function likeMedia(mediaId) {
+    if (!mediaId) {
+        console.error('Media ID bulunamadı');
+        return;
+    }
 
     try {
         const response = await fetch(`http://localhost:8000/api/media/${mediaId}/like`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'username': localStorage.getItem('username')
-            },
-            body: JSON.stringify({
-                action: isLiked ? 'unlike' : 'like'
-            })
+            }
         });
 
         if (response.ok) {
             const data = await response.json();
-            likeBtn.classList.toggle('liked');
-            document.querySelector('.like-count').textContent = data.like_count;
-            
-            // Kullanıcının toplam beğeni sayısını güncelle
-            loadUserProfile();
+            // Modal içindeki like sayısını güncelle
+            document.querySelector('.media-modal .like-count').textContent = data.like_count;
+            // Grid içindeki like sayısını güncelle
+            const gridItem = document.querySelector(`[data-media-id="${mediaId}"] .like-count`);
+            if (gridItem) {
+                gridItem.textContent = data.like_count;
+            }
         }
     } catch (error) {
         console.error('Beğeni işlemi sırasında hata:', error);
@@ -464,8 +421,9 @@ async function likeMedia() {
 // Yorum gönderme
 async function submitComment(event) {
     event.preventDefault();
-    const mediaId = document.querySelector('.like-btn').dataset.mediaId;
-    const commentInput = document.querySelector('.comment-input');
+    const modal = document.getElementById('mediaModal');
+    const mediaId = modal.querySelector('.like-btn').dataset.mediaId;
+    const commentInput = modal.querySelector('.comment-input');
     const comment = commentInput.value.trim();
 
     if (!comment || !mediaId) return;
@@ -485,11 +443,45 @@ async function submitComment(event) {
         if (response.ok) {
             const data = await response.json();
             commentInput.value = '';
-            loadComments(mediaId);
-            document.querySelector('.comment-count').textContent = data.comment_count;
+            // Yorumları yeniden yükle
+            await loadComments(mediaId);
+            // Yorum sayılarını güncelle
+            document.querySelector('.media-modal .comment-count').textContent = data.comment_count;
+            const gridItem = document.querySelector(`[data-media-id="${mediaId}"] .comment-count`);
+            if (gridItem) {
+                gridItem.textContent = data.comment_count;
+            }
         }
     } catch (error) {
         console.error('Yorum gönderilirken hata:', error);
+    }
+}
+
+// Yorumları yükle
+async function loadComments(mediaId) {
+    try {
+        const response = await fetch(`http://localhost:8000/api/media/${mediaId}/comments`);
+        const comments = await response.json();
+
+        const commentsSection = document.getElementById('comments');
+        commentsSection.innerHTML = comments.map(comment => {
+            // Profil fotoğrafı yolunu düzelt
+            const userImagePath = comment.user_image ? 
+                `http://localhost:8000${comment.user_image.replace('/public', '')}` : 
+                'http://localhost:8000/static/image/default-profile.jpg';
+
+            return `
+                <div class="comment">
+                    <div class="comment-header">
+                        <img src="${userImagePath}" alt="${comment.username}">
+                        <span class="comment-user">${comment.username}</span>
+                    </div>
+                    <p class="comment-text">${comment.comment}</p>
+                </div>
+            `;
+        }).join('');
+    } catch (error) {
+        console.error('Yorumlar yüklenirken hata:', error);
     }
 }
 
@@ -518,4 +510,26 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeMediaModal();
     }
-}); 
+});
+
+// Profil resmi yükleme
+function loadProfileImage(userId) {
+    fetch(`/api/users/${userId}/profile-image`)
+        .then(response => response.json())
+        .then(data => {
+            const profileImage = document.getElementById('profileImage');
+            if (data.profile_image) {
+                const imagePath = data.profile_image.startsWith('/') ? data.profile_image : '/' + data.profile_image;
+                profileImage.src = imagePath;
+            } else {
+                profileImage.src = '/static/image/default-profile.jpg'; // Varsayılan profil resmi
+            }
+        })
+        .catch(error => console.error('Profil resmi yükleme hatası:', error));
+}
+
+// Modal kapatma fonksiyonu
+function closeMediaModal() {
+    const modal = document.getElementById('mediaModal');
+    modal.classList.remove('active');
+} 

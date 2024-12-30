@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from datetime import datetime
 from sqlalchemy import or_
 from typing import Dict, List
+from pathlib import Path
 
 app = FastAPI()
 
@@ -15,11 +16,27 @@ app = FastAPI()
 os.makedirs("uploads", exist_ok=True)
 
 # Proje kök dizinini al
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Statik dosyaları serve et
-app.mount("/public", StaticFiles(directory="public"), name="public")
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+# Static dosyaları için dizin yollarını tanımlayalım
+STATIC_DIR = BASE_DIR / "public"
+UPLOADS_DIR = STATIC_DIR / "uploads"
+
+# StaticFiles mount işlemleri
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
+
+# Varsayılan profil resminin olduğundan emin olun
+DEFAULT_PROFILE_PATH = STATIC_DIR / "image" / "default-profile.jpg"
+if not DEFAULT_PROFILE_PATH.exists():
+    # image klasörünü oluştur
+    (STATIC_DIR / "image").mkdir(exist_ok=True)
+    # Varsayılan bir resim kopyala veya oluştur
+    # Bu kısmı kendi varsayılan resminizle değiştirin
+    import shutil
+    source_image = STATIC_DIR / "image" / "default.jpg"  # Varolan bir resim
+    if source_image.exists():
+        shutil.copy(source_image, DEFAULT_PROFILE_PATH)
 
 # CORS ayarları
 app.add_middleware(
@@ -284,11 +301,13 @@ async def get_user_profile(username: str = Header(None), db: Session = Depends(d
         # Post sayısını hesapla
         post_count = db.query(models.Media).filter(models.Media.kullanici_id == user.id).count()
 
-        # Profil fotoğrafı yolunu düzelt - public/uploads/profiles yolunu kullan
+        # Profil fotoğrafı yolunu düzelt
         profile_image = None
         if user.profile_image:
-            # Tam yolu oluştur
-            profile_image = f"/public/uploads/profiles/{os.path.basename(user.profile_image)}"
+            # /public kısmını kaldır
+            profile_image = user.profile_image.replace('/public/', '/')
+            if not profile_image.startswith('/'):
+                profile_image = '/' + profile_image
 
         return {
             "username": user.username,
@@ -379,11 +398,17 @@ async def update_profile_image(
         new_filename = f"profile_{user.id}_{int(datetime.now().timestamp())}{file_extension}"
         
         # Dosya yolu oluştur
-        uploads_dir = os.path.join(BASE_DIR, "public", "uploads", "profiles")
-        os.makedirs(uploads_dir, exist_ok=True)
-        file_path = os.path.join(uploads_dir, new_filename)
+        uploads_dir = UPLOADS_DIR / "profiles"  # UPLOADS_DIR zaten tanımlı
+        uploads_dir.mkdir(parents=True, exist_ok=True)
+        file_path = uploads_dir / new_filename
         
-        # Dosyayı kaydet
+        # Eski profil fotoğrafını sil (varsa)
+        if user.profile_image:
+            old_file_path = STATIC_DIR / user.profile_image.lstrip('/')
+            if old_file_path.exists():
+                old_file_path.unlink()
+        
+        # Yeni dosyayı kaydet
         try:
             contents = await profile_image.read()
             with open(file_path, "wb") as f:
@@ -544,21 +569,26 @@ async def upload_media(
         # Yeni dosya adını oluştur
         new_filename = f"post_{user.id}_{int(datetime.now().timestamp())}{file_extension}"
         
-        # Dosya yolu oluştur
-        uploads_dir = os.path.join("public", "uploads", "media")
-        os.makedirs(uploads_dir, exist_ok=True)
-        file_path = os.path.join(uploads_dir, new_filename)
+        # Dosya yolu oluştur (public/uploads/media altına kaydet)
+        uploads_dir = UPLOADS_DIR / "media"  # UPLOADS_DIR zaten tanımlı
+        uploads_dir.mkdir(parents=True, exist_ok=True)
+        file_path = uploads_dir / new_filename
         
         # Dosyayı kaydet
-        with open(file_path, "wb") as f:
-            content = await image.read()
-            f.write(content)
+        try:
+            contents = await image.read()
+            with open(file_path, "wb") as f:
+                f.write(contents)
+        except Exception as e:
+            print(f"Error saving file: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Dosya kaydedilemedi: {str(e)}")
         
-        # Medya kaydını oluştur
+        # Medya kaydını oluştur - veritabanı yolunu public ile başlat
+        db_file_path = f"/public/uploads/media/{new_filename}"
         new_media = models.Media(
             kullanici_id=user.id,
             media_type='photo',
-            file_path=f"/uploads/media/{new_filename}",
+            file_path=db_file_path,
             title=title,
             content=content,
             author=author,
@@ -573,7 +603,7 @@ async def upload_media(
             "message": "Medya başarıyla yüklendi",
             "media": {
                 "id": new_media.id,
-                "file_path": new_media.file_path,
+                "file_path": db_file_path,
                 "title": new_media.title,
                 "author": new_media.author
             }
@@ -585,75 +615,53 @@ async def upload_media(
 
 # Medya detaylarını getir
 @app.get("/api/media/{media_id}")
-async def get_media_details(
-    media_id: int,
-    username: str = Header(None),
-    db: Session = Depends(database.get_db)
-):
+async def get_media_details(media_id: int, db: Session = Depends(database.get_db)):
     try:
-        # Kullanıcı kontrolü
-        user = db.query(models.Kullanici).filter(models.Kullanici.username == username).first()
-        if not user:
-            raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
-
-        # Medya kontrolü
         media = db.query(models.Media).filter(models.Media.id == media_id).first()
         if not media:
             raise HTTPException(status_code=404, detail="Medya bulunamadı")
 
-        # Medya sahibi bilgisi
-        owner = db.query(models.Kullanici).filter(
-            models.Kullanici.id == media.kullanici_id
-        ).first()
-
-        # Beğeni durumu kontrolü
-        is_liked = db.query(models.Like).filter(
-            models.Like.kullanici_id == user.id,
-            models.Like.media_id == media_id
-        ).first() is not None
-
-        # Yorum sayısı kontrolü
-        comment_count = db.query(models.Comment).filter(
-            models.Comment.media_id == media_id
-        ).count()
-
-        # Media nesnesini dictionary'e dönüştür
-        media_dict = {
+        return {
             "id": media.id,
+            "kullanici_id": media.kullanici_id,
+            "media_type": media.media_type,
             "file_path": media.file_path,
             "title": media.title,
             "content": media.content,
             "caption": media.caption,
             "author": media.author,
-            "created_at": media.created_at,
-            "like_count": getattr(media, 'like_count', 0),  # Eğer alan yoksa 0 döndür
-            "comment_count": comment_count,
-            "is_liked": is_liked,
-            "user_image": owner.profile_image if owner else None,
-            "kullanici_id": media.kullanici_id
+            "like_count": media.like_count,
+            "comment_count": media.comment_count,
+            "created_at": media.created_at
         }
-
-        return media_dict
-
     except Exception as e:
-        print(f"Error in get_media_details: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Yorumları getir
-@app.get("/api/media/{media_id}/comments", response_model=List[schemas.Comment])
-async def get_media_comments(media_id: int, db: Session = Depends(database.get_db)):
+@app.get("/api/media/{media_id}/comments")
+async def get_comments(media_id: int, db: Session = Depends(database.get_db)):
     try:
+        # Tüm yorumları al
         comments = db.query(models.Comment).filter(
             models.Comment.media_id == media_id
         ).order_by(models.Comment.created_at.desc()).all()
 
-        return [{
-            **comment.__dict__,
-            "username": db.query(models.Kullanici).get(comment.kullanici_id).username,
-            "user_image": db.query(models.Kullanici).get(comment.kullanici_id).profile_image
-        } for comment in comments]
+        # Her yorum için kullanıcı bilgilerini ekle
+        comment_list = []
+        for comment in comments:
+            user = db.query(models.Kullanici).filter(models.Kullanici.id == comment.kullanici_id).first()
+            comment_list.append({
+                "id": comment.id,
+                "comment": comment.comment,
+                "username": user.username,
+                "user_image": user.profile_image,
+                "created_at": comment.created_at
+            })
+
+        return comment_list
 
     except Exception as e:
+        print(f"Error in get_comments: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Beğeni işlemi
@@ -672,6 +680,7 @@ async def like_media(
         if not media:
             raise HTTPException(status_code=404, detail="Medya bulunamadı")
 
+        # Kullanıcının daha önce beğenip beğenmediğini kontrol et
         existing_like = db.query(models.Like).filter(
             models.Like.kullanici_id == user.id,
             models.Like.media_id == media_id
@@ -680,10 +689,13 @@ async def like_media(
         if existing_like:
             # Beğeniyi kaldır
             db.delete(existing_like)
-            media.like_count = max(0, (media.like_count or 0) - 1)
+            media.like_count = max(0, media.like_count - 1)
         else:
             # Beğeni ekle
-            new_like = models.Like(kullanici_id=user.id, media_id=media_id)
+            new_like = models.Like(
+                kullanici_id=user.id,
+                media_id=media_id
+            )
             db.add(new_like)
             media.like_count = (media.like_count or 0) + 1
 
@@ -692,7 +704,6 @@ async def like_media(
 
     except Exception as e:
         db.rollback()
-        print(f"Error in like_media: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Yorum ekleme endpoint'i
@@ -718,23 +729,28 @@ async def add_comment(
             comment=comment
         )
         db.add(new_comment)
+        
+        # Yorum sayısını güncelle - mevcut yorum sayısını hesapla
+        comment_count = db.query(models.Comment).filter(
+            models.Comment.media_id == media_id
+        ).count()
+        
+        # Media tablosundaki yorum sayısını güncelle
+        media.comment_count = comment_count + 1
+        
         db.commit()
-
-        # Yorum sayısını güncelle
-        comment_count = db.query(models.Comment).filter(models.Comment.media_id == media_id).count()
+        db.refresh(new_comment)
 
         return {
             "id": new_comment.id,
             "comment": comment,
             "username": user.username,
-            "user_image": user.profile_image,
             "created_at": new_comment.created_at,
-            "comment_count": comment_count
+            "comment_count": media.comment_count
         }
 
     except Exception as e:
         db.rollback()
-        print(f"Error in add_comment: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Admin kullanıcı kontrolü
@@ -749,37 +765,22 @@ async def check_admin(username: str = Header(None), db: Session = Depends(databa
 
 # Tüm kullanıcıları getir
 @app.get("/api/admin/users")
-async def get_all_users(db: Session = Depends(database.get_db)):
+async def get_users(db: Session = Depends(database.get_db)):
     try:
-        # Kullanıcıları çek
         users = db.query(models.Kullanici).all()
-        user_list = []
-        
-        for user in users:
-            # Profil fotoğrafı yolunu kontrol et
-            profile_image = None
-            if user.profile_image:
-                # Dosyanın var olup olmadığını kontrol et
-                image_path = f"public/uploads/profiles/{user.profile_image}"
-                if os.path.exists(image_path):
-                    profile_image = f"/public/uploads/profiles/{user.profile_image}"
-                else:
-                    print(f"Profil fotoğrafı bulunamadı: {image_path}")
-            
-            user_list.append({
+        return {
+            "users": [{
                 "id": user.id,
                 "username": user.username,
                 "email": user.email,
-                "profile_image": profile_image,
+                "profile_image": user.profile_image,
                 "bio": user.bio or "",
                 "created_at": user.created_at.strftime("%Y-%m-%d %H:%M:%S") if user.created_at else None,
-                "follower_count": user.follower_count or 0,
-                "following_count": user.following_count or 0
-            })
-        
-        return {"users": user_list}
+                "is_active": True  # Şimdilik hepsini aktif göster
+            } for user in users]
+        }
     except Exception as e:
-        print(f"Error in get_all_users: {str(e)}")
+        print(f"Error in get_users: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Tek kullanıcı bilgilerini getir
