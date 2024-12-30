@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Form, Header
+from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Form, Header, Request
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from uuid import uuid4
@@ -9,6 +9,7 @@ from datetime import datetime
 from sqlalchemy import or_
 from typing import Dict, List
 from pathlib import Path
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -49,6 +50,17 @@ app.add_middleware(
 
 # Veritabanı tablolarını oluşturma
 models.Base.metadata.create_all(bind=database.engine)
+
+# Takip durumu için model
+class FollowStatus(BaseModel):
+    username: str
+    target_username: str
+
+# Takip işlemi için model
+class FollowAction(BaseModel):
+    username: str
+    target_username: str
+    action: str
 
 @app.post("/register")
 async def register_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
@@ -455,98 +467,122 @@ async def update_bio(
         print(f"Error in update_bio: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/kullanici/follow-status/{target_username}")
-async def get_follow_status(
-    target_username: str,
-    username: str = Header(None),
-    db: Session = Depends(database.get_db)
-):
+@app.get("/api/kullanici/follow-status")
+async def check_follow_status(follow_status: FollowStatus, db: Session = Depends(database.get_db)):
+    print(f"Follow status check - Username: {follow_status.username}, Target: {follow_status.target_username}")
+    
     try:
-        follower = db.query(models.Kullanici).filter(models.Kullanici.username == username).first()
-        target = db.query(models.Kullanici).filter(models.Kullanici.username == target_username).first()
-        
-        if not follower or not target:
-            raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
-            
+        if not follow_status.username or not follow_status.target_username:
+            raise HTTPException(
+                status_code=400, 
+                detail="Username ve target_username gerekli"
+            )
+
+        # Takip eden kullanıcı
+        follower = db.query(models.Kullanici).filter(models.Kullanici.username == follow_status.username).first()
+        if not follower:
+            raise HTTPException(status_code=404, detail=f"Kullanıcı bulunamadı: {follow_status.username}")
+
+        # Takip edilen kullanıcı
+        following = db.query(models.Kullanici).filter(models.Kullanici.username == follow_status.target_username).first()
+        if not following:
+            raise HTTPException(status_code=404, detail=f"Hedef kullanıcı bulunamadı: {follow_status.target_username}")
+
+        # Takip durumunu kontrol et
         is_following = db.query(models.Followers).filter(
             models.Followers.follower_id == follower.id,
-            models.Followers.following_id == target.id
+            models.Followers.following_id == following.id
         ).first() is not None
-        
+
         return {"is_following": is_following}
-        
+    except HTTPException as he:
+        raise he
     except Exception as e:
+        print(f"Error in check_follow_status: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# Takip et/bırak
 @app.post("/api/kullanici/follow")
-async def follow_user(
-    follow_data: Dict[str, str],
-    username: str = Header(None),
-    db: Session = Depends(database.get_db)
-):
+async def follow_user(follow_action: FollowAction, db: Session = Depends(database.get_db)):
+    print(f"Follow request - Username: {follow_action.username}, Target: {follow_action.target_username}, Action: {follow_action.action}")
+    
     try:
-        # Takip eden kullanıcıyı bul
-        follower = db.query(models.Kullanici).filter(models.Kullanici.username == username).first()
-        if not follower:
-            raise HTTPException(status_code=404, detail="Takip eden kullanıcı bulunamadı")
+        if not follow_action.username or not follow_action.target_username or not follow_action.action:
+            raise HTTPException(
+                status_code=400, 
+                detail="Username, target_username ve action gerekli"
+            )
 
-        # Takip edilecek kullanıcıyı bul
-        target = db.query(models.Kullanici).filter(
-            models.Kullanici.username == follow_data["target_username"]
-        ).first()
-        if not target:
-            raise HTTPException(status_code=404, detail="Takip edilecek kullanıcı bulunamadı")
+        # Takip eden kullanıcı
+        follower = db.query(models.Kullanici).filter(models.Kullanici.username == follow_action.username).first()
+        if not follower:
+            raise HTTPException(status_code=404, detail=f"Kullanıcı bulunamadı: {follow_action.username}")
+
+        # Takip edilen kullanıcı
+        following = db.query(models.Kullanici).filter(models.Kullanici.username == follow_action.target_username).first()
+        if not following:
+            raise HTTPException(status_code=404, detail=f"Hedef kullanıcı bulunamadı: {follow_action.target_username}")
 
         # Kendini takip etmeyi engelle
-        if follower.id == target.id:
+        if follower.id == following.id:
             raise HTTPException(status_code=400, detail="Kendinizi takip edemezsiniz")
 
-        if follow_data["action"] == "follow":
-            # Zaten takip ediliyor mu kontrol et
-            existing_follow = db.query(models.Followers).filter(
-                models.Followers.follower_id == follower.id,
-                models.Followers.following_id == target.id
-            ).first()
+        try:
+            if follow_action.action == "follow":
+                # Zaten takip ediyor mu kontrol et
+                existing_follow = db.query(models.Followers).filter(
+                    models.Followers.follower_id == follower.id,
+                    models.Followers.following_id == following.id
+                ).first()
 
-            if not existing_follow:
-                # Yeni takip kaydı oluştur
-                new_follow = models.Followers(
-                    follower_id=follower.id,
-                    following_id=target.id
-                )
-                db.add(new_follow)
-                
-                # Takipçi sayılarını güncelle
-                if target.follower_count is None:
-                    target.follower_count = 0
-                if follower.following_count is None:
-                    follower.following_count = 0
+                if not existing_follow:
+                    new_follow = models.Followers(
+                        follower_id=follower.id,
+                        following_id=following.id
+                    )
+                    db.add(new_follow)
+                    db.flush()
+
+                    # Takipçi sayılarını güncelle
+                    following.follower_count = db.query(models.Followers).filter(
+                        models.Followers.following_id == following.id
+                    ).count()
                     
-                target.follower_count += 1
-                follower.following_count += 1
+                    follower.following_count = db.query(models.Followers).filter(
+                        models.Followers.follower_id == follower.id
+                    ).count()
 
-        elif follow_data["action"] == "unfollow":
-            # Takip kaydını bul ve sil
-            follow_record = db.query(models.Followers).filter(
-                models.Followers.follower_id == follower.id,
-                models.Followers.following_id == target.id
-            ).first()
-
-            if follow_record:
-                db.delete(follow_record)
+            elif follow_action.action == "unfollow":
+                db.query(models.Followers).filter(
+                    models.Followers.follower_id == follower.id,
+                    models.Followers.following_id == following.id
+                ).delete()
                 
                 # Takipçi sayılarını güncelle
-                if target.follower_count > 0:
-                    target.follower_count -= 1
-                if follower.following_count > 0:
-                    follower.following_count -= 1
+                following.follower_count = db.query(models.Followers).filter(
+                    models.Followers.following_id == following.id
+                ).count()
+                
+                follower.following_count = db.query(models.Followers).filter(
+                    models.Followers.follower_id == follower.id
+                ).count()
 
-        db.commit()
-        return {"message": "İşlem başarılı", "action": follow_data["action"]}
+            db.commit()
+            return {
+                "message": f"Successfully {'followed' if follow_action.action == 'follow' else 'unfollowed'} user",
+                "follower_count": following.follower_count,
+                "following_count": follower.following_count
+            }
 
+        except Exception as e:
+            db.rollback()
+            print(f"Database error: {str(e)}")
+            raise HTTPException(status_code=500, detail="Database error occurred")
+
+    except HTTPException as he:
+        raise he
     except Exception as e:
-        print(f"Follow error: {str(e)}")  # Debug için
-        db.rollback()
+        print(f"Error in follow_user: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/kullanici/upload-media")
@@ -621,19 +657,70 @@ async def get_media_details(media_id: int, db: Session = Depends(database.get_db
         if not media:
             raise HTTPException(status_code=404, detail="Medya bulunamadı")
 
+        # Medyayı paylaşan kullanıcının bilgilerini al
+        user = db.query(models.Kullanici).filter(models.Kullanici.id == media.kullanici_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+
         return {
             "id": media.id,
-            "kullanici_id": media.kullanici_id,
-            "media_type": media.media_type,
             "file_path": media.file_path,
             "title": media.title,
-            "content": media.content,
             "caption": media.caption,
-            "author": media.author,
             "like_count": media.like_count,
             "comment_count": media.comment_count,
-            "created_at": media.created_at
+            "created_at": media.created_at,
+            "username": user.username,  # Medyayı paylaşan kullanıcının adı
+            "user_id": user.id,        # Kullanıcı ID'si
+            "user_image": user.profile_image,  # Kullanıcının profil fotoğrafı
+            "user_bio": user.bio       # Kullanıcının biyografisi
         }
+    except Exception as e:
+        print(f"Error in get_media_details: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Keşfet sayfası için tüm medyaları getir
+@app.get("/api/discover/media")
+async def get_discover_media(db: Session = Depends(database.get_db)):
+    try:
+        media_items = db.query(models.Media).order_by(models.Media.created_at.desc()).all()
+        
+        result = []
+        for item in media_items:
+            user = db.query(models.Kullanici).filter(models.Kullanici.id == item.kullanici_id).first()
+            result.append({
+                "id": item.id,
+                "file_path": item.file_path,
+                "title": item.title,
+                "username": user.username,
+                "user_image": user.profile_image,
+                "like_count": item.like_count,
+                "comment_count": item.comment_count,
+                "created_at": item.created_at
+            })
+        
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Beğeni durumunu kontrol et
+@app.get("/api/media/{media_id}/like-status")
+async def check_like_status(
+    media_id: int,
+    username: str = Header(None),
+    db: Session = Depends(database.get_db)
+):
+    try:
+        user = db.query(models.Kullanici).filter(models.Kullanici.username == username).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+
+        like = db.query(models.Like).filter(
+            models.Like.kullanici_id == user.id,
+            models.Like.media_id == media_id
+        ).first()
+
+        return {"is_liked": bool(like)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

@@ -37,3 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     slides[currentSlide].classList.add("active");
 });
+
+// Kullanıcı profiline yönlendirme fonksiyonu
+function goToUserProfile(username) {
+    if (!username) {
+        console.error('Username is required');
+        return;
+    }
+    window.location.href = `http://127.0.0.1:5500/istanbul/public/profile.html?username=${encodeURIComponent(username)}`;
+}

@@ -1,49 +1,70 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // Kullanıcı kontrolü
-    const username = localStorage.getItem('username');
-    if (!username) {
+    // URL'den username parametresini al
+    const urlParams = new URLSearchParams(window.location.search);
+    const profileUsername = urlParams.get('username');
+    const loggedInUsername = localStorage.getItem('username');
+    
+    console.log('Current URL:', window.location.href);
+    console.log('Profile page loaded:', {
+        profileUsername,
+        loggedInUsername
+    });
+
+    if (!loggedInUsername) {
         window.location.href = 'login.html';
         return;
     }
 
-    // Kullanıcı bilgilerini yükle
-    loadUserProfile();
-    loadUserMedia();
-    loadMessages();
+    // Eğer URL'de username yoksa, giriş yapan kullanıcının profilini göster
+    const targetUsername = profileUsername || loggedInUsername;
+    console.log('Target username:', targetUsername);
 
-    // Tab değiştirme işlevi
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const tabName = button.dataset.tab;
-            switchTab(tabName);
-        });
-    });
+    // Profil sahibi mi kontrol et
+    const isProfileOwner = targetUsername === loggedInUsername;
+    
+    // Takip butonunu göster/gizle
+    const followButton = document.querySelector('.follow-btn');
+    if (followButton) {
+        if (isProfileOwner) {
+            followButton.style.display = 'none';
+        } else {
+            followButton.style.display = 'block';
+            followButton.dataset.username = targetUsername;
+            followButton.onclick = () => toggleFollow(targetUsername);
+            await checkFollowStatus(targetUsername);
+        }
+    }
+
+    // Kullanıcı bilgilerini yükle
+    await loadUserProfile(targetUsername);
+    await loadUserMedia(targetUsername);
 });
 
 // Kullanıcı profil bilgilerini yükle
-async function loadUserProfile() {
+async function loadUserProfile(username) {
     try {
-        const response = await fetch(`http://localhost:8000/api/kullanici/profile`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/kullanici/profile`, {
             headers: {
-                'username': localStorage.getItem('username')
+                'username': username
             }
         });
         const data = await response.json();
 
         // Profil bilgilerini güncelle
-        document.getElementById('username').textContent = data.username;
+        const usernameElement = document.getElementById('username');
+        usernameElement.textContent = data.username;
         
+        // Takip butonuna kullanıcı adını ekle
+        const followButton = document.querySelector('.follow-btn');
+        if (followButton) {
+            followButton.dataset.username = data.username;
+        }
+
         // Profil fotoğrafını veritabanından al
         const profileImage = document.getElementById('profileImage');
         if (data.profile_image) {
-            profileImage.src = `http://localhost:8000${data.profile_image}`;
+            profileImage.src = `http://127.0.0.1:8000${data.profile_image}`;
         }
-        
-        // Profil fotoğrafı yüklenemezse tekrar dene
-        profileImage.onerror = async function() {
-            console.error('Profil fotoğrafı yüklenemedi:', data.profile_image);
-        };
 
         // Diğer profil bilgilerini güncelle
         document.getElementById('bio').querySelector('p').textContent = data.bio || 'Henüz biyografi eklenmemiş...';
@@ -57,11 +78,11 @@ async function loadUserProfile() {
 }
 
 // Kullanıcının medya içeriklerini yükle
-async function loadUserMedia() {
+async function loadUserMedia(username) {
     try {
-        const response = await fetch(`http://localhost:8000/api/kullanici/media`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/kullanici/media`, {
             headers: {
-                'username': localStorage.getItem('username')
+                'username': username
             }
         });
         const media = await response.json();
@@ -74,11 +95,10 @@ async function loadUserMedia() {
             mediaItem.className = 'media-item';
             mediaItem.dataset.mediaId = item.id;
 
-            // file_path'den public kısmını kaldır
             const imagePath = item.file_path.replace('/public', '');
             
             mediaItem.innerHTML = `
-                <img src="http://localhost:8000${imagePath}" alt="${item.title || ''}">
+                <img src="http://127.0.0.1:8000${imagePath}" alt="${item.title || ''}">
                 <div class="media-stats">
                     <span>
                         <i class="fas fa-heart"></i> ${item.like_count || 0}
@@ -281,38 +301,57 @@ document.querySelector('.edit-overlay').addEventListener('click', () => {
     document.getElementById('profileImageInput').click();
 });
 
-// Takip butonunu kontrol et ve göster/gizle
-function checkFollowButton(profileUsername) {
-    const currentUser = localStorage.getItem('username');
-    const followButton = document.getElementById('followButton');
+// Takip durumunu kontrol et ve butonu güncelle
+async function checkFollowStatus(targetUsername) {
+    console.log('checkFollowStatus called with:', targetUsername);
     
-    if (!currentUser || currentUser === profileUsername) {
-        // Kendi profiliyse veya giriş yapılmamışsa butonu gizle
-        followButton.style.display = 'none';
+    if (!targetUsername) {
+        console.error('Target username is missing');
+        return;
+    }
+    
+    const loggedInUsername = localStorage.getItem('username');
+    if (!loggedInUsername || targetUsername === loggedInUsername) {
+        console.error('Invalid follow check:', {
+            loggedInUsername,
+            targetUsername
+        });
         return;
     }
 
-    // Takip durumunu kontrol et
-    checkFollowStatus(profileUsername);
-}
-
-// Takip durumunu kontrol et
-async function checkFollowStatus(profileUsername) {
     try {
-        const response = await fetch(`http://localhost:8000/api/kullanici/follow-status/${profileUsername}`, {
-            headers: {
-                'username': localStorage.getItem('username')
-            }
+        console.log('Making follow status request:', {
+            username: loggedInUsername,
+            target_username: targetUsername
         });
-        const data = await response.json();
+
+        const response = await fetch(`http://127.0.0.1:8000/api/kullanici/follow-status`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: loggedInUsername,
+                target_username: targetUsername
+            })
+        });
         
-        const followButton = document.getElementById('followButton');
-        if (data.is_following) {
-            followButton.classList.add('following');
-            followButton.querySelector('span').textContent = 'Takip Ediliyor';
-        } else {
-            followButton.classList.remove('following');
-            followButton.querySelector('span').textContent = 'Takip Et';
+        const data = await response.json();
+        console.log('Follow status response:', data);
+
+        if (!response.ok) {
+            throw new Error(data.detail || 'Takip durumu kontrol edilemedi');
+        }
+        
+        const followButton = document.querySelector('.follow-btn');
+        if (followButton) {
+            if (data.is_following) {
+                followButton.classList.add('following');
+                followButton.textContent = 'Takip Ediliyor';
+            } else {
+                followButton.classList.remove('following');
+                followButton.textContent = 'Takip Et';
+            }
         }
     } catch (error) {
         console.error('Takip durumu kontrol edilirken hata:', error);
@@ -320,39 +359,61 @@ async function checkFollowStatus(profileUsername) {
 }
 
 // Takip et/bırak işlemi
-document.getElementById('followButton').addEventListener('click', async () => {
-    const profileUsername = document.getElementById('username').textContent;
-    const followButton = document.getElementById('followButton');
+async function toggleFollow(targetUsername) {
+    if (!targetUsername) {
+        console.error('Target username is missing');
+        return;
+    }
+
+    const loggedInUsername = localStorage.getItem('username');
+    if (!loggedInUsername || targetUsername === loggedInUsername) {
+        console.error('Invalid follow operation');
+        return;
+    }
+
+    const followButton = document.querySelector('.follow-btn');
     const isFollowing = followButton.classList.contains('following');
     
     try {
-        const response = await fetch('http://localhost:8000/api/kullanici/follow', {
+        const response = await fetch('http://127.0.0.1:8000/api/kullanici/follow', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'username': localStorage.getItem('username')
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                target_username: profileUsername,
+                username: loggedInUsername,
+                target_username: targetUsername,
                 action: isFollowing ? 'unfollow' : 'follow'
             })
         });
 
         const data = await response.json();
+        console.log('Toggle follow response:', data);
 
-        if (response.ok) {
-            // Takipçi sayısını güncelle
-            loadUserProfile();
-            // Buton durumunu güncelle
-            checkFollowStatus(profileUsername);
-        } else {
-            alert('Hata: ' + (data.detail || 'Bilinmeyen bir hata oluştu'));
+        if (!response.ok) {
+            throw new Error(data.detail || 'İşlem başarısız');
         }
+
+        // Takipçi sayısını güncelle
+        const followerCount = document.getElementById('followerCount');
+        if (followerCount) {
+            followerCount.textContent = data.follower_count;
+        }
+        
+        // Buton durumunu güncelle
+        if (isFollowing) {
+            followButton.classList.remove('following');
+            followButton.textContent = 'Takip Et';
+        } else {
+            followButton.classList.add('following');
+            followButton.textContent = 'Takip Ediliyor';
+        }
+        
     } catch (error) {
         console.error('Takip işlemi sırasında hata:', error);
-        alert('İşlem sırasında bir hata oluştu!');
+        alert(error.message);
     }
-});
+}
 
 // Modal açma fonksiyonu
 async function openMediaModal(mediaId) {

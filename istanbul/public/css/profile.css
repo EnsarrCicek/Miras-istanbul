@@ -518,44 +518,22 @@
 
 .follow-btn {
     padding: 8px 20px;
-    background: #3498db;
-    color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: 20px;
+    background-color: #1976d2;
+    color: white;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     font-weight: 500;
-    height: 36px;
-}
-
-.follow-btn i {
-    font-size: 0.9rem;
-}
-
-.follow-btn:hover {
-    background: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s ease;
 }
 
 .follow-btn.following {
-    background: #2ecc71;
+    background-color: #e0e0e0;
+    color: #333;
 }
 
-.follow-btn.following:hover {
-    background: #e74c3c;
-}
-
-.follow-btn.following:hover span {
-    display: none;
-}
-
-.follow-btn.following:hover:before {
-    content: 'Takibi Bırak';
+.follow-btn:hover {
+    opacity: 0.9;
 }
 
 /* Profil başlık kısmı */

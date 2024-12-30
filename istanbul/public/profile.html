@@ -47,7 +47,7 @@
                 <a href="index.html">Ana Sayfa</a>
                 <a href="about.html">Hakkımızda</a>
                 <a href="harita.html">Harita</a>
-                <a href="ilceler.html">İlçeler</a>
+                <a href="kesfet.html">Keşfet</a>
                 <a href="konum.html">Konum Takip</a>
             </div>
             <div class="right">
@@ -85,26 +85,21 @@
             </div>
             <div class="profile-info">
                 <div class="profile-header-top">
-                    <h1 id="username">Kullanıcı Adı</h1>
-                    <div class="profile-actions">
-                        <button id="followButton" class="follow-btn">
-                            <i class="fas fa-user-plus"></i>
-                            <span>Takip Et</span>
-                        </button>
-                    </div>
+                    <h1 id="username"></h1>
+                    <button class="follow-btn" data-username="">Takip Et</button>
                 </div>
                 <div class="stats">
-                    <div class="stat">
-                        <span class="count" id="postCount">0</span>
-                        <span class="label">Gönderi</span>
+                    <div>
+                        <span id="postCount">0</span>
+                        <label>GÖNDERİ</label>
                     </div>
-                    <div class="stat">
-                        <span class="count" id="followerCount">0</span>
-                        <span class="label">Takipçi</span>
+                    <div>
+                        <span id="followerCount">0</span>
+                        <label>TAKİPÇİ</label>
                     </div>
-                    <div class="stat">
-                        <span class="count" id="followingCount">0</span>
-                        <span class="label">Takip</span>
+                    <div>
+                        <span id="followingCount">0</span>
+                        <label>TAKİP</label>
                     </div>
                 </div>
                 <div class="bio" id="bio">
