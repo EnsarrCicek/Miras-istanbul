@@ -60,10 +60,14 @@ async function loadUserProfile(username) {
             followButton.dataset.username = data.username;
         }
 
-        // Profil fotoğrafını veritabanından al
+        // Profil fotoğrafını doğru yoldan al
         const profileImage = document.getElementById('profileImage');
         if (data.profile_image) {
-            profileImage.src = `http://127.0.0.1:8000${data.profile_image}`;
+            // /public kısmını kaldır, sadece /uploads/profiles kullan
+            profileImage.src = `http://127.0.0.1:8000/uploads/profiles/${data.profile_image.split('/').pop()}`;
+        } else {
+            // Varsayılan profil fotoğrafı
+            profileImage.src = 'http://127.0.0.1:8000/static/image/default-profile.jpg';
         }
 
         // Diğer profil bilgilerini güncelle
@@ -97,8 +101,16 @@ async function loadUserMedia(username) {
 
             const imagePath = item.file_path.replace('/public', '');
             
+            // Kullanıcı kendi profilindeyse silme butonunu göster
+            const isCurrentUser = username === localStorage.getItem('username');
+            
             mediaItem.innerHTML = `
                 <img src="http://127.0.0.1:8000${imagePath}" alt="${item.title || ''}">
+                ${isCurrentUser ? `
+                    <button class="delete-media-btn" onclick="deleteMedia(event, ${item.id})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                ` : ''}
                 <div class="media-stats">
                     <span>
                         <i class="fas fa-heart"></i> ${item.like_count || 0}
@@ -114,13 +126,55 @@ async function loadUserMedia(username) {
 
         // Medya öğelerine tıklama olayı ekle
         document.querySelectorAll('.media-item').forEach(item => {
-            item.addEventListener('click', () => {
-                openMediaModal(item.dataset.mediaId);
+            item.addEventListener('click', (e) => {
+                // Silme butonuna tıklandığında modalı açma
+                if (!e.target.closest('.delete-media-btn')) {
+                    openMediaModal(item.dataset.mediaId);
+                }
             });
         });
 
     } catch (error) {
         console.error('Medya yüklenirken hata:', error);
+    }
+}
+
+// Medya silme fonksiyonu
+async function deleteMedia(event, mediaId) {
+    event.stopPropagation(); // Modal açılmasını engelle
+    
+    if (!confirm('Bu gönderiyi silmek istediğinizden emin misiniz?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/kullanici/media/${mediaId}`, {
+            method: 'DELETE',
+            headers: {
+                'username': localStorage.getItem('username')
+            }
+        });
+
+        if (response.ok) {
+            // Silinen medyayı DOM'dan kaldır
+            const mediaItem = document.querySelector(`[data-media-id="${mediaId}"]`);
+            if (mediaItem) {
+                mediaItem.remove();
+            }
+            alert('Gönderi başarıyla silindi!');
+            
+            // İstatistikleri güncelle
+            const postCount = document.getElementById('postCount');
+            if (postCount) {
+                postCount.textContent = parseInt(postCount.textContent) - 1;
+            }
+        } else {
+            const error = await response.json();
+            throw new Error(error.detail || 'Gönderi silinirken bir hata oluştu');
+        }
+    } catch (error) {
+        console.error('Medya silinirken hata:', error);
+        alert(error.message);
     }
 }
 
@@ -526,9 +580,9 @@ async function loadComments(mediaId) {
 
         const commentsSection = document.getElementById('comments');
         commentsSection.innerHTML = comments.map(comment => {
-            // Profil fotoğrafı yolunu düzelt
+            // Profil fotoğrafı yolunu düzelt - /public kısmını kaldır
             const userImagePath = comment.user_image ? 
-                `http://localhost:8000${comment.user_image.replace('/public', '')}` : 
+                `http://localhost:8000/uploads/profiles/${comment.user_image.split('/').pop()}` : 
                 'http://localhost:8000/static/image/default-profile.jpg';
 
             return `

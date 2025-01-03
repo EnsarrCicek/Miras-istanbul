@@ -21,11 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Static dosyaları için dizin yollarını tanımlayalım
 STATIC_DIR = BASE_DIR / "public"
-UPLOADS_DIR = STATIC_DIR / "uploads"
+UPLOADS_DIR = BASE_DIR / "public" / "uploads"  # public/uploads klasörü için yeni yol
 
 # StaticFiles mount işlemleri
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
+
+# Uploads klasörünü ve alt klasörlerini oluştur
+os.makedirs(str(UPLOADS_DIR / "profiles"), exist_ok=True)
+os.makedirs(str(UPLOADS_DIR / "concerts"), exist_ok=True)  # Konser resimleri için klasör
 
 # Varsayılan profil resminin olduğundan emin olun
 DEFAULT_PROFILE_PATH = STATIC_DIR / "image" / "default-profile.jpg"
@@ -160,17 +164,17 @@ async def create_concert(
     image: UploadFile = File(...),
     db: Session = Depends(database.get_db)
 ):
-    # Resim kaydetme
-    uploads_dir = "uploads/concerts"
-    os.makedirs(uploads_dir, exist_ok=True)
-    
+    # Dosya yolunu düzelt
     file_name = f"{uuid4().hex}_{image.filename}"
-    file_path = os.path.join(uploads_dir, file_name)
+    file_path = str(UPLOADS_DIR / "concerts" / file_name)  # Fiziksel dosya yolu
     
+    # Dosyayı kaydet
     with open(file_path, "wb+") as file_object:
         file_object.write(await image.read())
-
-    # Konser oluşturma
+    
+    # Veritabanına kaydedilecek URL yolu
+    db_file_path = f"/uploads/concerts/{file_name}"  # URL yolunu düzelt
+    
     db_concert = models.Concert(
         title=title,
         venue=venue,
@@ -178,17 +182,24 @@ async def create_concert(
         price=price,
         description=description,
         lineup=lineup,
-        image_path=file_path
+        image_path=db_file_path  # URL yolunu kaydet
     )
     
     db.add(db_concert)
     db.commit()
     db.refresh(db_concert)
+    
     return db_concert
 
 @app.get("/api/concerts/", response_model=list[schemas.Concert])
 def read_concerts(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
     concerts = db.query(models.Concert).offset(skip).limit(limit).all()
+    for concert in concerts:
+        # image_path'i düzelt
+        if concert.image_path:
+            # Sadece dosya adını al ve doğru yolu oluştur
+            filename = os.path.basename(concert.image_path)
+            concert.image_path = f"/uploads/concerts/{filename}"
     return concerts
 
 @app.delete("/api/admin/concerts/{concert_id}")
@@ -347,7 +358,7 @@ async def get_user_media(username: str = Header(None), db: Session = Depends(dat
         return [
             {
                 "id": item.id,
-                "file_path": item.file_path,
+                "file_path": f"/uploads/media/{os.path.basename(item.file_path)}" if item.file_path else None,
                 "media_type": item.media_type,
                 "title": item.title,
                 "caption": item.caption,
@@ -409,14 +420,14 @@ async def update_profile_image(
         # Yeni dosya adını oluştur
         new_filename = f"profile_{user.id}_{int(datetime.now().timestamp())}{file_extension}"
         
-        # Dosya yolu oluştur
-        uploads_dir = UPLOADS_DIR / "profiles"  # UPLOADS_DIR zaten tanımlı
+        # Dosya yolu oluştur - public/uploads/profiles altına kaydet
+        uploads_dir = UPLOADS_DIR / "profiles"  # public/uploads/profiles
         uploads_dir.mkdir(parents=True, exist_ok=True)
         file_path = uploads_dir / new_filename
         
         # Eski profil fotoğrafını sil (varsa)
         if user.profile_image:
-            old_file_path = STATIC_DIR / user.profile_image.lstrip('/')
+            old_file_path = UPLOADS_DIR / user.profile_image.lstrip('/')
             if old_file_path.exists():
                 old_file_path.unlink()
         
@@ -606,7 +617,7 @@ async def upload_media(
         new_filename = f"post_{user.id}_{int(datetime.now().timestamp())}{file_extension}"
         
         # Dosya yolu oluştur (public/uploads/media altına kaydet)
-        uploads_dir = UPLOADS_DIR / "media"  # UPLOADS_DIR zaten tanımlı
+        uploads_dir = UPLOADS_DIR / "media"  # public/uploads/media klasörüne kaydet
         uploads_dir.mkdir(parents=True, exist_ok=True)
         file_path = uploads_dir / new_filename
         
@@ -619,8 +630,8 @@ async def upload_media(
             print(f"Error saving file: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Dosya kaydedilemedi: {str(e)}")
         
-        # Medya kaydını oluştur - veritabanı yolunu public ile başlat
-        db_file_path = f"/public/uploads/media/{new_filename}"
+        # Medya kaydını oluştur - veritabanı yolunu düzelt
+        db_file_path = f"uploads/media/{new_filename}"  # Veritabanında saklanacak yol
         new_media = models.Media(
             kullanici_id=user.id,
             media_type='photo',
@@ -639,7 +650,7 @@ async def upload_media(
             "message": "Medya başarıyla yüklendi",
             "media": {
                 "id": new_media.id,
-                "file_path": db_file_path,
+                "file_path": f"/uploads/media/{new_filename}",  # Frontend'e gönderilen yol
                 "title": new_media.title,
                 "author": new_media.author
             }
@@ -662,18 +673,22 @@ async def get_media_details(media_id: int, db: Session = Depends(database.get_db
         if not user:
             raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
 
+        # Medya ve profil fotoğrafı yollarını düzelt
+        file_path = f"/uploads/media/{os.path.basename(media.file_path)}"
+        user_image = f"/uploads/profiles/{os.path.basename(user.profile_image)}" if user.profile_image else None
+
         return {
             "id": media.id,
-            "file_path": media.file_path,
+            "file_path": file_path,  # Düzeltilmiş medya yolu
             "title": media.title,
             "caption": media.caption,
             "like_count": media.like_count,
             "comment_count": media.comment_count,
             "created_at": media.created_at,
-            "username": user.username,  # Medyayı paylaşan kullanıcının adı
-            "user_id": user.id,        # Kullanıcı ID'si
-            "user_image": user.profile_image,  # Kullanıcının profil fotoğrafı
-            "user_bio": user.bio       # Kullanıcının biyografisi
+            "username": user.username,
+            "user_id": user.id,
+            "user_image": user_image,  # Düzeltilmiş profil fotoğrafı yolu
+            "user_bio": user.bio
         }
     except Exception as e:
         print(f"Error in get_media_details: {str(e)}")
@@ -688,9 +703,13 @@ async def get_discover_media(db: Session = Depends(database.get_db)):
         result = []
         for item in media_items:
             user = db.query(models.Kullanici).filter(models.Kullanici.id == item.kullanici_id).first()
+            
+            # Dosya yolunu düzelt
+            file_path = f"/uploads/media/{os.path.basename(item.file_path)}"
+            
             result.append({
                 "id": item.id,
-                "file_path": item.file_path,
+                "file_path": file_path,  # Düzeltilmiş dosya yolu
                 "title": item.title,
                 "username": user.username,
                 "user_image": user.profile_image,
@@ -925,4 +944,39 @@ async def delete_user(user_id: int,
         return {"message": "Kullanıcı başarıyla silindi"}
     except Exception as e:
         print(f"Error in delete_user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/kullanici/media/{media_id}")
+async def delete_media(media_id: int, username: str = Header(None), db: Session = Depends(database.get_db)):
+    if not username:
+        raise HTTPException(status_code=401, detail="Kullanıcı girişi gerekli")
+    
+    # Kullanıcıyı bul
+    user = db.query(models.Kullanici).filter(models.Kullanici.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+    
+    # Media'yı bul
+    media = db.query(models.Media).filter(
+        models.Media.id == media_id,
+        models.Media.kullanici_id == user.id
+    ).first()
+    
+    if not media:
+        raise HTTPException(status_code=404, detail="Medya bulunamadı veya bu işlem için yetkiniz yok")
+    
+    try:
+        # Dosyayı fiziksel olarak sil
+        file_path = os.path.join("public", media.file_path.lstrip('/'))
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        
+        # Veritabanından sil
+        db.delete(media)
+        db.commit()
+        
+        return {"message": "Medya başarıyla silindi"}
+        
+    except Exception as e:
+        db.rollback()
         raise HTTPException(status_code=500, detail=str(e))

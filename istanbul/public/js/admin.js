@@ -88,54 +88,70 @@ document.getElementById('concertForm').addEventListener('submit', async (e) => {
 // Konserleri yükle
 async function loadConcerts() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/concerts/`);
+        const response = await fetch('http://localhost:8000/api/concerts/');
         const concerts = await response.json();
         
         const concertsList = document.getElementById('concertsList');
-        concertsList.innerHTML = concerts.map(concert => `
-            <div class="concert-card">
-                <div class="concert-image">
-                    <img src="${API_BASE_URL}/${concert.image_path}" alt="${concert.title}">
+        concertsList.innerHTML = '';
+        
+        concerts.forEach(concert => {
+            // Backend'den gelen görsel yolunu kullan
+            const imagePath = `http://localhost:8000${concert.image_path}`;
+            
+            const concertCard = `
+                <div class="concert-card">
+                    <div class="concert-image">
+                        <img src="${imagePath}" alt="${concert.title}">
+                    </div>
+                    <div class="concert-info">
+                        <h3>${concert.title}</h3>
+                        <p><strong>Mekan:</strong> ${concert.venue}</p>
+                        <p><strong>Tarih:</strong> ${concert.date}</p>
+                        <p><strong>Fiyat:</strong> ${concert.price} TL</p>
+                        <div class="concert-actions">
+                            <button onclick="editConcert(${concert.id})">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <button onclick="deleteConcert(${concert.id})">
+                                <i class="fas fa-trash"></i> Sil
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="concert-info">
-                    <h3>${concert.title}</h3>
-                    <p>${concert.venue}</p>
-                    <p>${concert.date}</p>
-                    <p class="price">${concert.price} TL</p>
-                </div>
-                <div class="concert-actions">
-                    <button class="edit" onclick="editConcert(${concert.id})">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="delete" onclick="deleteConcert(${concert.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-        `).join('');
+            `;
+            concertsList.innerHTML += concertCard;
+        });
     } catch (error) {
-        console.error('Hata:', error);
+        console.error('Konserler yüklenirken hata:', error);
+        document.getElementById('concertsList').innerHTML = `
+            <div class="error-message">
+                <p>Konserler yüklenirken bir hata oluştu: ${error.message}</p>
+            </div>
+        `;
     }
 }
 
 // Konser silme
-async function deleteConcert(id) {
-    if (confirm('Bu konseri silmek istediğinize emin misiniz?')) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/admin/concerts/${id}`, {
-                method: 'DELETE'
-            });
-            
-            if (response.ok) {
-                alert('Konser başarıyla silindi!');
-                loadConcerts();
-            } else {
-                alert('Silme işlemi başarısız!');
-            }
-        } catch (error) {
-            console.error('Hata:', error);
-            alert('Bir hata oluştu!');
+async function deleteConcert(concertId) {
+    if (!confirm('Bu konseri silmek istediğinizden emin misiniz?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`http://localhost:8000/api/admin/concerts/${concertId}`, {
+            method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+            throw new Error('Konser silinirken bir hata oluştu');
         }
+        
+        // Konserleri yeniden yükle
+        loadConcerts();
+        
+    } catch (error) {
+        console.error('Hata:', error);
+        alert('Konser silinirken bir hata oluştu: ' + error.message);
     }
 }
 
@@ -145,7 +161,7 @@ async function loadUsers() {
         const response = await fetch('http://localhost:8000/api/admin/users');
         const data = await response.json();
         
-        console.log('Gelen veri:', data); // Debug için
+        console.log('Gelen veri:', data);
 
         const users = data.users;
         if (!users || !Array.isArray(users)) {
@@ -154,19 +170,19 @@ async function loadUsers() {
 
         const usersList = document.getElementById('usersList');
         usersList.innerHTML = users.map(user => {
-            // Profil fotoğrafı URL'sini kontrol et
-            const profileImage = user.profile_image || '/public/image/default-profile.jpg';
-            console.log('Profil fotoğrafı:', profileImage); // Debug için
+            // Sadece backend'den gelen profil fotoğrafını kullan
+            const profileImage = user.profile_image 
+                ? `http://localhost:8000${user.profile_image}`
+                : '';
 
             return `
             <tr>
                 <td>${user.id}</td>
                 <td>
                     <div class="user-profile">
-                        <img src="${profileImage}" 
+                        ${profileImage ? `<img src="${profileImage}" 
                              alt="${user.username}"
-                             onerror="this.src='/public/image/default-profile.jpg'"
-                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
+                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">` : ''}
                         <span>${user.username}</span>
                     </div>
                 </td>

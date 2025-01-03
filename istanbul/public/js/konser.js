@@ -7,16 +7,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         konserGrid.innerHTML = ''; // Mevcut içeriği temizle
         
         concerts.forEach(concert => {
-            // Görsel yolunu düzelt
-            const imagePath = concert.image_path.startsWith('http') 
-                ? concert.image_path 
-                : `http://localhost:8000/${concert.image_path}`;
+            // Resim yolunu /uploads/concerts olarak değiştir
+            const imagePath = concert.image_path.startsWith('/uploads/concerts') ? 
+                `http://localhost:8000${concert.image_path}` : 
+                `http://localhost:8000/uploads/concerts/${concert.image_path}`;
 
             const konserCard = `
                 <div class="konser-card">
                     <div class="konser-image">
-                        <img src="${imagePath}" alt="${concert.title}" 
-                            onerror="this.src='image/default-concert.jpg'">
+                        <img src="${imagePath}" alt="${concert.title}">
                     </div>
                     <div class="konser-info">
                         <h2>${concert.title}</h2>

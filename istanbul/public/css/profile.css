@@ -845,4 +845,34 @@
     width: auto;
     height: auto;
     object-fit: contain;
+}
+
+/* Silme butonu için yeni stiller */
+.delete-media-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: #e74c3c;
+    z-index: 2;
+}
+
+.media-item:hover .delete-media-btn {
+    opacity: 1;
+}
+
+.delete-media-btn:hover {
+    background: #e74c3c;
+    color: white;
+    transform: rotate(90deg);
 } 

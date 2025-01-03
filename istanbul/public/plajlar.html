@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İstanbul Plajları</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/plajlar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <!-- Topbar buraya gelecek -->
+
+    <div class="topbar">
+        <link rel="stylesheet" href="css/topbar.css">
+
+
+        <div class="wrapper target">
+            <div class="left target">
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </div>
+            <div class="istanbul-menu">
+                <span class="istanbul-text">İstanbul Senin</span>
+                <i class="fas fa-plane istanbul-icon"></i>
+                <div class="istanbul-dropdown">
+                    <button class="istanbul-btn" onclick="window.location.href='onemli-numaralar.html'">Önemli Numaralar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='ulasim.html'">Ulaşım</button>
+                    <button class="istanbul-btn" onclick="window.location.href='haritalar.html'">Haritalar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='kultur.html'">Kültür & Sanat</button>
+                    <button class="istanbul-btn" onclick="window.location.href='yemek.html'">Yeme & İçme</button>
+                    <button class="istanbul-btn" onclick="window.location.href='etkinlik.html'">Etkinlikler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='muzeler.html'">Müzeler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='konser.html'">Konserler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='plajlar.html'">Plajlar</button>
+                </div>
+            </div>
+            <div class="center">
+                <a href="index2.html">Ana Sayfa</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="harita.html">Harita</a>
+                <a href="kesfet.html">Keşfet</a>
+                <a href="konum.html">Konum Takip</a>
+            </div>
+            <div class="right">
+                <div class="weather">
+                    <i class="fa-solid fa-cloud-sun" id="weatherIcon"></i>
+                    <div class="weather-content" id="weatherContent">
+                        <p>Hava durumu bilgisi yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <i class="fa-solid fa-user dropdown-icon" id="dropdownIcon"></i>
+                    <div class="dropdown-content">
+                        <a href="/public/profile.html">Profilim</a>
+                        <a href="/public/add.html">Senin Manzaran</a>
+                        <a href="/public/gallery.html">Galeri</a>
+                        <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                        <a href="#" onclick="logout()">Çıkış Yap</a>
+                    </div>
+                </div>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="beaches-container">
+        <!-- Kilyos Plajı -->
+        <div class="beach-card">
+            <div class="slider-container">
+                <div class="slider">
+                    <img src="image/kilyos1.jpg" alt="Kilyos Plajı">
+                    <img src="image/kilyos2.jpg" alt="Kilyos Plajı">
+                    
+                </div>
+                <div class="slider-nav"></div>
+                <div class="slider-arrows">
+                    <div class="slider-arrow prev"><i class="fas fa-chevron-left"></i></div>
+                    <div class="slider-arrow next"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            <div class="beach-info">
+                <h2 class="beach-title">Kilyos Plajı</h2>
+                <p class="beach-description">
+                    İstanbul'un kuzeyinde, Karadeniz kıyısında yer alan Kilyos Plajı, şehrin en popüler plajlarından biridir. 
+                    Temiz kumsalı, berrak suyu ve modern tesisleriyle yaz aylarında İstanbulluların vazgeçilmez mekanıdır. 
+                    Sörf tutkunları için ideal dalgaları ve rüzgar koşulları sunar.
+                </p>
+                <div class="beach-details">
+                    <div class="detail-item">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <span>Şezlong ve Şemsiye Mevcut</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-parking"></i>
+                        <span>Ücretsiz Otopark</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-utensils"></i>
+                        <span>Cafe & Restoran</span>
+                    </div>
+                </div>
+                <div class="beach-features">
+                    <span class="feature"><i class="fas fa-water"></i> Sörf İmkanı</span>
+                    <span class="feature"><i class="fas fa-volleyball-ball"></i> Plaj Voleybolu</span>
+                    <span class="feature"><i class="fas fa-life-ring"></i> Cankurtaran</span>
+                </div>
+                <a href="https://www.google.com/maps/dir//Kilyos+Plajı,+Kısırkaya,+Kilyos+Cd.,+34450+Sarıyer/İstanbul" 
+                   class="direction-btn" 
+                   target="_blank">
+                    <i class="fas fa-map-marker-alt"></i> Yol Tarifi Al
+                </a>
+            </div>
+        </div>
+
+        <!-- Şile Plajı -->
+        <div class="beach-card">
+            <div class="slider-container">
+                <div class="slider">
+                   
+                    <img src="image/sille3.jpg" alt="Şile Plajı">
+                    <img src="image/sie2.jpg" alt="Şile Plajı">
+                </div>
+                <div class="slider-nav"></div>
+                <div class="slider-arrows">
+                    <div class="slider-arrow prev"><i class="fas fa-chevron-left"></i></div>
+                    <div class="slider-arrow next"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            <div class="beach-info">
+                <h2 class="beach-title">Şile Plajı</h2>
+                <p class="beach-description">
+                    İstanbul'un doğusunda yer alan Şile Plajı, tarihi feneri ve doğal güzellikleriyle ünlüdür. 
+                    Uzun kumsalı, berrak suyu ve çevresindeki balık restoranlarıyla tam bir tatil beldesi 
+                    atmosferi sunar. Mavi bayraklı plajı ve temiz deniziyle ailelerin tercih ettiği bir destinasyondur.
+                </p>
+                <div class="beach-details">
+                    <div class="detail-item">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <span>Şezlong ve Şemsiye Mevcut</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-fish"></i>
+                        <span>Balık Restoranları</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-hotel"></i>
+                        <span>Konaklama İmkanı</span>
+                    </div>
+                </div>
+                <div class="beach-features">
+                    <span class="feature"><i class="fas fa-award"></i> Mavi Bayrak</span>
+                    <span class="feature"><i class="fas fa-child"></i> Çocuk Dostu</span>
+                    <span class="feature"><i class="fas fa-life-ring"></i> Cankurtaran</span>
+                </div>
+                <a href="https://www.google.com/maps/dir//Şile+Plajı,+Şile/İstanbul" 
+                   class="direction-btn" 
+                   target="_blank">
+                    <i class="fas fa-map-marker-alt"></i> Yol Tarifi Al
+                </a>
+            </div>
+        </div>
+
+        <!-- Diğer plajlar için benzer kartlar eklenecek -->
+        
+    </div>
+    <script src="js/index1.js"></script>
+    <script src="js/hava.js"></script>
+    <script src="js/sayfa.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/heritage-slider.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/müzeler.js"></script>
+    <script src="js/plajlar.js"></script>
+</body>
+</html>

@@ -11,7 +11,6 @@
     <div class="admin-container">
         <div class="admin-sidebar">
             <div class="admin-logo">
-                <img src="../image/istanbul.jpg" alt="Logo">
                 <h2>Admin Panel</h2>
             </div>
             <nav class="admin-nav">
@@ -34,112 +33,85 @@
         </div>
 
         <div class="admin-content">
-            <div class="admin-header">
-                <h1>Konser Yönetimi</h1>
-                <button class="add-btn" onclick="showAddForm()">
-                    <i class="fas fa-plus"></i> Yeni Konser Ekle
-                </button>
-            </div>
+            <!-- Konserler Bölümü -->
+            <div class="concerts-section">
+                <div class="admin-header">
+                    <h1>Konser Yönetimi</h1>
+                    <button class="add-btn" onclick="showAddForm()">
+                        <i class="fas fa-plus"></i> Yeni Konser Ekle
+                    </button>
+                </div>
 
-            <!-- Konser Ekleme Formu -->
-            <div class="add-form" id="addForm" style="display: none;">
-                <h2>Yeni Konser Ekle</h2>
-                <form id="concertForm" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label>Konser Başlığı</label>
-                        <input type="text" name="title" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Mekan</label>
-                        <input type="text" name="venue" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Tarih</label>
-                        <input type="text" name="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Fiyat</label>
-                        <input type="number" name="price" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Açıklama</label>
-                        <textarea name="description" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Konser Görseli</label>
-                        <input type="file" name="image" accept="image/*" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Program/Sanatçılar</label>
-                        <textarea name="lineup" required></textarea>
-                    </div>
-                    <div class="form-buttons">
-                        <button type="submit">Kaydet</button>
-                        <button type="button" onclick="hideAddForm()">İptal</button>
-                    </div>
-                </form>
-            </div>
+                <!-- Konser Ekleme Formu -->
+                <div class="add-form" id="addForm" style="display: none;">
+                    <h2>Yeni Konser Ekle</h2>
+                    <form id="concertForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Konser Başlığı</label>
+                            <input type="text" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mekan</label>
+                            <input type="text" name="venue" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tarih</label>
+                            <input type="text" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fiyat</label>
+                            <input type="number" name="price" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Açıklama</label>
+                            <textarea name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Konser Görseli</label>
+                            <input type="file" name="image" accept="image/*" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Program/Sanatçılar</label>
+                            <textarea name="lineup" required></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit">Kaydet</button>
+                            <button type="button" onclick="hideAddForm()">İptal</button>
+                        </div>
+                    </form>
+                </div>
 
-            <!-- Konser Listesi -->
-            <div class="concerts-list" id="concertsList">
-                <!-- Konserler JavaScript ile buraya yüklenecek -->
+                <!-- Konser Listesi -->
+                <div class="concerts-list" id="concertsList">
+                    <!-- Konserler JavaScript ile buraya yüklenecek -->
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Kullanıcılar bölümü içeriği -->
-    <div class="users-section" style="display: none;">
-        <div class="admin-header">
-            <h1>Kullanıcı Yönetimi</h1>
-            <div class="user-filters">
-                <input type="text" id="userSearch" placeholder="Kullanıcı ara...">
-                <select id="userFilter">
-                    <option value="all">Tümü</option>
-                    <option value="active">Aktif</option>
-                    <option value="inactive">İnaktif</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="users-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Profil</th>
-                        <th>Kullanıcı Adı</th>
-                        <th>Email</th>
-                        <th>Kayıt Tarihi</th>
-                        <th>Durum</th>
-                        <th>İşlemler</th>
-                    </tr>
-                </thead>
-                <tbody id="usersList">
-                    <!-- Kullanıcılar JavaScript ile buraya yüklenecek -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
+    <!-- JavaScript dosyaları -->
     <script src="../js/admin.js"></script>
     <script>
-    // Sayfa yüklendiğinde admin kontrolü yap
-    document.addEventListener('DOMContentLoaded', () => {
-        const isAdmin = localStorage.getItem('isAdmin');
-        const adminUsername = localStorage.getItem('adminUsername');
-        
-        if (!isAdmin || !adminUsername) {
-            // Admin değilse login sayfasına yönlendir
-            window.location.href = '../login.html';
-        }
-    });
+        // Sayfa yüklendiğinde konserleri yükle
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAdmin = localStorage.getItem('isAdmin');
+            const adminUsername = localStorage.getItem('adminUsername');
+            
+            if (!isAdmin || !adminUsername) {
+                window.location.href = '../login.html';
+                return;
+            }
 
-    // Çıkış yap butonu için
-    document.querySelector('.logout').addEventListener('click', () => {
-        localStorage.removeItem('isAdmin');
-        localStorage.removeItem('adminUsername');
-        window.location.href = '../index1.html';
-    });
+            // Konserleri yükle
+            loadConcerts();
+        });
+
+        // Çıkış yap
+        document.querySelector('.logout').addEventListener('click', () => {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('adminUsername');
+            window.location.href = '../index1.html';
+        });
     </script>
 </body>
 </html> 

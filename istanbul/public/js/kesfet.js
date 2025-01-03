@@ -21,10 +21,9 @@ async function loadAllMedia() {
 
         const mediaGrid = document.getElementById('mediaGrid');
         mediaGrid.innerHTML = mediaItems.map(item => {
-            const imagePath = item.file_path.replace('/public', '');
             return `
                 <div class="media-item" onclick="openMediaModal(${item.id})">
-                    <img src="http://127.0.0.1:8000${imagePath}" 
+                    <img src="http://127.0.0.1:8000${item.file_path}" 
                          alt="${item.title || ''}"
                          loading="lazy">
                 </div>
@@ -53,7 +52,7 @@ async function openMediaModal(mediaId) {
 
         // Medya görüntüsünü ayarla
         mediaView.innerHTML = `
-            <img src="http://localhost:8000${media.file_path.replace('/public', '')}" 
+            <img src="http://localhost:8000${media.file_path}" 
                  alt="${media.title || ''}"
                  onclick="window.location.href='profile.html?username=${media.username}'">
         `;
@@ -65,7 +64,7 @@ async function openMediaModal(mediaId) {
         // Profil fotoğrafını ayarla
         const userAvatar = userProfileLink.querySelector('.user-avatar');
         if (media.user_image) {
-            userAvatar.src = `http://localhost:8000${media.user_image.replace('/public', '')}`;
+            userAvatar.src = `http://localhost:8000${media.user_image}`;
             userAvatar.onerror = function() {
                 this.src = 'http://localhost:8000/static/image/default-profile.jpg';
             };
@@ -108,7 +107,7 @@ async function loadComments(mediaId) {
         commentsSection.innerHTML = comments.map(comment => `
             <div class="comment">
                 <div class="comment-header">
-                    <img src="http://localhost:8000${comment.user_image?.replace('/public', '')}" 
+                    <img src="http://localhost:8000${comment.user_image || '/static/image/default-profile.jpg'}" 
                          alt="${comment.username}" 
                          class="user-avatar">
                     <span class="comment-user">${comment.username}</span>

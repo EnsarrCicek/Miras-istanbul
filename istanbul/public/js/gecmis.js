@@ -74,8 +74,45 @@ const historyData = {
     ],
     "01-01": [
         {
-            title: "1929: İstanbul'da İlk Radyo Yayını",
-            description: "İstanbul Radyosu düzenli yayına başladı."
+            title: "2017: İstanbul'da, Reina gece kulübüne saldırı yapıldı.",
+            description: "1 Ocak 2017'de yerel saatle 01:15'te İstanbul'un Beşiktaş ilçesindeki Ortaköy semtinde bulunan Reina adlı gece kulübüne yeni yıl kutlamaları sırasında düzenlenen silahlı saldırı. Saldırı sonucunda 39 kişi öldü, 70 kişi ise yaralandı.",
+            image: "image/reina.JPG",
+            additionalContent: `
+                <div class="detailed-content">
+                    <h3>Olay Detayları</h3>
+                    <p>Olay yerine taksiyle gelen ve üzerinde siyah mont, siyah pantolon ve açık renkli şapka olan Abdulkadir Masharipov (kod adı: Abu Muhammed Horasani) elindeki AK-47 marka uzun namlulu silahla ilk önce etrafa ateş açtı. Sonrasında polis memuru Burak Yıldız'ı öldürdü. Ardından kapıda bekleyen gece kulübünün özel güvenliğini sağlayan kişilere ateş açarak öldürdü ve içeriye girerek etrafa rastgele ateş açtı. Yaklaşık 7 dakika süren saldırı sonrası saldırgan üstünü değiştirerek gözden kayboldu.[32][33]
+
+Kayıplar
+Saldırıda biri aynı zamanda Belçika vatandaşı olan 12 Türk vatandaşı hayatını yitirdi.[34] Bunların dışında, 7 tane Suudi Arabistan, üç tane Lübnan, en az üç tane Irak, ikişer tane Tunus, Fas ve Ürdün, birer tane Rusya, Kuveyt, Kanada, İsrail ve Suriye vatandaşı hayatını yitirdi.[34] Ölen iki Hindistan vatandaşından biri olan film yapımcısı ve iş insanı Abis Rizvi'de saldırı günü gece kulübünde bulunmaktaydı. Hayatını kaybetmiş 39 kişiden birinin kimliği henüz tespit edilemedi;[34] bazı kaynaklarda ölen Iraklı sayısının dört olduğu bildirilmektedir.[35]
+
+Saldırının ardından haber ajanslarına düşen ilk bilgiler biri polis iki kişinin öldüğü yönündeydi. Olaydan yaklaşık bir buçuk saat sonra basına konuşan İstanbul Valisi Vasip Şahin, saldırının bir "terör saldırısı" olduğunu ve ilk belirlemelere göre 35 kişinin öldüğünü açıkladı. Daha sonra yeni bir açıklama yapan İçişleri Bakanı Süleyman Soylu, ölen kişi sayısının 39 olduğunu bildirdi. Sağlık Bakanı Recep Akdağ ise kimliği belirlenen 20 kişiden 15'inin yabancı uyruklu, 5'inin ise Türk olduğunu ve 4'ü ağır olmak üzere 65 kişinin yaralı olarak hastanelerde olduğunu duyurdu.[36]</p>
+                    
+                   
+
+                   
+                </div>
+            `
+        }
+    ],
+    "01-02": [
+        {
+            title: "1923: İstanbul'un İşgalden Kurtuluşu",
+            description: "Kısa açıklama buraya...",
+            image: "image/kurtulus.jpg",
+            additionalContent: `
+                <div class="detailed-content">
+                    <h3>Kurtuluş Süreci</h3>
+                    <p>Detaylı bilgiler...</p>
+                    
+                    <div class="image-gallery">
+                        <img src="image/kurtulus1.jpg" alt="Tarihi Fotoğraf 1">
+                        <img src="image/kurtulus2.jpg" alt="Tarihi Fotoğraf 2">
+                    </div>
+
+                    <h3>Kutlamalar</h3>
+                    <p>Kutlamalar hakkında bilgiler...</p>
+                </div>
+            `
         }
     ],
     // Diğer tarihler için verileri ekleyebilirsiniz
