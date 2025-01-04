@@ -7,6 +7,8 @@
     <!-- MapLibre GL JS -->
     <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
+    <!-- Önce konum.js'yi yükle -->
+    <script src="js/konum.js"></script>
     <style>
         body, html {
             height: 100%;
@@ -79,8 +81,6 @@
         let map, userMarker, destinationMarker;
         let isWakeUpModeActive = false;
         let hasAlerted = false;
-        let userPosition = null;
-        let destinationPosition = null;
         let wakeLock = null;
         let alertSound = null;
 
@@ -133,7 +133,7 @@
         }
 
         function initMap() {
-            const map = new maplibregl.Map({
+            map = new maplibregl.Map({
                 container: 'map',
                 style: {
                     version: 8,
@@ -212,95 +212,8 @@
                 }
             });
 
-            // Konum alma fonksiyonu
-            function getLocation() {
-                if (!navigator.geolocation) {
-                    document.getElementById('status').innerText = 
-                        "Tarayıcınız konum hizmetlerini desteklemiyor.";
-                    return;
-                }
-
-                const options = {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                };
-
-                // İlk konumu al
-                navigator.geolocation.getCurrentPosition(
-                    // Başarılı
-                    position => {
-                        const coords = [position.coords.longitude, position.coords.latitude];
-                        userPosition = coords;
-
-                        console.log('Konum alındı:', {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude,
-                            accuracy: position.coords.accuracy + 'm'
-                        });
-
-                        // Haritayı konuma merkezle
-                        map.flyTo({
-                            center: coords,
-                            zoom: 15
-                        });
-
-                        // Marker oluştur veya güncelle
-                        if (!userMarker) {
-                            userMarker = new maplibregl.Marker({
-                                color: '#00FF00',
-                                scale: 0.8
-                            })
-                            .setLngLat(coords)
-                            .setPopup(new maplibregl.Popup().setHTML('Konumunuz'))
-                            .addTo(map);
-                        } else {
-                            userMarker.setLngLat(coords);
-                        }
-
-                        // Sürekli konum takibi yap
-                        navigator.geolocation.watchPosition(
-                            pos => {
-                                const newCoords = [pos.coords.longitude, pos.coords.latitude];
-                                userPosition = newCoords;
-                                userMarker.setLngLat(newCoords);
-                                
-                                if (destinationPosition) {
-                                    checkProximity();
-                                }
-                            },
-                            err => {
-                                console.warn('Konum takip hatası:', err);
-                            },
-                            options
-                        );
-                    },
-                    // Hata
-                    error => {
-                        let message = "Konum alınamadı: ";
-                        switch(error.code) {
-                            case error.PERMISSION_DENIED:
-                                message += "Konum izni reddedildi. Lütfen tarayıcı ayarlarından konum iznini etkinleştirin.";
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                message += "Konum bilgisi alınamıyor. Lütfen konum servislerinizi kontrol edin.";
-                                break;
-                            case error.TIMEOUT:
-                                message += "Konum isteği zaman aşımına uğradı. Tekrar deneniyor...";
-                                setTimeout(getLocation, 2000); // 2 saniye sonra tekrar dene
-                                break;
-                            default:
-                                message += error.message;
-                        }
-                        document.getElementById('status').innerText = message;
-                        console.error('Konum hatası:', error);
-                    },
-                    options
-                );
-            }
-
-            // Konumu almaya başla
-            getLocation();
+            // Konum izlemeyi başlat
+            initLocationTracking(map, userMarker);
 
             // Ses başlatma için kullanıcı etkileşimi gerekiyor
             document.getElementById('wakeMeUp').addEventListener('click', async () => {

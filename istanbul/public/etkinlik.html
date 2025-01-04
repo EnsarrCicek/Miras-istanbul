@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İstanbul Plajları</title>
+    <title>İstanbul Park & Bahçeler</title>
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/topbar.css">
-    <link rel="stylesheet" href="css/plajlar.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/etkinlik.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Topbar buraya gelecek -->
-
     <div class="topbar">
         <link rel="stylesheet" href="css/topbar.css">
 
@@ -45,7 +44,7 @@
                 </div>
             </div>
             <div class="center">
-                <a href="index2.html">Ana Sayfa</a>
+                <a href="index1.html">Ana Sayfa</a>
                 <a href="about.html">Hakkımızda</a>
                 <a href="harita.html">Harita</a>
                 <a href="kesfet.html">Keşfet</a>
@@ -59,13 +58,13 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <i class="fa-solid fa-user dropdown-icon" id="dropdownIcon"></i>
+                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
                     <div class="dropdown-content">
-                        <a href="/public/profile.html">Profilim</a>
+                        <a href="/public/register.html">Kayıt Ol</a>
+                        <a href="login.html">Giriş Yap</a>
                         <a href="/public/add.html">Senin Manzaran</a>
                         <a href="/public/gallery.html">Galeri</a>
                         <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
-                        <a href="#" onclick="logout()">Çıkış Yap</a>
                     </div>
                 </div>
                 <div class="searchEngine" id="searchEngine">
@@ -75,107 +74,82 @@
             </div>
         </div>
     </div>
-    <div class="beaches-container">
-        <!-- Kilyos Plajı -->
-        <div class="beach-card">
-            <div class="slider-container">
-                <div class="slider">
-                    <img src="image/kilyos1.jpg" alt="Kilyos Plajı">
-                    <img src="image/kilyos2.jpg" alt="Kilyos Plajı">
-                    
-                </div>
-                <div class="slider-nav"></div>
-                <div class="slider-arrows">
-                    <div class="slider-arrow prev"><i class="fas fa-chevron-left"></i></div>
-                    <div class="slider-arrow next"><i class="fas fa-chevron-right"></i></div>
-                </div>
-            </div>
-            <div class="beach-info">
-                <h2 class="beach-title">Kilyos Plajı</h2>
-                <p class="beach-description">
-                    İstanbul'un kuzeyinde, Karadeniz kıyısında yer alan Kilyos Plajı, şehrin en popüler plajlarından biridir. 
-                    Temiz kumsalı, berrak suyu ve modern tesisleriyle yaz aylarında İstanbulluların vazgeçilmez mekanıdır. 
-                    Sörf tutkunları için ideal dalgaları ve rüzgar koşulları sunar.
-                </p>
-                <div class="beach-details">
-                    <div class="detail-item">
-                        <i class="fas fa-umbrella-beach"></i>
-                        <span>Şezlong ve Şemsiye Mevcut</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-parking"></i>
-                        <span>Ücretsiz Otopark</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-utensils"></i>
-                        <span>Cafe & Restoran</span>
-                    </div>
-                </div>
-                <div class="beach-features">
-                    <span class="feature"><i class="fas fa-water"></i> Sörf İmkanı</span>
-                    <span class="feature"><i class="fas fa-volleyball-ball"></i> Plaj Voleybolu</span>
-                    <span class="feature"><i class="fas fa-life-ring"></i> Cankurtaran</span>
-                </div>
-                <a href="https://www.google.com/maps/dir//Kilyos+Plajı,+Kısırkaya,+Kilyos+Cd.,+34450+Sarıyer/İstanbul" 
-                   class="direction-btn" 
-                   target="_blank">
-                    <i class="fas fa-map-marker-alt"></i> Yol Tarifi Al
-                </a>
-            </div>
-        </div>
 
-        <!-- Şile Plajı -->
-        <div class="beach-card">
-            <div class="slider-container">
-                <div class="slider">
-                   
-                    <img src="image/sille3.jpg" alt="Şile Plajı">
-                    <img src="image/sie2.jpg" alt="Şile Plajı">
-                </div>
-                <div class="slider-nav"></div>
-                <div class="slider-arrows">
-                    <div class="slider-arrow prev"><i class="fas fa-chevron-left"></i></div>
-                    <div class="slider-arrow next"><i class="fas fa-chevron-right"></i></div>
-                </div>
-            </div>
-            <div class="beach-info">
-                <h2 class="beach-title">Şile Plajı</h2>
-                <p class="beach-description">
-                    İstanbul'un doğusunda yer alan Şile Plajı, tarihi feneri ve doğal güzellikleriyle ünlüdür. 
-                    Uzun kumsalı, berrak suyu ve çevresindeki balık restoranlarıyla tam bir tatil beldesi 
-                    atmosferi sunar. Mavi bayraklı plajı ve temiz deniziyle ailelerin tercih ettiği bir destinasyondur.
-                </p>
-                <div class="beach-details">
-                    <div class="detail-item">
-                        <i class="fas fa-umbrella-beach"></i>
-                        <span>Şezlong ve Şemsiye Mevcut</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-fish"></i>
-                        <span>Balık Restoranları</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-hotel"></i>
-                        <span>Konaklama İmkanı</span>
-                    </div>
-                </div>
-                <div class="beach-features">
-                    <span class="feature"><i class="fas fa-award"></i> Mavi Bayrak</span>
-                    <span class="feature"><i class="fas fa-child"></i> Çocuk Dostu</span>
-                    <span class="feature"><i class="fas fa-life-ring"></i> Cankurtaran</span>
-                </div>
-                <a href="https://www.google.com/maps/dir//Şile+Plajı,+Şile/İstanbul" 
-                   class="direction-btn" 
-                   target="_blank">
-                    <i class="fas fa-map-marker-alt"></i> Yol Tarifi Al
-                </a>
-            </div>
-        </div>
 
-        <!-- Diğer plajlar için benzer kartlar eklenecek -->
-        
+    <!-- Hero Section -->
+    <div class="parks-hero">
+        <div class="hero-content">
+            <h1>İSTANBUL'UN<br>YEŞİL VAHALARİ</h1>
+            <p>Şehrin kalbinde huzur dolu mekanlar</p>
+        </div>
     </div>
-    <footer class="main-footer"></footer>
+
+    <!-- Kategoriler -->
+    <div class="parks-categories">
+        <div class="category-item" data-filter="park">
+            <i class="fas fa-tree"></i>
+            <h3>Parklar</h3>
+        </div>
+        <div class="category-item" data-filter="piknik">
+            <i class="fas fa-umbrella-beach"></i>
+            <h3>Piknik Alanları</h3>
+        </div>
+        <div class="category-item" data-filter="botanik">
+            <i class="fas fa-leaf"></i>
+            <h3>Botanik Bahçeler</h3>
+        </div>
+        <div class="category-item" data-filter="korular">
+            <i class="fas fa-mountain"></i>
+            <h3>Korular</h3>
+        </div>
+    </div>
+
+    <!-- Mekanlar Listesi -->
+    <div class="venues-section">
+        <div class="section-header">
+            <h2>POPÜLER MEKANLAR</h2>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Tümü</button>
+                <button class="filter-btn" data-filter="avrupa">Avrupa Yakası</button>
+                <button class="filter-btn" data-filter="anadolu">Anadolu Yakası</button>
+            </div>
+        </div>
+
+        <div class="venues-grid">
+            <!-- Mekanlar dinamik olarak eklenecek -->
+        </div>
+    </div>
+
+    <!-- Özellikler -->
+    <div class="features-section">
+        <h2>ÖZELLİKLER & AKTİVİTELER</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-bicycle"></i>
+                <h3>Bisiklet Yolları</h3>
+                <p>Güvenli bisiklet rotaları</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-running"></i>
+                <h3>Koşu Parkurları</h3>
+                <p>Profesyonel koşu alanları</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-coffee"></i>
+                <h3>Kafeler</h3>
+                <p>Dinlenme noktaları</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-child"></i>
+                <h3>Çocuk Parkları</h3>
+                <p>Güvenli oyun alanları</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+    
+
         <div class="footer-content">
             <div class="footer-left">
               
@@ -237,6 +211,7 @@
             </div>
         </div>
     </footer>
+
     <script src="js/index1.js"></script>
     <script src="js/hava.js"></script>
     <script src="js/sayfa.js"></script>
@@ -245,7 +220,6 @@
     <script src="js/script.js"></script>
     <script src="js/heritage-slider.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/müzeler.js"></script>
-    <script src="js/plajlar.js"></script>
+    <script src="js/etkinlik.js"></script>
 </body>
 </html>

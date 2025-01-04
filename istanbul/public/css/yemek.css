@@ -1,0 +1,195 @@
+.discover-section {
+    padding: 50px 20px;
+    text-align: center;
+    background: #f8f9fa;
+}
+
+.discover-section h1 {
+    color: #2c3e50;
+    font-size: 3em;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.discover-section h2 {
+    color: #34495e;
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    font-weight: 600;
+}
+
+.food-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    cursor: pointer;
+    height: 300px;
+    transition: transform 0.3s ease;
+}
+
+.category-item:hover {
+    transform: translateY(-10px);
+}
+
+.category-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.category-item:hover img {
+    transform: scale(1.1);
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 20px;
+    color: white;
+    text-align: left;
+}
+
+.overlay h3 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.overlay p {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.category-content {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .food-categories {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-item {
+        height: 250px;
+    }
+}
+
+.food-section {
+    padding: 80px 0;
+    display: none; /* Başlangıçta gizli */
+}
+
+.food-section.active {
+    display: block;
+}
+
+.section-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.restaurant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.restaurant-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-5px);
+}
+
+.restaurant-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.restaurant-info {
+    padding: 20px;
+}
+
+.restaurant-info h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.rating {
+    color: #f1c40f;
+    margin-bottom: 10px;
+}
+
+.address {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #34495e;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.restaurant-features {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.restaurant-features span {
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+.reservation-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #e74c3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background 0.3s ease;
+}
+
+.reservation-btn:hover {
+    background: #c0392b;
+}
+
+@media (max-width: 768px) {
+    .restaurant-card img {
+        height: 250px;
+    }
+    
+    .restaurant-grid {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+} 

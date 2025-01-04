@@ -5,33 +5,391 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İstanbul Ulaşım</title>
     <link rel="stylesheet" href="css/index1.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/ulasim.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="transportation">
-        <h1>İstanbul Ulaşım Rehberi</h1>
-        <div class="transport-options">
-            <div class="transport-card">
-                <h3>Metrobüs</h3>
-                <p>Metrobüs güzergahları ve saatleri</p>
-                <a href="#" class="transport-link">Detaylı Bilgi</a>
+    <!-- Topbar buraya gelecek -->
+    <div class="topbar">
+        <link rel="stylesheet" href="css/topbar.css">
+
+
+        <div class="wrapper target">
+            <div class="left target">
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
             </div>
-            <div class="transport-card">
-                <h3>Metro</h3>
-                <p>Metro hatları ve çalışma saatleri</p>
-                <a href="#" class="transport-link">Detaylı Bilgi</a>
+            <div class="istanbul-menu">
+                <span class="istanbul-text">İstanbul Senin</span>
+                <i class="fas fa-plane istanbul-icon"></i>
+                <div class="istanbul-dropdown">
+                    <button class="istanbul-btn" onclick="window.location.href='onemli-numaralar.html'">Önemli Numaralar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='ulasim.html'">Ulaşım</button>
+                    <button class="istanbul-btn" onclick="window.location.href='haritalar.html'">Haritalar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='kultur.html'">Kültür & Sanat</button>
+                    <button class="istanbul-btn" onclick="window.location.href='yemek.html'">Yeme & İçme</button>
+                    <button class="istanbul-btn" onclick="window.location.href='etkinlik.html'">Etkinlikler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='muzeler.html'">Müzeler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='konser.html'">Konserler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='plajlar.html'">Plajlar</button>
+                </div>
             </div>
-            <div class="transport-card">
-                <h3>Otobüs</h3>
-                <p>Otobüs hatları ve güzergahları</p>
-                <a href="#" class="transport-link">Detaylı Bilgi</a>
+            <div class="center">
+                <a href="index1.html">Ana Sayfa</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="harita.html">Harita</a>
+                <a href="kesfet.html">Keşfet</a>
+                <a href="konum.html">Konum Takip</a>
             </div>
-            <div class="transport-card">
-                <h3>Marmaray</h3>
-                <p>Marmaray sefer saatleri</p>
-                <a href="#" class="transport-link">Detaylı Bilgi</a>
+            <div class="right">
+                <div class="weather">
+                    <i class="fa-solid fa-cloud-sun" id="weatherIcon"></i>
+                    <div class="weather-content" id="weatherContent">
+                        <p>Hava durumu bilgisi yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <i class="fa-solid fa-layer-group dropdown-icon" id="dropdownIcon"></i>
+                    <div class="dropdown-content">
+                        <a href="/public/register.html">Kayıt Ol</a>
+                        <a href="login.html">Giriş Yap</a>
+                        <a href="/public/add.html">Senin Manzaran</a>
+                        <a href="/public/gallery.html">Galeri</a>
+                        <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                    </div>
+                </div>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
             </div>
         </div>
     </div>
+    <!-- İstanbulkart Tanıtım Bölümü -->
+    <div class="istanbulkart-hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    <span class="highlight">İSTANBULKART</span> İLE<br>
+                    ŞEHRİ DOYA DOYA<br>
+                    YAŞAYIN
+                </h1>
+                <p class="subtitle">TOPLU TAŞIMA KARTI</p>
+                <p class="description">
+                    İstanbulkart (Istanbul Kart), City Life Card olarak ödemenin olduğu her yerde! 
+                    Toplu taşımada hızlı ve güvenli ödeme yapmanızı sağlar ve ayrıca kafeler, 
+                    restoranlar, market alışverişleri ve otoparklar gibi birçok yerde çeşitli kullanımlar sunar.
+                </p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-bus"></i>
+                        <span>Toplu Taşıma</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-coffee"></i>
+                        <span>Kafeler</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Marketler</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-parking"></i>
+                        <span>Otoparklar</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+               
+                <img src="image/card.png" alt="İstanbulkart Arka Yüz" class="card-back">
+            </div>
+        </div>
+    </div>
+
+    <!-- Kullanım Alanları -->
+    <div class="usage-areas">
+        <h2>KULLANIM ALANLARI</h2>
+        <div class="areas-grid">
+            <div class="area-card">
+                <i class="fas fa-subway"></i>
+                <h3>Metro</h3>
+                <p>Tüm metro hatlarında geçerli</p>
+            </div>
+            <div class="area-card">
+                <i class="fas fa-bus"></i>
+                <h3>Otobüs</h3>
+                <p>İETT, Halk Otobüsü ve Metrobüs</p>
+            </div>
+            <div class="area-card">
+                <i class="fas fa-ship"></i>
+                <h3>Vapur</h3>
+                <p>Şehir Hatları ve İDO</p>
+            </div>
+            <div class="area-card">
+                <i class="fas fa-train"></i>
+                <h3>Marmaray</h3>
+                <p>Tüm Marmaray istasyonları</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Avantajlar Bölümü -->
+    <div class="advantages">
+        <h2>AVANTAJLAR</h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <i class="fas fa-clock"></i>
+                <h3>Hızlı Geçiş</h3>
+                <p>Temassız ödeme ile hızlı geçiş imkanı</p>
+            </div>
+            <div class="advantage-card">
+                <i class="fas fa-percent"></i>
+                <h3>İndirimli Kullanım</h3>
+                <p>Transfer indirimleri ve özel kampanyalar</p>
+            </div>
+            <div class="advantage-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Güvenli</h3>
+                <p>Güvenli ödeme sistemi</p>
+            </div>
+            <div class="advantage-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobil Uygulama</h3>
+                <p>HES kodu eşleştirme ve bakiye sorgulama</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kart Seçenekleri Bölümü -->
+    <div class="card-options">
+        <h2>KART SEÇENEKLERİ</h2>
+        <div class="cards-grid">
+            <!-- İstanbul Şehir Kartı -->
+            <div class="card-option">
+                <div class="card-icon">
+                    <i class="fas fa-city"></i>
+                </div>
+                <div class="card-info">
+                    <h3>İstanbul Şehir Kartı</h3>
+                    <p class="card-subtitle">Şehir deneyiminizi harika kılmak için tasarlandı!</p>
+                    <p class="card-description">
+                        Ziyaretinizin süresine bağlı olarak İstanbul'un her yerinde 1, 3, 5, 7 veya 
+                        15 günlük toplu taşıma hizmetine sınırsız erişim sağlayabilirsiniz. Kart 
+                        ayrıca İstanbul Kitapçısı'nda, seçili müzelerde ve halk vapurlarıyla Boğaz 
+                        turlarında da geçerlidir.
+                    </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-clock"></i> 1-15 gün arası seçenekler</span>
+                        <span><i class="fas fa-museum"></i> Müze girişlerinde geçerli</span>
+                        <span><i class="fas fa-ship"></i> Boğaz turlarında kullanılabilir</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sınırlı Geçiş Biletleri -->
+            <div class="card-option">
+                <div class="card-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Sınırlı Geçiş Biletleri</h3>
+                    <p class="card-subtitle">Limited Pass Tickets, ONEpass, TWOpass, THREEpass, FIVEpass</p>
+                    <p class="card-description">
+                        Ziyaret sürenize bağlı olarak bunlardan birini alabilir ve tüm toplu taşıma 
+                        ulaşımlarınızda (Otobüs, Metro, Tramvay, Teleferik, Marmaray, Metrobüs, 
+                        Vapur vb.) ödemelerinizde kullanabilirsiniz.
+                    </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-ticket-alt"></i> Esnek geçiş seçenekleri</span>
+                        <span><i class="fas fa-bus"></i> Tüm toplu taşımada geçerli</span>
+                        <span><i class="fas fa-wallet"></i> Ekonomik seçenek</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İstanbulkart -->
+            <div class="card-option">
+                <div class="card-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <div class="card-info">
+                    <h3>İstanbulkart</h3>
+                    <p class="card-subtitle">İstanbul'un çok yönlü yaşam kartı</p>
+                    <p class="card-description">
+                        İstanbul'un toplu taşıma araçlarında kullanılan ödeme yöntemi olup, kafe 
+                        ve restoranlar, market alışverişi, şehir plajları gibi birçok lokasyonda 
+                        çeşitli kullanımlar sağlar. İstanbulkart ile tüm toplu taşıma ödemelerinizi 
+                        yapabilirsiniz.
+                    </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-sync-alt"></i> Tekrar yüklenebilir</span>
+                        <span><i class="fas fa-store"></i> Çoklu kullanım alanları</span>
+                        <span><i class="fas fa-percentage"></i> Transfer indirimleri</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Bölümü -->
+    <div class="faq-section">
+        <h2>SIKÇA SORULAN SORULAR</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>İstanbulkart* Nasıl Alabilirim?</h3>
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>İstanbulkart'ı metro istasyonları, otobüs durakları ve yetkili satış noktalarından edinebilirsiniz. 
+                    Ayrıca İBB Mobil uygulaması üzerinden de kart başvurusu yapabilirsiniz.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>İstanbulkart, LPS veya İstanbul Şehir Kartı'nın maliyeti ne kadar?</h3>
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Kart ücretleri şu şekildedir:<br>
+                    - İstanbulkart: 20 TL<br>
+                    - LPS (Limited Pass): 15-50 TL arası<br>
+                    - İstanbul Şehir Kartı: 30 TL</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>İstanbulkart'ıma TL Nasıl Yükleyebilirim?</h3>
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>İstanbulkart'ınıza bakiye yüklemek için:<br>
+                    - İstanbulkart Dolum Noktaları<br>
+                    - Mobil uygulama<br>
+                    - Online ödeme<br>
+                    - ATM'ler<br>
+                    seçeneklerini kullanabilirsiniz.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>İstanbulkart'ımı Nasıl Kullanırım?</h3>
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Kartınızı toplu taşıma araçlarındaki okuyuculara yaklaştırarak kullanabilirsiniz. 
+                    Geçiş yapmak için yeterli bakiye bulundurmanız gerekmektedir.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>İstanbul Şehir Kartımı Nasıl Kullanabilirim?</h3>
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Şehir Kartı ile seçtiğiniz süre boyunca (1-15 gün) sınırsız ulaşım sağlayabilirsiniz. 
+                    Müze girişleri ve Boğaz turları için de geçerlidir.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Sınırlı Geçiş Biletlerini Nasıl Kullanabilirim?</h3>
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>LPS biletleri belirli sayıda geçiş hakkı sunar. Kartı okuyucuya okutarak kullanabilir, 
+                    kalan geçiş hakkınızı kontrol edebilirsiniz.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Kredi ve Banka Kartlarımı Nasıl Kullanabilirim?</h3>
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Temassız özellikli banka ve kredi kartlarınızı doğrudan turnike ve validatörlerde kullanabilirsiniz. 
+                    Her geçiş için tam bilet ücreti tahsil edilir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+              
+                <p class="footer-description">Yazılmış ve devam eden hikayenin bir parçası olun</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>TEMELLER</h3>
+                <ul>
+                    
+                    <li><a href="#">Toplu Taşıma</a></li>
+                    <li><a href="#">Erişilebilirlik</a></li>
+                    <li><a href="#">İstanbul Kart</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>İLETİŞİME GEÇİN</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> +90538 393 16 24</p>
+                    <p><i class="fas fa-envelope"></i> ensarcckk@gmail.com</p>
+                </div>
+                <div class="social-title">
+                    <h4>HİKAYELERİMİZİ TAKİP EDİN</h4>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>BİRLİKTE YARATIYORUZ</h3>
+                <p>Kendi İstanbul hikayenizi yazmaya hazır mısınız?</p>
+                <div class="creators-logo">
+                   
+                    <span>YARATICILAR. İSTANBUL</span>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="footer-logo-ibb">
+                  
+                    <p>©2025 Telif Hakkı - İstanbul Büyükşehir Belediyesi Turizm Şube Müdürlüğü</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Yasal Uyarı</a>
+                    <a href="#">Gizlilik Politikası</a>
+                    <a href="#">Çerez Beyanı</a>
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="js/index1.js"></script>
     <script src="js/hava.js"></script>
     <script src="js/sayfa.js"></script>
@@ -40,5 +398,6 @@
     <script src="js/script.js"></script>
     <script src="js/heritage-slider.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/ulasim.js"></script>
 </body>
 </html> 

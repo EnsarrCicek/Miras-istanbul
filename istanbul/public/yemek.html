@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İstanbul Lezzetleri</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/yemek.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Topbar buraya gelecek -->
+    <div class="topbar">
+        <link rel="stylesheet" href="css/topbar.css">
+
+
+        <div class="wrapper target">
+            <div class="left target">
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </div>
+            <div class="istanbul-menu">
+                <span class="istanbul-text">İstanbul Senin</span>
+                <i class="fas fa-plane istanbul-icon"></i>
+                <div class="istanbul-dropdown">
+                    <button class="istanbul-btn" onclick="window.location.href='onemli-numaralar.html'">Önemli Numaralar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='ulasim.html'">Ulaşım</button>
+                    <button class="istanbul-btn" onclick="window.location.href='haritalar.html'">Haritalar</button>
+                    <button class="istanbul-btn" onclick="window.location.href='kultur.html'">Kültür & Sanat</button>
+                    <button class="istanbul-btn" onclick="window.location.href='yemek.html'">Yeme & İçme</button>
+                    <button class="istanbul-btn" onclick="window.location.href='etkinlik.html'">Etkinlikler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='muzeler.html'">Müzeler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='konser.html'">Konserler</button>
+                    <button class="istanbul-btn" onclick="window.location.href='plajlar.html'">Plajlar</button>
+                </div>
+            </div>
+            <div class="center">
+                <a href="index2.html">Ana Sayfa</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="harita.html">Harita</a>
+                <a href="kesfet.html">Keşfet</a>
+                <a href="konum.html">Konum Takip</a>
+            </div>
+            <div class="right">
+                <div class="weather">
+                    <i class="fa-solid fa-cloud-sun" id="weatherIcon"></i>
+                    <div class="weather-content" id="weatherContent">
+                        <p>Hava durumu bilgisi yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <i class="fa-solid fa-user dropdown-icon" id="dropdownIcon"></i>
+                    <div class="dropdown-content">
+                        <a href="/public/profile.html">Profilim</a>
+                        <a href="/public/add.html">Senin Manzaran</a>
+                        <a href="/public/gallery.html">Galeri</a>
+                        <a href="/public/gecmis.html">Tarihte Bugün "İstanbul"</a>
+                        <a href="#" onclick="logout()">Çıkış Yap</a>
+                    </div>
+                </div>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="discover-section">
+        <h1>Discover</h1>
+        <h2>TASTE & QUALITY</h2>
+        
+        <div class="food-categories">
+            <div class="category-item" data-target="kebap-section">
+                <img src="image/kebap.jpg" alt="Kebap">
+                <div class="overlay">
+                    <h3>Kebap</h3>
+                    <p>En İyi Kebap Restoranları</p>
+                </div>
+            </div>
+            
+            <div class="category-item" data-target="doner-section">
+                <img src="image/döner.jpg" alt="Döner">
+                <div class="overlay">
+                    <h3>Döner</h3>
+                    <p>En İyi Döner Restoranları</p>
+                </div>
+            </div>
+            
+            <div class="category-item" data-target="baklava-section">
+                <img src="image/baklava.jpg" alt="Baklava">
+                <div class="overlay">
+                    <h3>Baklava</h3>
+                    <p>En İyi Baklava Restoranları</p>
+                </div>
+            </div>
+            
+            <div class="category-item" data-target="lokum-section">
+                <img src="image/lokum.jpg" alt="Lokum">
+                <div class="overlay">
+                    <h3>Lokum</h3>
+                    <p>En İyi Lokum Restoranları</p>
+                </div>
+            </div>
+            
+            <div class="category-item" data-target="evyemegi-section">
+                <img src="image/evyemegi.jpg" alt="Ev Yemekleri">
+                <div class="overlay">
+                    <h3>Ev Yemekleri</h3>
+                    <p>En İyi Ev Yemekleri Restoranları</p>
+                </div>
+            </div>
+            
+            <div class="category-item" data-target="şarap-section">
+                <img src="image/şarap.jpg" alt="İcecek">
+                <div class="overlay">
+                    <h3>İçecekler</h3>
+                    <p>En İyi İçecekler</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kategori Bölümleri -->
+        <section id="kebap-section" class="food-section">
+            <div class="section-content">
+                <h2>En İyi Kebap Restoranları</h2>
+                <div class="restaurant-grid">
+                    <div class="restaurant-card">
+                        <img src="image/kebap1.jpg" alt="Adana Kebap">
+                        <div class="restaurant-info">
+                            <h3>Adana Kebapçısı</h3>
+                            <p class="rating"><i class="fas fa-star"></i> 4.8</p>
+                            <p class="address">Kadıköy, İstanbul</p>
+                            <p class="description">Geleneksel Adana kebap lezzeti</p>
+                            <div class="restaurant-features">
+                                <span><i class="fas fa-parking"></i> Park</span>
+                                <span><i class="fas fa-wifi"></i> Wifi</span>
+                                <span><i class="fas fa-credit-card"></i> Kart</span>
+                            </div>
+                            <a href="#" class="reservation-btn">Rezervasyon Yap</a>
+                        </div>
+                    </div>
+                    <!-- Diğer restoranlar -->
+                </div>
+            </div>
+        </section>
+
+        <section id="doner-section" class="food-section">
+            <div class="section-content">
+                <h2>En İyi Döner Restoranları</h2>
+                <div class="restaurant-grid">
+                    <div class="restaurant-card">
+                        <img src="image/döner1.jpg" alt="İskender Döner">
+                        <div class="restaurant-info">
+                            <h3>İskender Efendi</h3>
+                            <p class="rating"><i class="fas fa-star"></i> 4.6</p>
+                            <p class="address">Beşiktaş, İstanbul</p>
+                            <p class="description">Meşhur İskender döner</p>
+                            <div class="restaurant-features">
+                                <span><i class="fas fa-wifi"></i> Wifi</span>
+                                <span><i class="fas fa-credit-card"></i> Kart</span>
+                            </div>
+                            <a href="#" class="reservation-btn">Rezervasyon Yap</a>
+                        </div>
+                    </div>
+                    <!-- Diğer döner restoranları -->
+                </div>
+            </div>
+        </section>
+
+        <section id="baklava-section" class="food-section">
+            <div class="section-content">
+                <h2>En İyi Baklava Dükkanları</h2>
+                <div class="restaurant-grid">
+                    <div class="restaurant-card">
+                        <img src="image/baklava1.jpg" alt="Güllüoğlu">
+                        <div class="restaurant-info">
+                            <h3>Karaköy Güllüoğlu</h3>
+                            <p class="rating"><i class="fas fa-star"></i> 4.9</p>
+                            <p class="address">Karaköy, İstanbul</p>
+                            <p class="description">Geleneksel fıstıklı baklava</p>
+                            <div class="restaurant-features">
+                                <span><i class="fas fa-wifi"></i> Wifi</span>
+                                <span><i class="fas fa-credit-card"></i> Kart</span>
+                                <span><i class="fas fa-shopping-bag"></i> Paket</span>
+                            </div>
+                            <a href="#" class="reservation-btn">Sipariş Ver</a>
+                        </div>
+                    </div>
+                    <!-- Diğer baklava dükkanları -->
+                </div>
+            </div>
+        </section>
+
+        <section id="lokum-section" class="food-section">
+            <div class="section-content">
+                <h2>En İyi Lokum Dükkanları</h2>
+                <div class="restaurant-grid">
+                    <div class="restaurant-card">
+                        <img src="image/lokum1.jpg" alt="Hacı Bekir">
+                        <div class="restaurant-info">
+                            <h3>Ali Muhiddin Hacı Bekir</h3>
+                            <p class="rating"><i class="fas fa-star"></i> 4.9</p>
+                            <p class="address">Eminönü, İstanbul</p>
+                            <p class="description">Tarihi lokum ustası</p>
+                            <div class="restaurant-features">
+                                <span><i class="fas fa-wifi"></i> Wifi</span>
+                                <span><i class="fas fa-credit-card"></i> Kart</span>
+                                <span><i class="fas fa-landmark"></i> Tarihi</span>
+                            </div>
+                            <a href="#" class="reservation-btn">Sipariş Ver</a>
+                        </div>
+                    </div>
+                    <!-- Diğer lokum dükkanları -->
+                </div>
+            </div>
+        </section>
+
+        <section id="evyemegi-section" class="food-section">
+            <div class="section-content">
+                <h2>En İyi Ev Yemekleri Restoranları</h2>
+                <div class="restaurant-grid">
+                    <div class="restaurant-card">
+                        <img src="image/evyemegi1.jpg" alt="Çiya">
+                        <div class="restaurant-info">
+                            <h3>Çiya Sofrası</h3>
+                            <p class="rating"><i class="fas fa-star"></i> 4.8</p>
+                            <p class="address">Kadıköy, İstanbul</p>
+                            <p class="description">Geleneksel Anadolu mutfağı</p>
+                            <div class="restaurant-features">
+                                <span><i class="fas fa-wifi"></i> Wifi</span>
+                                <span><i class="fas fa-credit-card"></i> Kart</span>
+                                <span><i class="fas fa-leaf"></i> Organik</span>
+                            </div>
+                            <a href="#" class="reservation-btn">Rezervasyon Yap</a>
+                        </div>
+                    </div>
+                    <!-- Diğer ev yemekleri restoranları -->
+                </div>
+            </div>
+        </section>
+
+        <section id="şarap-section" class="food-section">
+            <div class="section-content">
+                <h2>En İyi İçecek Mekanları</h2>
+                <div class="restaurant-grid">
+                    <div class="restaurant-card">
+                        <img src="image/sarap1.jpg" alt="La Cave">
+                        <div class="restaurant-info">
+                            <h3>La Cave</h3>
+                            <p class="rating"><i class="fas fa-star"></i> 4.8</p>
+                            <p class="address">Nişantaşı, İstanbul</p>
+                            <p class="description">Seçkin şarap koleksiyonu</p>
+                            <div class="restaurant-features">
+                                <span><i class="fas fa-wifi"></i> Wifi</span>
+                                <span><i class="fas fa-credit-card"></i> Kart</span>
+                                <span><i class="fas fa-wine-glass-alt"></i> Sommelier</span>
+                            </div>
+                            <a href="#" class="reservation-btn">Rezervasyon Yap</a>
+                        </div>
+                    </div>
+                    <!-- Diğer içecek mekanları -->
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+              
+                <p class="footer-description">Yazılmış ve devam eden hikayenin bir parçası olun</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>TEMELLER</h3>
+                <ul>
+                    
+                    <li><a href="#">Toplu Taşıma</a></li>
+                    <li><a href="#">Erişilebilirlik</a></li>
+                    <li><a href="#">İstanbul Kart</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>İLETİŞİME GEÇİN</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> +90538 393 16 24</p>
+                    <p><i class="fas fa-envelope"></i> ensarcckk@gmail.com</p>
+                </div>
+                <div class="social-title">
+                    <h4>HİKAYELERİMİZİ TAKİP EDİN</h4>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>BİRLİKTE YARATIYORUZ</h3>
+                <p>Kendi İstanbul hikayenizi yazmaya hazır mısınız?</p>
+                <div class="creators-logo">
+                   
+                    <span>YARATICILAR. İSTANBUL</span>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="footer-logo-ibb">
+                  
+                    <p>©2025 Telif Hakkı - İstanbul Büyükşehir Belediyesi Turizm Şube Müdürlüğü</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Yasal Uyarı</a>
+                    <a href="#">Gizlilik Politikası</a>
+                    <a href="#">Çerez Beyanı</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/index1.js"></script>
+    <script src="js/hava.js"></script>
+    <script src="js/sayfa.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/heritage-slider.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/yemek.js"></script>
+</body>
+</html>

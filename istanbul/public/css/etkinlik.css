@@ -1,0 +1,214 @@
+/* Hero Section */
+.parks-hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                url('../image/emirgan.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.hero-content h1 {
+    font-size: 4em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero-content p {
+    font-size: 1.5em;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Kategoriler */
+.parks-categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 50px;
+    background: white;
+    margin-top: -50px;
+    position: relative;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.category-item {
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.category-item:hover {
+    transform: translateY(-5px);
+    background: #4CAF50;
+    color: white;
+}
+
+.category-item i {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #4CAF50;
+}
+
+.category-item:hover i {
+    color: white;
+}
+
+/* Mekanlar Bölümü */
+.venues-section {
+    padding: 80px 20px;
+    background: #f8f9fa;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.filters {
+    margin: 30px 0;
+}
+
+.filter-btn {
+    padding: 10px 25px;
+    margin: 0 10px;
+    border: none;
+    background: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+    background: #4CAF50;
+    color: white;
+}
+
+.venues-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Mekan Kartları */
+.venue-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.venue-card:hover {
+    transform: translateY(-10px);
+}
+
+.venue-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.venue-info {
+    padding: 20px;
+}
+
+.venue-info h3 {
+    color: #2c3e50;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.venue-info .location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.venue-info .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.feature-tag {
+    padding: 5px 12px;
+    background: #f1f1f1;
+    border-radius: 15px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Özellikler Bölümü */
+.features-section {
+    padding: 80px 20px;
+    background: white;
+}
+
+.features-section h2 {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+
+.feature-item i {
+    font-size: 2.5em;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+    .parks-categories {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: -30px;
+        padding: 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5em;
+    }
+
+    .filter-btn {
+        margin: 5px;
+    }
+
+    .venue-card img {
+        height: 200px;
+    }
+} 

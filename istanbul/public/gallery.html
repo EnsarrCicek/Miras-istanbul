@@ -117,14 +117,13 @@
 
                     // Görüntü yolunu düzgün şekilde oluştur
                     const imagePath = post.image_path ? 
-                        `http://localhost:8000${post.image_path}` : 
-                        'image/default-image.jpg';
+                        `http://localhost:8000/static/uploads${post.image_path.replace('/uploads', '')}` : '';
 
                     console.log('Image path:', imagePath); // Debug için
 
                     slideElement.innerHTML = `
-                        <img src="${imagePath}" alt="${post.title}" 
-                             onerror="this.onerror=null; this.src='image/default-image.jpg';">
+                        <img src="${imagePath}" 
+                            alt="${post.title}">
                         <div class="caption">
                             <h2>${post.title}</h2>
                             <p>${post.content}</p>
