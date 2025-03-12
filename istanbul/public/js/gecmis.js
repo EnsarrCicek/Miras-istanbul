@@ -115,6 +115,76 @@ Saldırının ardından haber ajanslarına düşen ilk bilgiler biri polis iki k
             `
         }
     ],
+    "01-04": [
+        {
+            title: "2017: İstanbul'da, Reina gece kulübüne saldırı yapıldı.",
+            description: "1 Ocak 2017'de yerel saatle 01:15'te İstanbul'un Beşiktaş ilçesindeki Ortaköy semtinde bulunan Reina adlı gece kulübüne yeni yıl kutlamaları sırasında düzenlenen silahlı saldırı. Saldırı sonucunda 39 kişi öldü, 70 kişi ise yaralandı.",
+            image: "image/reina.JPG",
+            additionalContent: `
+                <div class="detailed-content">
+                    <h3>Olay Detayları</h3>
+                    <p>Olay yerine taksiyle gelen ve üzerinde siyah mont, siyah pantolon ve açık renkli şapka olan Abdulkadir Masharipov (kod adı: Abu Muhammed Horasani) elindeki AK-47 marka uzun namlulu silahla ilk önce etrafa ateş açtı. Sonrasında polis memuru Burak Yıldız'ı öldürdü. Ardından kapıda bekleyen gece kulübünün özel güvenliğini sağlayan kişilere ateş açarak öldürdü ve içeriye girerek etrafa rastgele ateş açtı. Yaklaşık 7 dakika süren saldırı sonrası saldırgan üstünü değiştirerek gözden kayboldu.[32][33]
+
+Kayıplar
+Saldırıda biri aynı zamanda Belçika vatandaşı olan 12 Türk vatandaşı hayatını yitirdi.[34] Bunların dışında, 7 tane Suudi Arabistan, üç tane Lübnan, en az üç tane Irak, ikişer tane Tunus, Fas ve Ürdün, birer tane Rusya, Kuveyt, Kanada, İsrail ve Suriye vatandaşı hayatını yitirdi.[34] Ölen iki Hindistan vatandaşından biri olan film yapımcısı ve iş insanı Abis Rizvi'de saldırı günü gece kulübünde bulunmaktaydı. Hayatını kaybetmiş 39 kişiden birinin kimliği henüz tespit edilemedi;[34] bazı kaynaklarda ölen Iraklı sayısının dört olduğu bildirilmektedir.[35]
+
+Saldırının ardından haber ajanslarına düşen ilk bilgiler biri polis iki kişinin öldüğü yönündeydi. Olaydan yaklaşık bir buçuk saat sonra basına konuşan İstanbul Valisi Vasip Şahin, saldırının bir "terör saldırısı" olduğunu ve ilk belirlemelere göre 35 kişinin öldüğünü açıkladı. Daha sonra yeni bir açıklama yapan İçişleri Bakanı Süleyman Soylu, ölen kişi sayısının 39 olduğunu bildirdi. Sağlık Bakanı Recep Akdağ ise kimliği belirlenen 20 kişiden 15'inin yabancı uyruklu, 5'inin ise Türk olduğunu ve 4'ü ağır olmak üzere 65 kişinin yaralı olarak hastanelerde olduğunu duyurdu.[36]</p>
+                    
+                   
+
+                   
+                </div>
+            `
+        }
+    ],
+    "01-06": [
+        {
+            title: "1929: İstanbul'da, şiddetli kar fırtınası",
+            description: "İstanbul beyaza büründü",
+            image: "image/1929.jpg",
+            additionalContent: `
+                <div class="detailed-content">
+                    <h3>Olay Detayları</h3>
+                    <p>6 Ocak 1929 tarihinde gece yarısı başlayan çok şiddetli fırtına ve kar yağışı 55 gün devam edecek bir afetin habercisiydi. Kısa sürede İstanbul’u etkisi altına alan kar maddi hasarlara sebep oldu. Odun ve kömür fiyatlarına zam yapıldı. 21 Ocak 1929 tarihinde Tatavla’da (Kurtuluş) Aya Dimitri Kilisesi’nde yangın çıktı ve yangın hızla diğer evlere sıçradı. Yangını söndürecek su bulunamaması ve sert hava koşulları nedeniyle 500 ev yandı. 2 Şubat 1929’a gelindiğinde vapur ve tren seferleri yapılamadı. Bostancı, Erenköy ve Beykoz gibi şehrin uzak semtlerinde hayat durdu. Cenazeler günlerce kaldırılamadı. Aç kalan kurtlar Beşiktaş’a indi ve mahallelerde dolaşmaya başladı. Buzlanma nedeniyle kazalar meydana geldi ve Haliç sahilinde sekiz santimlik buz tabakası oluştu. Dönemi anlatanlar yoğun kar yağışı nedeniyle cenazelerin gömülemediğini ve ertesi gün gömülmek üzere mezarlıkta bırakılanların da kurtlar tarafından zarar gördüğünü yazıyor. 1 Mart 1929 tarihinde gece yarısından sonra İstanbul Boğazı’na büyük buz kütleleri hâkim oldu. Boğaz ve limanda on metre genişliğinde ve 
+                    üç metre kalınlığında iri buzlar görüldü. Kar yağışları 12 Mart’a kadar devam etti.
+                   
+
+                   
+                </div>
+            `
+        },
+        {
+            title: "1977: Yurtsever Devrimci Gençler Derneği Kapatıldı",
+            description: "Dernek Kapatıldı",
+            image: "image/devim.jpg",
+            additionalContent: `
+                <div class="detailed-content">
+                    <h3>Olay Detayları</h3>
+                    <p>Dev-Genç İstanbul Başkanı Paşa Güven yakalandı. 
+                    İstanbul Yurtsever Devrimci Gençlik Derneği kapatıldı ve 39 kişi gözaltına alındı.
+                   
+
+                   
+                </div>
+            `
+        },
+        {
+            title: "2015: İstanbul'da patlama",
+            description: "Kanlı Saldırı",
+            image: "image/patlama.jpg",
+            additionalContent: `
+                <div class="detailed-content">
+                    <h3>Olay Detayları</h3>
+                    <p>2015 Sultanahmet saldırısı, 6 Ocak 2015'te İstanbul'un Fatih ilçesindeki Sultanahmet semtinde bulunan İstanbul Emniyet Müdürlüğü Turizm Şube Müdürlüğü önünde, Irak ve Şam İslam Devleti mensubu Diana Ramazova'nın üzerindeki patlayıcıları infilak ettirmesiyle gerçekleştirilen intihar saldırısı. 
+                    Patlama sonucunda saldırganın yanı sıra bir polis memuru ölürken, bir polis memuru yaralandı.Saldırı sonrasında Devrimci Halk Kurtuluş Partisi-Cephesi'ne yakın bir web sitesinden yapılan açıklamayla saldırının, örgüt üyelerinden Elif Sultan Kalsen tarafından gerçekleştirildiği belirtildi. Açıklamada yer saldırının gerekçesi "Feda savaşçımız tarafından Berkin Elvan'ın katillerinin cezalandırılması ve AKP'nin rüşvetçi, hırsız bakanlarını koruyan faşist devletten hesap sormak" olarak sunulmuştu.[2] Ölen saldırganın teşhisi için Adli Tıp Kurumuna getirilen Kalsen'in ailesi cesedin Kalsen'e ait olmadığını söylerken emniyetten de saldırganın Kalsen olmadığı yönünde bir açıklama yapıldı.[3] Bir süre sonra da Devrimci Halk Kurtuluş Partisi-Cephesi tarafından yapılan açıklamayla saldırının kendileri tarafından düzenlenmediği ve daha önceki açıklamanın bir hata sonucu yapıldığı bildirildi.[4] Daha sonraları ise saldırının Diana Ramazova adlı Irak ve Şam İslam Devleti'ne mensup Rus vatandaşı tarafından gerçekleştirildiği belirlendi.[5][6][7][8]
+                   
+
+                   
+                </div>
+            `
+        }
+    ],
+    
     // Diğer tarihler için verileri ekleyebilirsiniz
 };
 
